@@ -1,0 +1,15 @@
+# Misc
+.DS_Store
+.tmp
+.vscode
+.env
+.cache
+
+# Node build artifacts
+node_modules
+npm-debug.log
+package-lock.json
+
+# Local development
+web/dev
+web/dist
