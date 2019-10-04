@@ -13,3 +13,7 @@ package-lock.json
 # Local development
 web/dev
 web/dist
+.Rproj.user
+
+# Data
+data
