@@ -1,8 +1,8 @@
 /* global d3 */
 import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
-import graphic from './graphic';
 import footer from './footer';
+import Impact from './graphic-impact';
 
 const $body = d3.select('body');
 let previousWidth = 0;
@@ -13,7 +13,7 @@ function resize() {
   const width = $body.node().offsetWidth;
   if (previousWidth !== width) {
     previousWidth = width;
-    graphic.resize();
+    Impact.resize();
   }
 }
 
@@ -38,7 +38,7 @@ function init() {
   // setup sticky header menu
   setupStickyHeader();
   // kick off graphic code
-  graphic.init();
+  Impact.init();
   // load footer stories
   footer.init();
 }

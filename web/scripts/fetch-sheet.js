@@ -13,10 +13,8 @@ const makeRequest = (opt, cb) => {
   request(url, (error, response, body) => {
     if (error) console.log(error);
     else if (response) {
-      const data = dsv.csvParse(body);
-      const str = JSON.stringify(data);
-      const file = `${CWD}/${opt.filepath || 'data/sheet.json'}`;
-      fs.writeFile(file, str, err => {
+      const file = `${CWD}/${opt.filepath || 'data/sheet.csv'}`;
+      fs.writeFile(file, body, err => {
         if (err) console.error(err);
         cb();
       });
