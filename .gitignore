@@ -17,7 +17,7 @@ web/dist
 .Rhistory
 
 # Data
-data
+analysis/data
 
 #Plots
-plots
+analysis/plots

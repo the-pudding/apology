@@ -10,4 +10,10 @@
 		</a>
 	</p>
 	<time class='intro__time'>Month 2019</time>
+
+	<div class='intro__prelude'>
+		{{#each doc.intro}}
+		<p>{{{value}}}</p>
+		{{/each}}
+	</div>
 </div>

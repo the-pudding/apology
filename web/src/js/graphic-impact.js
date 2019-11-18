@@ -32,6 +32,7 @@ function cleanData(data, pre) {
     side,
   }));
 }
+
 function setup([people, pre, post]) {
   const dataPeople = people.filter(d => d.remove_flag === 'FALSE');
   const dataPre = cleanData(pre, true);

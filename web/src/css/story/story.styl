@@ -2,6 +2,8 @@
 #impact
 	.impact__graphic
 		display grid
+		margin 0 auto
+		max-width 80rem
 
 	.graphic__zone
 		position relative
@@ -23,6 +25,9 @@
 			top 0
 			left 0
 			margin 0
+			font-family $sans
+			set-type-size(small)
+			lin-height 1
 
 			&:first-of-type
 				text-align right
@@ -50,26 +55,29 @@
 			stroke $gray-light
 			stroke-width 2px
 
-		// &.is-beauty path
-		// stroke red
-		// stroke-width 2px
-		&.cluster--1 path
-			stroke indigo
-
-		&.cluster--2 path
-			stroke purple
-
-		&.cluster--3 path
-			stroke blue
-
-		&.cluster--4 path
-			stroke green
-
-		&.cluster--5 path
-			stroke yellow
-
-		&.cluster--6 path
-			stroke orange
-
-		&.cluster--7 path
+		&.is-beauty path
 			stroke red
+
+		// stroke-width 2px
+		// &.cluster--1 path
+		// stroke indigo
+
+		// &.cluster--2 path
+		// stroke purple
+
+		// &.cluster--3 path
+		// stroke blue
+
+		// &.cluster--4 path
+		// stroke green
+
+		// &.cluster--5 path
+		// stroke yellow
+
+		// &.cluster--6 path
+		// stroke orange
+
+		// &.cluster--7 path
+		// stroke red
+		text
+			display none
