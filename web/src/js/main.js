@@ -14,7 +14,7 @@ function resize() {
   const width = $body.node().offsetWidth;
   if (previousWidth !== width) {
     previousWidth = width;
-    Impact.resize();
+    // Impact.resize();
     Beeswarm.resize();
   }
 }
@@ -40,7 +40,7 @@ function init() {
   // setup sticky header menu
   setupStickyHeader();
   // kick off graphic code
-  Impact.init();
+  // Impact.init();
   Beeswarm.init();
   // load footer stories
   footer.init();
