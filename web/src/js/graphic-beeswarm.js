@@ -20,10 +20,11 @@ function resize() {
 	});
 }
 
-function setupFigure() {
+function setupGraphics() {
 	const $f = d3.select(this);
-	const id = $f.attr('data-id');
-	const file = `beeswarm--${id}.json`;
+    const id = $f.attr('data-id');
+    
+	const file = `beeswarm--${id}.csv`;
 	loadData(file).then(data => {
 		const chart = $f.datum(data).puddingChartBeeswarm();
 		chart.resize().render();
@@ -32,7 +33,7 @@ function setupFigure() {
 }
 
 function init() {
-	$figure.each(setupFigure);
+    $figure.each(setupGraphics);
 }
 
 export default { init, resize };

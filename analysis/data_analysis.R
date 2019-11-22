@@ -626,7 +626,7 @@ indices = c(5, 6, 8, 9, 10, 14, 19, 26)
 
 # 2. Rate of utterances of sorry phrases
 
-generateTranscript <- function(index) {
+generateTranscript <- function(index, process = TRUE) {
   filename = gsub(' ', '', meta$name[index])
   if (!file.exists(paste0('analysis/data/transcripts/', filename, '.en.vtt')))
   {
@@ -639,17 +639,21 @@ generateTranscript <- function(index) {
       )
     )
   }
-  transcript <-
-    readLines(paste0('analysis/data/transcripts/', filename, '.en.vtt'))[-(1:3)] %>%
-    gsub('^.*\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}.*$',
-         '',
-         .) %>%
-    gsub('^.*<c>.*$', '', .) %>%
-    unique() %>%
-    gsub('  ', '', .) %>%
-    paste(., collapse = ' ') %>%
-    gsub('  ', '', .)
-  
+  if (process) {
+    transcript <-
+      readLines(paste0('analysis/data/transcripts/', filename, '.en.vtt'))[-(1:3)] %>%
+      gsub('^.*\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}.*$',
+           '',
+           .) %>%
+      gsub('^.*<c>.*$', '', .) %>%
+      unique() %>%
+      gsub('  ', '', .) %>%
+      paste(., collapse = ' ') %>%
+      gsub('  ', '', .)
+  } else{
+    transcript <-
+      readLines(paste0('analysis/data/transcripts/', filename, '.en.vtt'))[-(1:3)]
+  }
   return(transcript)
 }
 
@@ -696,11 +700,51 @@ createCutCommands <- function(index, threshold = 12) {
 }
 
 
-data.frame(name = meta$name[indices], sorries, avg_sub_change) %>% 
+data.frame(name = meta$name[indices], sorries, change = avg_sub_change) %>%
   mutate_if(is.numeric, function(col) {
-      colmax = max(col)
-      colmin = min(col)
-      return((col - colmin)/(colmax - colmin))
-}) %>% gather(type, value, -name) %>% 
-  mutate(type = as.factor(type)) %>%
-  mutate(type_code = as.numeric(type)) %>% toJSON(., pretty = TRUE)
+    colmax = max(col)
+    colmin = min(col)
+    if(colmin >= 0){
+      return((col - colmin) / (colmax - colmin))
+    } else if (colmax > 0) {
+      scaler = 2*max(-colmin, colmax)
+      return(0.5+(col/scaler))
+    }
+  }) %>% gather(type, value, -name) %>% split(f = .$type) %>% lapply(function(df) {
+    write.csv(df, 
+              paste0("web/src/assets/data/beeswarm--", unique(df$type), ".csv"),
+              row.names = FALSE)
+  })
+
+
+###############################################
+
+timestamps = list()
+index = 0
+for (i in c(1:12, 14:28, 30:31)) {
+  if (meta$original_available[i]) {
+    if (length(grep("align:start", generateTranscript(i, FALSE))) != 0) {
+      trans = generateTranscript(i, FALSE) %>%
+        gsub('^.*\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}.*$',
+             '',
+             .) %>%
+        tolower() %>%
+        unique %>%
+        gsub('\'', "", .)
+      pos = grep('im sorry', trans)
+      times = trans[pos[1] - 1] %>% strsplit(split = "</c>") %>% gsub('[[:alpha:]]', "", .) %>% strsplit(., split = ",")
+      stamp = times[[1]][1] %>% gsub("^.*\\d{2}:(\\d{2}:\\d{2}).\\d{3}.*$", "\\1", .)
+    } else{
+      trans = generateTranscript(i, FALSE) %>% unique %>% gsub('\'', "", .) %>% tolower
+      pos = grep('im sorry', trans)
+      stamp = trans[pos[1] - 1] %>% gsub("^\\d{2}:(\\d{2}:\\d{2}).\\d{3}.*$", "\\1", .)
+    }
+    index = index + 1
+    timestamps[[index]] = data.frame(
+      name = meta$name[i],
+      link = meta$video_link[i] %>% as.character(),
+      timestamp = stamp
+    )
+  }
+}
+#timestamps %>% bind_rows() %>% write.csv("timestamps.csv", row.names = FALSE)
