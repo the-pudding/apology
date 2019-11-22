@@ -1,19 +1,13 @@
 <div class='intro'>
-	<h1 class='intro__hed'>{{doc.title}}</h1>
-	<p class='intro__dek'>{{doc.description}}</p>
+	<h1 class='intro__hed'>{{@root.doc.title}}</h1>
+	<p class='intro__dek'>{{@root.doc.description}}</p>
 	<p class='intro__byline'>By
-		<a href='{{meta.author2.url}}' target='_blank'>
-			<strong>{{meta.author2.name}}</strong>
+		<a href='{{@root.meta.author2.url}}' target='_blank'>
+			<strong>{{@root.meta.author2.name}}</strong>
 		</a> and 
-		<a href='{{meta.author.url}}' target='_blank'>
-			<strong>{{meta.author.name}}</strong>
+		<a href='{{@root.meta.author.url}}' target='_blank'>
+			<strong>{{@root.meta.author.name}}</strong>
 		</a>
 	</p>
 	<time class='intro__time'>Month 2019</time>
-
-	<div class='intro__prelude'>
-		{{#each doc.intro}}
-		<p>{{{value}}}</p>
-		{{/each}}
-	</div>
 </div>

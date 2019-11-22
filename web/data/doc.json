@@ -1,14 +1,42 @@
 {
 	"title": "The Aftermath of a YouTube Apology",
 	"description": "Quantifying the lasting impact of a YouTube controversy.",
-	"intro": [
+	"slides": [
 		{
-			"type": "text",
-			"value": "Paragraph 1"
+			"type": "titlecard",
+			"slide": "intro"
 		},
 		{
 			"type": "text",
-			"value": "ANother one."
+			"slide": "costume",
+			"content": [
+				{
+					"type": "text",
+					"value": "When YouTubers’ apology videos became a Halloween costume, it was time to investigate."
+				},
+				{
+					"type": "text",
+					"value": "All sorts of celebrities have controversies and ultimately issue a publicly apology. But YouTubers are uniquely interesting to study because they shit where they eat, so to speak."
+				}
+			]
+		},
+		{
+			"type": "text",
+			"slide": "tldr",
+			"content": [
+				{
+					"type": "text",
+					"value": "We researched nearly every possible popular YouTuber that had some sort of controversy and the found ones with  apology videos."
+				},
+				{
+					"type": "text",
+					"value": "We found 31 notable in the past few years, then classified their pre and post apology subscriber trajectories to compare their short and long term effects."
+				},
+				{
+					"type": "text",
+					"value": "There is no one-size-fits-all video approach or reaction. Beauty YouTubers reign supreme."
+				}
+			]
 		}
 	]
 }

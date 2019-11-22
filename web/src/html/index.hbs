@@ -18,9 +18,26 @@
 	{{> base/header 'sticky'}}
 
 	<main id='content'>
+		
+		<div class='swiper' data-js='swiper'>
+			<div class='swiper__wrapper' data-js='swiper__wrapper'>
+				
+				{{#each doc.slides}}
+					<div class='slide' data-js='slide'>
+					{{#ifEquals type 'titlecard'}}
+						{{> story/intro }}
+					{{/ifEquals}}
+					
+					{{#ifEquals type 'text'}}
+						{{#each content}}
+							<p>{{{value}}}</p>
+						{{/each}}
+					{{/ifEquals}}
+					</div>
+				{{/each}}
 
-		{{> story/intro }}
-		{{> story/impact }}
+			</div>
+		</div>
 
 	</main>
 

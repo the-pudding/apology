@@ -1,4 +1,5 @@
 /* global d3 */
+import Swiper from 'tiny-swiper';
 import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import footer from './footer';
@@ -30,6 +31,34 @@ function setupStickyHeader() {
   }
 }
 
+function setupSwiper() {
+  let index = 0;
+
+  const containerEl = d3.select('[data-js="swiper"]').node();
+  const swiper = new Swiper(containerEl, {
+    wrapperClass: 'swiper__wrapper',
+    slideClass: 'slide',
+    slideNextClass: 'slide--next',
+    slidePrevClass: 'slide--prev',
+    slideActiveClass: 'slide--active',
+  });
+
+  swiper.on('before-slide', currentIndex => {
+    console.log('current', currentIndex);
+  });
+
+  swiper.on('after-slide', newIndex => {
+    console.log('new', newIndex);
+    index = newIndex;
+  });
+
+  $body.on('keydown', () => {
+    const key = d3.event.keyCode;
+    if (key === 37) index -= 1;
+    else if (key === 39) index += 1;
+  });
+}
+
 function init() {
   // add mobile class to body tag
   $body.classed('is-mobile', isMobile.any());
@@ -38,7 +67,9 @@ function init() {
   // setup sticky header menu
   setupStickyHeader();
   // kick off graphic code
-  Impact.init();
+  // Impact.init();
+  // setup swiper
+  setupSwiper();
   // load footer stories
   footer.init();
 }
