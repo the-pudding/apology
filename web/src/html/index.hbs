@@ -19,11 +19,17 @@
 
 	<main id='content'>
 		
+		<div class='graphics'>
+			{{> story/category }}
+			{{> story/impact }}
+			{{> story/costume }}
+		</div>
+
 		<div class='swiper' data-js='swiper'>
 			<div class='swiper__wrapper' data-js='swiper__wrapper'>
 				
 				{{#each doc.slides}}
-					<div class='slide' data-js='slide'>
+					<div class='slide' data-js='slide' data-slide='{{slide}}' data-trigger='{{trigger}}'>
 					{{#ifEquals type 'titlecard'}}
 						{{> story/intro }}
 					{{/ifEquals}}

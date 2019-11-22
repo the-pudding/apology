@@ -3,19 +3,21 @@ import Swiper from 'tiny-swiper';
 import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import footer from './footer';
+import Category from './graphic-category';
 import Impact from './graphic-impact';
 
 const $body = d3.select('body');
-let previousWidth = 0;
+const $slide = d3.selectAll('[data-js="slide"]');
+const $section = d3.selectAll('section');
+
+let swiper = null;
 
 function resize() {
   // only do resize on width changes, not height
   // (remove the conditional if you want to trigger on height change)
-  const width = $body.node().offsetWidth;
-  if (previousWidth !== width) {
-    previousWidth = width;
-    Impact.resize();
-  }
+  Category.resize();
+  Impact.resize();
+  swiper.update();
 }
 
 function setupStickyHeader() {
@@ -33,9 +35,8 @@ function setupStickyHeader() {
 
 function setupSwiper() {
   let index = 0;
-
   const containerEl = d3.select('[data-js="swiper"]').node();
-  const swiper = new Swiper(containerEl, {
+  swiper = new Swiper(containerEl, {
     wrapperClass: 'swiper__wrapper',
     slideClass: 'slide',
     slideNextClass: 'slide--next',
@@ -44,12 +45,20 @@ function setupSwiper() {
   });
 
   swiper.on('before-slide', currentIndex => {
-    console.log('current', currentIndex);
+    // console.log('current', currentIndex);
   });
 
   swiper.on('after-slide', newIndex => {
-    console.log('new', newIndex);
+    // console.log('new', newIndex);
     index = newIndex;
+    const $s = $slide.filter((d, i) => i === index);
+    const slide = $s.attr('data-slide');
+    const trigger = $s.attr('data-trigger');
+    $section.classed('is-visible', false);
+    if (trigger) {
+      d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
+      if (trigger === 'category') Category.slide(slide);
+    }
   });
 
   $body.on('keydown', () => {
@@ -67,7 +76,8 @@ function init() {
   // setup sticky header menu
   setupStickyHeader();
   // kick off graphic code
-  // Impact.init();
+  Category.init();
+  Impact.init();
   // setup swiper
   setupSwiper();
   // load footer stories
