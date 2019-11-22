@@ -3,6 +3,7 @@ import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import footer from './footer';
 import Impact from './graphic-impact';
+import Beeswarm from './graphic-beeswarm';
 
 const $body = d3.select('body');
 let previousWidth = 0;
@@ -14,6 +15,7 @@ function resize() {
   if (previousWidth !== width) {
     previousWidth = width;
     Impact.resize();
+    Beeswarm.resize();
   }
 }
 
@@ -39,6 +41,7 @@ function init() {
   setupStickyHeader();
   // kick off graphic code
   Impact.init();
+  Beeswarm.init();
   // load footer stories
   footer.init();
 }

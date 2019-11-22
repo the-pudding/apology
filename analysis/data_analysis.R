@@ -12,21 +12,21 @@ library(zoo)
 
 ##################### Read in data #########################
 # Import apologies metadata
-meta <- read.csv('data/apologies_meta.csv') %>%
+meta <- read.csv('analysis/data/apologies_meta.csv') %>%
   mutate(
-    Data.Variable.ID = paste0('id_', Data.Variable.ID),
-    Name = as.character(Name),
-    Apology.Date = parse_date_time(Apology.Date, orders = 'b! d!, Y!'),
-    Controversy.Date = parse_date_time(Controversy.Date, orders = 'b! d!, Y!'),
-    Likes.Dislikes.Views = as.character(Likes.Dislikes.Views)
+    id = paste0('id_', id),
+    name = as.character(name),
+    apology_date = parse_date_time(apology_date, orders = 'b! d!, Y!'),
+    controversy_date = parse_date_time(controversy_date, orders = 'b! d!, Y!'),
+    likes_dislikes_views = as.character(likes_dislikes_views)
   ) %>%
-  rename(id = Data.Variable.ID) %>%
-  filter(Remove.Flag == FALSE) %>%
-  select(-Remove.Flag, -X)
+  filter(remove_flag == FALSE) %>%
+  select(-remove_flag, -X, -note)
 
 # Read in the JSON subscriber and view data and convert to
 # listed data frame structure
-subview_list <- read_json('data/compiled_subview_data.json') %>%
+subview_list <-
+  read_json('analysis/data/compiled_subview_data.json') %>%
   lapply(., function(item) {
     sub_df <- bind_rows(item$data$dailySubs) %>%
       full_join(bind_rows(item$data$totalSubs), by = "date") %>%
@@ -55,7 +55,10 @@ subview_list <- read_json('data/compiled_subview_data.json') %>%
 
 ################## Clustering ######################
 
-mykmeans <- function(X, k, quality = FALSE, maxiters = 25) {
+mykmeans <- function(X,
+                     k,
+                     quality = FALSE,
+                     maxiters = 25) {
   n = dim(X)[1]
   p = dim(X)[2]
   X = scale(X)
@@ -71,17 +74,18 @@ mykmeans <- function(X, k, quality = FALSE, maxiters = 25) {
         if (is.null(nrow(X[group_old == index, ])))
           centroids[[index]]
         else
-          apply(X[group_old == index, ], 2, function(x) mean(x, na.rm=TRUE))
+          apply(X[group_old == index, ], 2, function(x)
+            mean(x, na.rm = TRUE))
       })
       group_new = apply(X, 1, function(row) {
         which.min(sapply(centroids, function(c) {
           sqrt(sum((c - row) ^ 2, na.rm = TRUE))
         }))
       })
-      if(length(unique(group_new)) == 1 || i > maxiters){
+      if (length(unique(group_new)) == 1 || i > maxiters) {
         group_new = sample(k, n, replace = TRUE)
         break
-      } 
+      }
     }
     qual = sum(sapply(1:n, function(i) {
       sqrt(sum((centroids[[group_new[i]]] - X[i, ]) ^ 2, na.rm = TRUE))
@@ -99,29 +103,34 @@ mykmeans <- function(X, k, quality = FALSE, maxiters = 25) {
 
 
 #Fix weird issue with Tana's subs
-subview_list[[paste0('id_',33)]]$subscriptions$total[501] = mean(subview_list[[paste0('id_',33)]]$subscriptions$total[500], subview_list[[paste0('id_',33)]]$subscriptions$total[502])
+subview_list[[paste0('id_', 33)]]$subscriptions$total[501] = mean(subview_list[[paste0('id_', 33)]]$subscriptions$total[500],
+                                                                  subview_list[[paste0('id_', 33)]]$subscriptions$total[502])
 pre_apology_classification_data <- lapply(1:37, function(i) {
   sub_df <- subview_list[[i]][[1]]
-  controversy_date <- meta$Controversy.Date[i]
+  controversy_date <- meta$controversy_date[i]
   maxcount_ba <- filter(sub_df, date < controversy_date) %>%
     summarise(max(total)) %>% as.double
   sub_df <- sub_df %>%
     filter(date < controversy_date) %>%
-    filter(floor((controversy_date-date)/24) < 90) %>%
+    filter(floor((controversy_date - date) / 24) < 90) %>%
     mutate(total = total / maxcount_ba,
-           days = as.integer(ceiling((controversy_date-date)/24))) %>%
+           days = as.integer(ceiling((
+             controversy_date - date
+           ) / 24))) %>%
     mutate(id = gsub("\\D", "", meta$id[i]))
   return(sub_df)
 }) %>%
   bind_rows() %>%
-  filter(!is.na(total) & total != 0 & id != "7" & id != "11" & id != "23" & id != "27" & id != "32"& id != "29") %>%
+  filter(!is.na(total) &
+           total != 0) %>%
   select(-daily,-date) %>%
   mutate(id = as.factor(id)) %>%
   spread(., id, total) %>%
   select(-days) %>%
   t
 
-pregroups <- mykmeans(pre_apology_classification_data, 7, quality = TRUE)
+pregroups <-
+  mykmeans(pre_apology_classification_data, 7, quality = TRUE)
 
 
 # pre_apology_classification_data %>%
@@ -137,7 +146,7 @@ pre_apology_classification_data %>%
   mutate(days = 1:nrow(.)) %>%
   gather(id, value, -days) %>%
   mutate(group = pregroups[[1]][paste0(id)],
-         name = meta$Name[as.integer(id)]) %>%
+         name = meta$name[as.integer(id)]) %>%
   group_by(id) %>%
   mutate(name = if_else(days == sample(days, 1), name, NA_character_)) %>%
   ggplot(aes(
@@ -166,26 +175,30 @@ pre_apology_classification_data %>%
 
 post_apology_classification_data <- lapply(1:37, function(i) {
   sub_df <- subview_list[[i]][[1]]
-  apology_date <- meta$Apology.Date[i]
+  apology_date <- meta$apology_date[i]
   maxcount_ba <- filter(sub_df, date < apology_date) %>%
     summarise(max(total)) %>% as.double
   sub_df <- sub_df %>%
     filter(date >= apology_date) %>%
     mutate(total = total / maxcount_ba,
-           days = as.integer(floor((date - apology_date)/24))) %>%
+           days = as.integer(floor((
+             date - apology_date
+           ) / 24))) %>%
     mutate(id = gsub("\\D", "", meta$id[i]))
   return(sub_df)
 }) %>%
   bind_rows() %>%
   filter(days < 180) %>%
-  filter(!is.na(total) & total != 0 & id != "7" & id != "11" & id != "23" & id != "27" & id != "32" & id != "29") %>%
+  filter(!is.na(total) &
+           total != 0) %>%
   select(-daily,-date) %>%
   mutate(id = as.factor(id)) %>%
   spread(., id, total) %>%
   select(-days) %>%
   t
 
-postgroups <- mykmeans(post_apology_classification_data, 7, quality = TRUE)
+postgroups <-
+  mykmeans(post_apology_classification_data, 7, quality = TRUE)
 
 
 # post_apology_classification_data %>%
@@ -200,11 +213,11 @@ postgroups <- mykmeans(post_apology_classification_data, 7, quality = TRUE)
 post_apology_classification_data %>%
   t %>%
   as.data.frame() %>%
-  mutate(days = 0:(nrow(.)-1)) %>%
+  mutate(days = 0:(nrow(.) - 1)) %>%
   gather(id, value, -days) %>%
   filter(!is.na(value)) %>%
   mutate(group = postgroups[[1]][paste0(id)],
-         name = meta$Name[as.integer(id)]) %>%
+         name = meta$name[as.integer(id)]) %>%
   group_by(id) %>%
   mutate(name = if_else(days == sample(days, 1), name, NA_character_)) %>%
   ggplot(aes(
@@ -247,20 +260,20 @@ addPvalue <- function(df, testwidth = 30) {
 
 
 create_plot <- function(id, days_for_avg = 30) {
-  df <- subview_list[[id]]
+  df <- subview_list[meta$id[id]][[1]]
   sub_df <- df[[1]] %>% addPvalue() %>%
     mutate(color = ifelse(pval < 0.05, 'red', ifelse(pval > 0.95, 'blue', 'black'))) %>%
-    mutate(color = ifelse(is.na(color), 'black', color)) %>% 
+    mutate(color = ifelse(is.na(color), 'black', color)) %>%
     mutate(avg = rollapply(daily, days_for_avg, mean, align = 'right', fill = NA))
   view_df <- df[[2]] %>% addPvalue() %>%
     mutate(color = ifelse(pval < 0.05, 'red', ifelse(pval > 0.95, 'blue', 'black'))) %>%
-    mutate(color = ifelse(is.na(color), 'black', color)) %>% 
+    mutate(color = ifelse(is.na(color), 'black', color)) %>%
     mutate(avg = rollapply(daily, days_for_avg, mean, align = 'right', fill = NA))
-
+  
   p1 <- ggplot(data = sub_df, aes(x = date, y = total)) +
     geom_line() +
     geom_hline(yintercept = 0) +
-    geom_vline(xintercept = meta$Apology.Date.s[id],
+    geom_vline(xintercept = meta$apology_date[id],
                linetype = 2) +
     scale_x_datetime(date_breaks = '4 month', date_labels = '%b %y') +
     ggtitle('', subtitle = 'Total Subscriber Count') +
@@ -280,7 +293,7 @@ create_plot <- function(id, days_for_avg = 30) {
     geom_bar(stat = 'identity', aes(fill = color), alpha = 0.4) +
     geom_line(aes(y = avg)) +
     geom_hline(yintercept = 0) +
-    geom_vline(xintercept = meta$Apology.Date.s[id],
+    geom_vline(xintercept = meta$apology_date[id],
                linetype = 2)  +
     scale_x_datetime(date_breaks = '4 month', date_labels = '%b %y') +
     scale_fill_manual(values = c('grey', 'blue', 'red')) +
@@ -301,7 +314,7 @@ create_plot <- function(id, days_for_avg = 30) {
   p3 <- ggplot(data = view_df, aes(x = date, y = total)) +
     geom_line() +
     geom_hline(yintercept = 0) +
-    geom_vline(xintercept = meta$Apology.Date.s[id],
+    geom_vline(xintercept = meta$apology_date[id],
                linetype = 2)  +
     scale_x_datetime(date_breaks = '4 month', date_labels = '%b %y') +
     ggtitle('', subtitle = 'Total View Count') +
@@ -321,7 +334,7 @@ create_plot <- function(id, days_for_avg = 30) {
     geom_bar(stat = 'identity', aes(fill = color), alpha = 0.4) +
     geom_line(aes(y = avg)) +
     geom_hline(yintercept = 0) +
-    geom_vline(xintercept = meta$Apology.Date.s[id],
+    geom_vline(xintercept = meta$apology_date[id],
                linetype = 2) +
     scale_x_datetime(date_breaks = '4 month', date_labels = '%b %y') +
     scale_fill_manual(values = c('grey', 'blue', 'red')) +
@@ -364,8 +377,10 @@ create_plot <- function(id, days_for_avg = 30) {
 
 get_stats <-
   function(id, api_key = 'AIzaSyBvPE49eyTfHp42SMHcAiebOOJiC6Va9AU') {
-    if (is.character(id)) video_id <- id
-    else video_id <- gsub('^.*v=', '', meta$Video.Link[id])
+    if (is.character(id))
+      video_id <- id
+    else
+      video_id <- gsub('^.*v=', '', meta$Video.Link[id])
     request <-
       paste0(
         'https://www.googleapis.com/youtube/v3/videos?id=',
@@ -381,34 +396,50 @@ get_stats <-
     ))
   }
 
-get_stats_history <- function(index, api_key = 'AIzaSyBvPE49eyTfHp42SMHcAiebOOJiC6Va9AU'){
-  request <- paste0(
-    'https://www.googleapis.com/youtube/v3/search?key=',
-    api_key,
-    '&channelId=',
-    meta$Channel.ID[index],
-    '&part=snippet,id&type=video&publishedBefore=',
-    meta$Apology.Date[index],
-    'T00:00:00Z&order=date&maxResults=10'
-  )
-  returnval <- read_html(request) %>% html_text %>% parse_json
-  lapply(returnval$items, function(item){
-    stats <- get_stats(item$id$videoId)
-    return(data.frame(date = as.POSIXct(item$snippet$publishedAt),
-                      views = stats$views,
-                      likes = stats$likes,
-                      dislikes = stats$dislikes))
-  }) %>%
-    bind_rows() %>%
-    return()
-}
+get_stats_history <-
+  function(index, api_key = 'AIzaSyBvPE49eyTfHp42SMHcAiebOOJiC6Va9AU') {
+    request <- paste0(
+      'https://www.googleapis.com/youtube/v3/search?key=',
+      api_key,
+      '&channelId=',
+      meta$Channel.ID[index],
+      '&part=snippet,id&type=video&publishedBefore=',
+      meta$Apology.Date[index],
+      'T00:00:00Z&order=date&maxResults=10'
+    )
+    returnval <- read_html(request) %>% html_text %>% parse_json
+    lapply(returnval$items, function(item) {
+      stats <- get_stats(item$id$videoId)
+      return(
+        data.frame(
+          date = as.POSIXct(item$snippet$publishedAt),
+          views = stats$views,
+          likes = stats$likes,
+          dislikes = stats$dislikes
+        )
+      )
+    }) %>%
+      bind_rows() %>%
+      return()
+  }
 
-create_stats_plot <- function(index, save=FALSE) {
-  p <- get_stats_history(index) %>% bind_rows(data.frame(date = meta$Apology.Date[index],
-                                                views = as.numeric(strsplit(as.character(meta$Likes.Dislikes.Views[index]), split = '/')[[1]][3]),
-                                                likes = as.numeric(strsplit(as.character(meta$Likes.Dislikes.Views[index]), split = '/')[[1]][1]),
-                                                dislikes = as.numeric(strsplit(as.character(meta$Likes.Dislikes.Views[index]), split = '/')[[1]][2]))) %>%
-    gather(type, count, likes, dislikes) %>%  
+create_stats_plot <- function(index, save = FALSE) {
+  p <-
+    get_stats_history(index) %>% bind_rows(
+      data.frame(
+        date = meta$Apology.Date[index],
+        views = as.numeric(strsplit(
+          as.character(meta$Likes.Dislikes.Views[index]), split = '/'
+        )[[1]][3]),
+        likes = as.numeric(strsplit(
+          as.character(meta$Likes.Dislikes.Views[index]), split = '/'
+        )[[1]][1]),
+        dislikes = as.numeric(strsplit(
+          as.character(meta$Likes.Dislikes.Views[index]), split = '/'
+        )[[1]][2])
+      )
+    ) %>%
+    gather(type, count, likes, dislikes) %>%
     ggplot(aes(date)) +
     geom_bar(aes(weight = count, fill = type)) +
     geom_vline(xintercept = meta$Apology.Date[index], lty = 2) +
@@ -417,7 +448,15 @@ create_stats_plot <- function(index, save=FALSE) {
     ggtitle(paste0(meta$Name[index], ' like and dislike trend'))
   
   if (save) {
-    pdf(file = paste0('plots/stats/', gsub('\\s', '_', meta$Name[index]), '_likedislikeplot.pdf'), width = 7, height = 5)
+    pdf(
+      file = paste0(
+        'plots/stats/',
+        gsub('\\s', '_', meta$Name[index]),
+        '_likedislikeplot.pdf'
+      ),
+      width = 7,
+      height = 5
+    )
     print(p)
     dev.off()
   }
@@ -429,56 +468,56 @@ create_stats_plot(14, TRUE)
 
 
 
-for(i in 17:37) {
-  a <- get_stats(i)$channelID
-  print(a)
-}
-
-stats_df <- lapply(1:37, function(i){
-  if(meta$Original.Available[i]){
-    index = as.integer(gsub('\\D', '', meta$id[i]))
-    return(list(id = meta$id[i],
-                name = meta$Name[i],
-                likes = ifelse(length(stats_list[[index]]$likes) == 0, NA, stats_list[[index]]$likes),
-                dislikes = ifelse(length(stats_list[[index]]$dislikes) == 0, NA, stats_list[[index]]$dislikes),
-                views = stats_list[[index]]$views))
-  }
-  return(NULL)
-}) 
-
-stats_df <- stats_df[lengths(stats_df) != 0] %>% bind_rows %>% mutate(combined = paste0(likes,'/',dislikes,'/',views))
-
-p1 <- stats_df %>%
-  gather(type, count, likes, dislikes) %>%
-  ggplot(aes(x = name, fill = type)) +
-  geom_bar(aes(weight = count)) + 
-  theme_bw() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_text(
-          size = 8,
-          angle = 45,
-          hjust = 1
-        )) + 
-  ylab('likes and dislikes')
-
-p2 <- stats_df %>%
-  select(name, views) %>%
-  ggplot(aes(x = name)) +
-  geom_bar(aes(weight = views)) +
-  theme_bw() +
-  theme(axis.title.x = element_blank(),
-        axis.text.x = element_text(
-          size = 8,
-          angle = 45,
-          hjust = 1
-        )) +
-  ylab('video views')
-
-#pdf(file = 'plots/video_stats.pdf', width = 7, height = 5)
-grid.arrange(
-  grobs = list(p1, p2),
-  top = paste('Video Stats')
-)
+# for(i in 17:37) {
+#   a <- get_stats(i)$channelID
+#   print(a)
+# }
+#
+# stats_df <- lapply(1:37, function(i){
+#   if(meta$Original.Available[i]){
+#     index = as.integer(gsub('\\D', '', meta$id[i]))
+#     return(list(id = meta$id[i],
+#                 name = meta$Name[i],
+#                 likes = ifelse(length(stats_list[[index]]$likes) == 0, NA, stats_list[[index]]$likes),
+#                 dislikes = ifelse(length(stats_list[[index]]$dislikes) == 0, NA, stats_list[[index]]$dislikes),
+#                 views = stats_list[[index]]$views))
+#   }
+#   return(NULL)
+# })
+#
+# stats_df <- stats_df[lengths(stats_df) != 0] %>% bind_rows %>% mutate(combined = paste0(likes,'/',dislikes,'/',views))
+#
+# p1 <- stats_df %>%
+#   gather(type, count, likes, dislikes) %>%
+#   ggplot(aes(x = name, fill = type)) +
+#   geom_bar(aes(weight = count)) +
+#   theme_bw() +
+#   theme(axis.title.x = element_blank(),
+#         axis.text.x = element_text(
+#           size = 8,
+#           angle = 45,
+#           hjust = 1
+#         )) +
+#   ylab('likes and dislikes')
+#
+# p2 <- stats_df %>%
+#   select(name, views) %>%
+#   ggplot(aes(x = name)) +
+#   geom_bar(aes(weight = views)) +
+#   theme_bw() +
+#   theme(axis.title.x = element_blank(),
+#         axis.text.x = element_text(
+#           size = 8,
+#           angle = 45,
+#           hjust = 1
+#         )) +
+#   ylab('video views')
+#
+# #pdf(file = 'plots/video_stats.pdf', width = 7, height = 5)
+# grid.arrange(
+#   grobs = list(p1, p2),
+#   top = paste('Video Stats')
+# )
 #dev.off()
 
 ################### Comment Sentiment Analysis ##########################
@@ -500,7 +539,8 @@ get_comments <-
           nextPageToken
         )
       
-      comments <- read_html(request) %>% html_text() %>% parse_json()
+      comments <-
+        read_html(request) %>% html_text() %>% parse_json()
       nextPageToken <- comments$nextPageToken
       commentlist <-
         append(commentlist, comments$items %>% lapply(function(item) {
@@ -529,39 +569,138 @@ calculate_sentiment <- function(comment_list) {
 
 for (i in 27:37) {
   if (meta$Original.Available[i]) {
-    if (!file.exists(paste0('data/Comments/', gsub('\\s', '_', meta$Name[i]), '_comments.RData'))) {
+    if (!file.exists(paste0(
+      'data/Comments/',
+      gsub('\\s', '_', meta$Name[i]),
+      '_comments.RData'
+    ))) {
       comments <- get_comments(i)
-      save(comments, file = paste0('data/Comments/', gsub('\\s', '_', meta$Name[i]), '_comments.RData'))
+      save(comments,
+           file = paste0(
+             'data/Comments/',
+             gsub('\\s', '_', meta$Name[i]),
+             '_comments.RData'
+           ))
     } else{
-      load(paste0('data/Comments/', gsub('\\s', '_', meta$Name[i]), '_comments.RData'))
+      load(paste0(
+        'data/Comments/',
+        gsub('\\s', '_', meta$Name[i]),
+        '_comments.RData'
+      ))
     }
     sent_df <- calculate_sentiment(comments)
-    p1 <- ggplot(filter(sent_df, date < "2019-09-16"), aes(x = date, y = sentiment)) +
+    p1 <-
+      ggplot(filter(sent_df, date < "2019-09-16"),
+             aes(x = date, y = sentiment)) +
       geom_point() +
       geom_smooth() +
       theme_bw()
     
-    p2 <- ggplot(filter(sent_df, date < "2019-09-16"), aes(x = date, y = sentiment*num)) +
+    p2 <-
+      ggplot(filter(sent_df, date < "2019-09-16"),
+             aes(x = date, y = sentiment * num)) +
       geom_line() +
       theme_bw()
     
     #pdf(file = paste0('plots/', gsub('\\s', '_', meta$Name[i]), '_commentplot.pdf'), width = 7, height = 5)
-    grid.arrange(
-      grobs = list(p1, p2),
-      top = paste(meta$Name[i], 'Comment Sentiments')
-    )
+    grid.arrange(grobs = list(p1, p2),
+                 top = paste(meta$Name[i], 'Comment Sentiments'))
     #dev.off()
   }
 }
 
-#######
+####################### Data generation for the short term stats #########################
+
+### Inside R:
+# 1. ratio compared to pre and/or post
+# 2. rate of utterances of sorry phrases
+# 3. Look at word pairs and see what is preceded or followed by apologetic word most frequently (v2 of above)
+# 4. knee-jerk reaction of sub count changes (between controversy and apology & apology and further, possibly use the significant gains/losses detection, or sub gain/loss per day metric
+
+### Import
+# 5. actual scene cuts/edits (can be automated by using DaVinci resolve)
+
+# Indices to use
+
+indices = c(5, 6, 8, 9, 10, 14, 19, 26)
+
+# 2. Rate of utterances of sorry phrases
+
+generateTranscript <- function(index) {
+  filename = gsub(' ', '', meta$name[index])
+  if (!file.exists(paste0('analysis/data/transcripts/', filename, '.en.vtt')))
+  {
+    system(
+      paste0(
+        'youtube-dl --sub-lang en -o analysis/data/transcripts/',
+        filename,
+        ' --write-auto-sub ',
+        meta$video_link[index]
+      )
+    )
+  }
+  transcript <-
+    readLines(paste0('analysis/data/transcripts/', filename, '.en.vtt'))[-(1:3)] %>%
+    gsub('^.*\\d{2}:\\d{2}:\\d{2}.\\d{3} --> \\d{2}:\\d{2}:\\d{2}.\\d{3}.*$',
+         '',
+         .) %>%
+    gsub('^.*<c>.*$', '', .) %>%
+    unique() %>%
+    gsub('  ', '', .) %>%
+    paste(., collapse = ' ') %>%
+    gsub('  ', '', .)
+  
+  return(transcript)
+}
+
+# Brad sousa and KSI apology do not have captions
+for (i in 1:31) {
+  if (meta$original_available[i]) {
+    generateTranscript(i)
+  }
+}
+
+sorries <-
+  sapply(indices, function(ind) {
+    generateTranscript(ind) %>% tolower() %>%
+      gsub('[[:punct:]]', '', .) %>%
+      strsplit(split = ' ') %>%
+      table() %>%
+      as.data.frame(row.names = NULL) %>%
+      rename(., word = ., freq = Freq) %>%
+      mutate(freq = as.numeric(freq) / sum(freq)) %>%
+      mutate(word = as.character(word)) %>%
+      filter(word %in% c("apologize", "sorry", "mistake")) %>%
+      summarize(sum(freq)) %>% as.double()
+  })
+
+# 4. knee-jerk reaction
+
+avg_sub_change <-
+  sapply(indices, function(ind) {
+    subview_list[meta$id[ind]][[1]][[1]] %>% addPvalue() %>%
+      mutate(events = ifelse(pval < 0.05,-1, ifelse(pval > 0.95, 1, 0))) %>%
+      filter(date > meta$apology_date[ind]) %>%
+      slice(1:10) %>% summarize(mean(daily / total)) %>% as.double()
+  })
 
 
+# 5. actual scene cuts/edits (using PySceneDetect)
+createCutCommands <- function(index, threshold = 12) {
+  paste0(
+    "scenedetect -i ",
+    gsub(' ', '', meta$name[index]),
+    " -s list-scenes detect-content --threshold ",
+    threshold
+  )
+}
 
 
-
-
-
-
-
-
+data.frame(name = meta$name[indices], sorries, avg_sub_change) %>% 
+  mutate_if(is.numeric, function(col) {
+      colmax = max(col)
+      colmin = min(col)
+      return((col - colmin)/(colmax - colmin))
+}) %>% gather(type, value, -name) %>% 
+  mutate(type = as.factor(type)) %>%
+  mutate(type_code = as.numeric(type)) %>% toJSON(., pretty = TRUE)
