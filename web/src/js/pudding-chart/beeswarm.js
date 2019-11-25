@@ -18,8 +18,8 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     const radius = 32;
     const marginTop = 0;
     const marginBottom = 0;
-    const marginLeft = 200;
-    const marginRight = 200;
+    const marginLeft = 0;
+    const marginRight = 0;
 
     const sim = d3.forceSimulation(data);
 
