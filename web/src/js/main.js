@@ -5,6 +5,7 @@ import isMobile from './utils/is-mobile';
 import footer from './footer';
 import Category from './graphic-category';
 import Impact from './graphic-impact';
+import Beeswarm from './graphic-beeswarm';
 
 const $body = d3.select('body');
 const $slide = d3.selectAll('[data-js="slide"]');
@@ -19,6 +20,7 @@ function resize() {
   // (remove the conditional if you want to trigger on height change)
   Category.resize();
   Impact.resize();
+  Beeswarm.resize();
   swiper.update();
 }
 
@@ -88,6 +90,7 @@ function init() {
   // kick off graphic code
   Category.init();
   Impact.init();
+  Beeswarm.init();
   // setup swiper
   setupSwiper();
   // load footer stories

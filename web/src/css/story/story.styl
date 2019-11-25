@@ -55,3 +55,38 @@ section
 	set-type-size(xx-large)
 	padding 0.5em
 	line-height 1
+ 
+ #beeswarm
+	.beeswarm__graphic
+		margin 0 auto
+		max-width 80rem
+
+	figure
+		position relative
+		width 100%
+		height 20rem
+
+	svg, .bees
+		position absolute
+		top 0
+		left 0
+		width 100%
+		height 100%
+
+	.axis
+		fill none
+		stroke $gray-light
+		stroke-width 2px
+
+	.label
+		font-size 15px
+
+	.bee
+		position absolute
+		width 4rem
+		height 4rem
+		border solid 2px grey
+		border-radius 50%
+		background-position center center
+		background-size 5rem 5rem
+		transform translate(-50%, -50%)
