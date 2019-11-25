@@ -16,8 +16,7 @@
 <body>
 	<main id='content'>
 		<div class='graphics'>
-      {{> story/costume }}
-			{{> story/category }}
+      {{> story/category }}
 			{{> story/impact }}
       {{> story/beeswarm }}
 		</div>
@@ -27,15 +26,23 @@
 				
 				{{#each doc.slides}}
 					<div class='slide' data-js='slide' data-slide='{{slide}}' data-trigger='{{trigger}}'>
-					{{#ifEquals type 'titlecard'}}
-						{{> story/intro }}
-					{{/ifEquals}}
 					
-					{{#ifEquals type 'text'}}
-						{{#each content}}
-							<p>{{{value}}}</p>
-						{{/each}}
-					{{/ifEquals}}
+						{{#ifEquals type 'titlecard'}}
+						{{> story/intro }}
+						{{/ifEquals}}
+					
+						{{#ifEquals type 'text'}}
+						<p>{{{text}}}</p>
+						{{/ifEquals}}
+
+						{{#ifEquals type 'image'}}
+							<p>{{{text}}}</p>
+							<figure class='slide__figure'>
+								<img src='assets/images/{{slide}}.png' alt='{{alt}}'>
+								<figcaption>{{{caption}}}</figcaption>
+							</figure>
+						{{/ifEquals}}
+					
 					</div>
 				{{/each}}
 

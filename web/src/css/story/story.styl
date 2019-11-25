@@ -15,10 +15,11 @@ section
 	width 100%
 	height 100%
 	opacity 0
-	transition 300ms ease-in-out
+	transition $fade-out ease-out
 
 	&.is-visible
 		opacity 1
+		transition $fade $fade-out ease-in
 
 .graphics, .swiper
 	position absolute
@@ -38,9 +39,18 @@ section
 	p
 		margin 0 auto
 		padding 1rem
-		max-width 40rem
+		border 1px solid $fg
 		background $bg
 		set-type-size(x-large, true)
+
+	.img
+		background-position center center
+		background-size cover
+		background-repeat none
+
+	img
+		margin 0 auto
+		max-width 20rem
 
 .graphic__title
 	text-align center

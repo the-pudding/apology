@@ -22,6 +22,11 @@ function resize() {
   updateChartDimensions();
 }
 
+function slide(value) {
+  const isPre = ['pre-setup', 'pre-result'].includes(value);
+  $figurePost.classed('is-visible', !isPre);
+}
+
 function cleanData(data, pre) {
   const factor = pre ? -1 : 1;
   const side = pre ? 'pre' : 'post';
@@ -76,4 +81,4 @@ function init() {
   loadData(['people.csv', 'pre.csv', 'post.csv']).then(setup);
 }
 
-export default { init, resize };
+export default { init, resize, slide };

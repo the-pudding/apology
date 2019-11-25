@@ -62,6 +62,7 @@ function setupSwiper() {
     if (trigger) {
       d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
       if (trigger === 'category') Category.slide(slide);
+      if (trigger === 'impact') Impact.slide(slide);
     }
   });
 
