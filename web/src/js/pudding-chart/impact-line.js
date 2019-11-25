@@ -69,7 +69,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         // defaults to grabbing dimensions from container element
         width = $chart.node().offsetWidth - marginLeft - marginRight;
         height = $chart.node().offsetHeight - marginTop - marginBottom;
-        console.log(height);
+
         $svg
           .attr('width', width + marginLeft + marginRight)
           .attr('height', height + marginTop + marginBottom);
