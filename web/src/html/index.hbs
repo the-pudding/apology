@@ -14,14 +14,33 @@
 </head>
 
 <body>
-
-	{{> base/header 'sticky'}}
-
 	<main id='content'>
+		<div class='graphics'>
+      {{> story/costume }}
+			{{> story/category }}
+			{{> story/impact }}
+      {{> story/beeswarm }}
+		</div>
 
-		{{> story/intro }}
-		{{!-- {{> story/impact }} --}}
-		{{> story/beeswarm }}
+		<div class='swiper' data-js='swiper'>
+			<div class='swiper__wrapper' data-js='swiper__wrapper'>
+				
+				{{#each doc.slides}}
+					<div class='slide' data-js='slide' data-slide='{{slide}}' data-trigger='{{trigger}}'>
+					{{#ifEquals type 'titlecard'}}
+						{{> story/intro }}
+					{{/ifEquals}}
+					
+					{{#ifEquals type 'text'}}
+						{{#each content}}
+							<p>{{{value}}}</p>
+						{{/each}}
+					{{/ifEquals}}
+					</div>
+				{{/each}}
+
+			</div>
+		</div>
 
 	</main>
 
