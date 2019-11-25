@@ -1,0 +1,82 @@
+#impact
+	.impact__graphic
+		display grid
+		margin 0 auto
+		max-width 80rem
+
+	.graphic__zone
+		position relative
+		height 80vh
+		background $off-white
+		vertical-align middle
+		text-align center
+
+		.zone__label
+			position absolute
+			top 0
+			left 0
+			margin 0
+			width 100%
+			line-height 1
+
+		span
+			position absolute
+			top 0
+			left 0
+			margin 0
+			font-family $sans
+			set-type-size(small)
+			lin-height 1
+
+			&:first-of-type
+				text-align right
+				transform translate(-50%, -100%)
+
+			&:last-of-type
+				right 0
+				left auto
+				text-align right
+				transform translate(50%, -100%)
+
+			&:after
+				position absolute
+				top 100%
+				left 50%
+				display block
+				width 1px
+				height 0.5rem
+				background $fg
+				content ''
+
+	.person
+		path
+			fill none
+			stroke $gray-light
+			stroke-width 2px
+
+		&.is-beauty path
+			stroke red
+
+		// stroke-width 2px
+		// &.cluster--1 path
+		// stroke indigo
+
+		// &.cluster--2 path
+		// stroke purple
+
+		// &.cluster--3 path
+		// stroke blue
+
+		// &.cluster--4 path
+		// stroke green
+
+		// &.cluster--5 path
+		// stroke yellow
+
+		// &.cluster--6 path
+		// stroke orange
+
+		// &.cluster--7 path
+		// stroke red
+		text
+			display none
