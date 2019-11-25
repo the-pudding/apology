@@ -98,7 +98,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 
         sim
           .force("y-pos", d3.forceY(height / 2))
-          .force("x-pos", d3.forceX(node => scaleX(node.value)))
+          .force("x-pos", d3.forceX(node => scaleX(node.display)))
           .force("collide", d3.forceCollide(radius));
 
         return Chart;
