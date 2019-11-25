@@ -376,11 +376,11 @@ create_plot <- function(id, days_for_avg = 30) {
 ################## Likes, dislikes and views ########################
 
 get_stats <-
-  function(id, api_key = 'AIzaSyBvPE49eyTfHp42SMHcAiebOOJiC6Va9AU') {
+  function(id, api_key = 'AIzaSyCWjP5OYNjMXKTnrgnY1Lb9dGiefK5ZnPg') {
     if (is.character(id))
       video_id <- id
     else
-      video_id <- gsub('^.*v=', '', meta$Video.Link[id])
+      video_id <- gsub('^.*v=', '', meta$video_link[id])
     request <-
       paste0(
         'https://www.googleapis.com/youtube/v3/videos?id=',
@@ -624,6 +624,21 @@ for (i in 27:37) {
 
 indices = c(5, 6, 8, 9, 10, 14, 19, 26)
 
+# 1. ratio
+
+ratios <- sapply(indices, function(ind){
+  stats = get_stats(ind)
+  ratio = stats$likes/stats$dislikes
+  if (ratio < 1) {
+    ratio = 1 - 1/ratio
+  } else {
+    ratio = ratio - 1
+  }
+  return(ratio)
+})
+
+
+
 # 2. Rate of utterances of sorry phrases
 
 generateTranscript <- function(index, process = TRUE) {
@@ -700,7 +715,7 @@ createCutCommands <- function(index, threshold = 12) {
 }
 
 
-data.frame(name = meta$name[indices], sorries, change = avg_sub_change) %>%
+data.frame(name = meta$name[indices], sorries, change = avg_sub_change, ratios) %>%
   mutate_if(is.numeric, function(col) {
     colmax = max(col)
     colmin = min(col)

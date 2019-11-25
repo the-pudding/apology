@@ -15,7 +15,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     // dimension stuff
     let width = 0;
     let height = 0;
-    let radius = 30;
+    let radius = 32;
     const marginTop = 0;
     const marginBottom = 0;
     const marginLeft = 200;
@@ -82,15 +82,15 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 
         $labels
           .transition()
-          .attr("y", (2 * height) / 3)
+          .attr("y", height / 2)
           .attr("x", d => {
             switch (d) {
               case "lower":
-                return marginLeft;
+                return marginLeft / 2;
               case "middle":
                 return marginLeft + width / 2;
               case "upper":
-                return marginLeft + width;
+                return (3 * marginLeft) / 2 + width;
             }
           });
 
@@ -99,7 +99,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         sim
           .force("y-pos", d3.forceY(height / 2))
           .force("x-pos", d3.forceX(node => scaleX(node.value)))
-          .force("collide", d3.forceCollide([radius / 2]));
+          .force("collide", d3.forceCollide(radius));
 
         return Chart;
       },
@@ -110,10 +110,13 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .data(data, d => d.name)
           .join("div")
           .attr("class", d => `bee bee--${d.name.replace(/\s/g, "")}`)
-          .text(d => d.name.slice(0, 2));
+          .style(
+            "background-image",
+            d => `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
+          );
 
         sim
-          .alpha(0.6)
+          .alpha(1)
           .on("tick", () => {
             $bee.style("left", d => `${d.x}px`).style("top", d => `${d.y}px`);
           })
@@ -129,7 +132,8 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 				Chart.render();
 				return Chart;
 			},*/
-      highlighter(elem) {
+      getPosition(elemClass) {
+		  $bees.select(elemClass)
         return Chart;
       }
     };

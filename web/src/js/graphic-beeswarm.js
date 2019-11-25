@@ -29,7 +29,7 @@ function setupGraphics() {
 		const chart = $f.datum(data).puddingChartBeeswarm();
 		chart.resize().render();
 		charts.push(chart);
-	});
+    });
 }
 
 function init() {
