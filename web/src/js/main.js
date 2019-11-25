@@ -71,6 +71,11 @@ function setupSwiper() {
     let newIndex = index;
     if (key === 37) newIndex -= 1;
     else if (key === 39) newIndex += 1;
+
+    // TODO remove
+    if (key === 73) swiper.scroll(4);
+    if (key === 66) swiper.scroll(SLIDE_COUNT - 1);
+
     newIndex = Math.max(0, Math.min(newIndex, SLIDE_COUNT - 1));
 
     if (newIndex !== index) {
