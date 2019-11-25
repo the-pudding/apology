@@ -10,7 +10,8 @@
 		margin 0 auto
 		text-align center
 		text-transform uppercase
-		set-type-size(xxxxxx-large)
+		set-type-size(xxxxxx-large, true)
+		max-width $column-width
 
 	&__dek
 		position relative
@@ -33,4 +34,9 @@
 		margin 0 auto
 		margin-top 1rem
 		max-width $column-width
+		text-align center
+
+	&__start
+		position relative
+		margin 1rem auto
 		text-align center

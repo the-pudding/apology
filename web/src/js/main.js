@@ -10,6 +10,8 @@ const $body = d3.select('body');
 const $slide = d3.selectAll('[data-js="slide"]');
 const $section = d3.selectAll('section');
 
+const SLIDE_COUNT = $slide.size();
+
 let swiper = null;
 
 function resize() {
@@ -61,10 +63,18 @@ function setupSwiper() {
     }
   });
 
+  // arrow keys
   $body.on('keydown', () => {
     const key = d3.event.keyCode;
-    if (key === 37) index -= 1;
-    else if (key === 39) index += 1;
+    let newIndex = index;
+    if (key === 37) newIndex -= 1;
+    else if (key === 39) newIndex += 1;
+    newIndex = Math.max(0, Math.min(newIndex, SLIDE_COUNT - 1));
+
+    if (newIndex !== index) {
+      index = newIndex;
+      swiper.scroll(index);
+    }
   });
 }
 
@@ -74,7 +84,7 @@ function init() {
   // setup resize event
   window.addEventListener('resize', debounce(resize, 150));
   // setup sticky header menu
-  setupStickyHeader();
+  // setupStickyHeader();
   // kick off graphic code
   Category.init();
   Impact.init();
