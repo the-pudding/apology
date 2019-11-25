@@ -10,12 +10,12 @@
 d3.selection.prototype.puddingChartBeeswarm = function init(options) {
   function createChart(el) {
     const $sel = d3.select(el);
-    const labels = ["lower", "middle", "upper"];
-    let data = $sel.datum();
+    const labels = ['lower', 'middle', 'upper'];
+    const data = $sel.datum();
     // dimension stuff
     let width = 0;
     let height = 0;
-    let radius = 32;
+    const radius = 32;
     const marginTop = 0;
     const marginBottom = 0;
     const marginLeft = 200;
@@ -39,28 +39,28 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     const Chart = {
       // called once at start
       init() {
-        $svg = $sel.append("svg").attr("class", "pudding-chart");
-        $bees = $sel.append("div").attr("class", "bees");
+        $svg = $sel.append('svg').attr('class', 'pudding-chart');
+        $bees = $sel.append('div').attr('class', 'bees');
 
-        const $g = $svg.append("g");
+        const $g = $svg.append('g');
 
         // offset chart for margins
-        $g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
+        $g.attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
         // create axis
-        $axis = $svg.append("g").attr("class", "g-axis");
-        $axis.append("line").attr("class", "axis");
+        $axis = $svg.append('g').attr('class', 'g-axis');
+        $axis.append('line').attr('class', 'axis');
         $labels = $axis
-          .selectAll(".label")
+          .selectAll('.label')
           .data(labels)
           .enter()
-          .append("text")
-          .attr("class", d => `label ${d}-lab`)
-          .attr("text-anchor", "middle")
+          .append('text')
+          .attr('class', d => `label ${d}-lab`)
+          .attr('text-anchor', 'middle')
           .text(d => $sel.attr(d));
 
         // setup viz group
-        $vis = $g.append("g").attr("class", "g-vis");
+        $vis = $g.append('g').attr('class', 'g-vis');
       },
       // on resize, update new dimensions
       resize() {
@@ -69,27 +69,27 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         height = $sel.node().offsetHeight - marginTop - marginBottom;
 
         $svg
-          .attr("width", width + marginLeft + marginRight)
-          .attr("height", height + marginTop + marginBottom);
+          .attr('width', width + marginLeft + marginRight)
+          .attr('height', height + marginTop + marginBottom);
 
         $axis
-          .select(".axis")
+          .select('.axis')
           .transition()
-          .attr("y1", height / 2)
-          .attr("y2", height / 2)
-          .attr("x1", marginLeft)
-          .attr("x2", marginLeft + width);
+          .attr('y1', height / 2)
+          .attr('y2', height / 2)
+          .attr('x1', marginLeft)
+          .attr('x2', marginLeft + width);
 
         $labels
           .transition()
-          .attr("y", height / 2)
-          .attr("x", d => {
+          .attr('y', height / 2)
+          .attr('x', d => {
             switch (d) {
-              case "lower":
+              case 'lower':
                 return marginLeft / 2;
-              case "middle":
+              case 'middle':
                 return marginLeft + width / 2;
-              case "upper":
+              case 'upper':
                 return (3 * marginLeft) / 2 + width;
             }
           });
@@ -97,45 +97,45 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         scaleX.range([marginLeft, width + marginLeft]);
 
         sim
-          .force("y-pos", d3.forceY(height / 2))
-          .force("x-pos", d3.forceX(node => scaleX(node.display)))
-          .force("collide", d3.forceCollide(radius));
+          .force('y-pos', d3.forceY(height / 2))
+          .force('x-pos', d3.forceX(node => scaleX(node.display)))
+          .force('collide', d3.forceCollide(radius));
 
         return Chart;
       },
       // update scales and render chart
       render() {
         const $bee = $bees
-          .selectAll(".bee")
+          .selectAll('.bee')
           .data(data, d => d.name)
-          .join("div")
-          .attr("class", d => `bee bee--${d.name.replace(/\s/g, "")}`)
+          .join('div')
+          .attr('class', d => `bee bee--${d.name.replace(/\s/g, '')}`)
           .style(
-            "background-image",
-            d => `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
+            'background-image',
+            d => `url("assets/images/${d.name.replace(/\s/g, '')}.png")`
           );
 
         sim
           .alpha(1)
-          .on("tick", () => {
-            $bee.style("left", d => `${d.x}px`).style("top", d => `${d.y}px`);
+          .on('tick', () => {
+            $bee.style('left', d => `${d.x}px`).style('top', d => `${d.y}px`);
           })
           .restart();
 
         return Chart;
       },
       // get / set data
-      /*data(val) {
+      /* data(val) {
 				if (!arguments.length) return data;
 				data = val;
 				$sel.datum(data);
 				Chart.render();
 				return Chart;
-			},*/
+			}, */
       getPosition(elemClass) {
-		  $bees.select(elemClass)
+        $bees.select(elemClass);
         return Chart;
-      }
+      },
     };
     Chart.init();
 
