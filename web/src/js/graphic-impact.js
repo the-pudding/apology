@@ -35,7 +35,7 @@ function resize() {
 }
 
 function slide(value) {
-  const isPre = ['pre-setup', 'pre-result'].includes(value);
+  const isPre = ['pre-setup', 'pre-result', 'pre-example'].includes(value);
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-setup');
@@ -84,20 +84,16 @@ function setup([people, pre, post]) {
     }))
     .filter(d => d.id);
 
-  chartPre = $figurePre
-    .datum(nestedPre)
-    .puddingChartLine({
-      extentY,
-      label: '90 Days Until Controversy',
-      comp: 'Pre-Controversy Max',
-    });
-  chartPost = $figurePost
-    .datum(nestedPost)
-    .puddingChartLine({
-      extentY,
-      label: '180 Days Since Apology',
-      comp: 'Pre-Apology Max',
-    });
+  chartPre = $figurePre.datum(nestedPre).puddingChartLine({
+    extentY,
+    label: '90 Days Until Controversy',
+    comp: 'Pre-Controversy Max',
+  });
+  chartPost = $figurePost.datum(nestedPost).puddingChartLine({
+    extentY,
+    label: '180 Days Since Apology',
+    comp: 'Pre-Apology Max',
+  });
 
   updateChartDimensions();
 
