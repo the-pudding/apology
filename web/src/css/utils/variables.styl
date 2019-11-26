@@ -1,5 +1,5 @@
-$fade = 250ms
-$fade-out = 250ms
+$fade = 100ms
+$fade-out = 100ms
 // -------------------
 // Breakpoints
 // -------------------
@@ -19,14 +19,13 @@ $tiempos = 'Tiempos Text Web'
 $tiempos-hed = 'Tiempos Headline Web'
 $atlas = 'Atlas Grotesk Web'
 $publico = 'Publico Text Web'
-$impact = Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 $sans-fb = Helvetica, Arial, sans-serif
 $serif-fb = Georgia, Times, serif
-$sans = $impact, $sans-fb
+$sans = 'Tahoma', $sans-fb
 $sans-display = $national-narrow, $sans-fb
 $serif = $tiempos, $serif-fb
 $serif-display = $tiempos-hed, $serif-fb
-$mono = Menlo, Consolas, Monaco, 'Courier New', monospace
+$mono = 'Courier New', monospace
 // z-index
 $z-index = {
 	bottom: -100,
@@ -35,16 +34,19 @@ $z-index = {
 	overlay: 1000
 }
 // Color
+$base-red = #221115
+$base-green = #142211
+$base-brown = #1b1918
 $black = #000
-$off-black = #282828
-$gray-dark = #5b5b5b
-$gray = #949494
-$gray-light = #c9c9c9
-$off-white = #f4f4f4
-$white = #fff
+$off-black = $base-brown
+$gray-dark = lighten($off-black, 16)
+$gray = lighten($off-black, 32)
+$gray-light = lighten($off-black, 48)
+$off-white = lighten($off-black, 64)
+$white = lighten($off-black, 80)
 $fg = $off-black
 $bg = $white
-$red = #f30
+$red = #c20
 $primary = $red
 $column-width = 40rem
 $type-size = {
@@ -97,7 +99,7 @@ $type-size = {
 		line-height: 1.2
 	},
 	xxxxxx-large: {
-		size: 96px,
+		size: 80px,
 		line-height: 1.2
 	}
 }

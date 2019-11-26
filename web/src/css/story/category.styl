@@ -16,21 +16,28 @@
 		position relative
 		flex-grow 1
 		margin-bottom 1rem
+		padding 0 0.5em
 
-	.person
+	.person p
+		margin 0
+
 		+mq('bp-6')
-			set-type-size(x-large)
+			set-type-size(large)
 
 	.is-label
-		color $gray
-		set-type-size(small)
 		position absolute
-		bottom 0
-		left 0
-		transform translateY(150%)
+		top 100%
+		left 0.5em
+		transform translateY(0.5em)
 
-		+mq('bp-6')
-			set-type-size(medium)
+		p
+			color $gray
+			set-type-size(small)
+			line-height 1
+
+			+mq('bp-6')
+				set-type-size(root)
 
 	.is-beauty.is-active
-		color red
+		p
+			color $primary

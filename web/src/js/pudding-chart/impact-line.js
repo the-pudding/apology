@@ -20,6 +20,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     const { extentY } = options;
     let data = $chart.datum();
 
+    let shouldShrink = false;
+    let fraction = 0;
+    let offset = 0;
+
     // dimensions
     let width = 0;
     let height = 0;
@@ -28,6 +32,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let marginLeft = 0;
     let marginRight = 0;
     const MARGIN_FACTOR = 0.05;
+    const DUR = 500;
+    const EASE = d3.easeCubicInOut;
 
     // scales
     const scaleX = d3.scaleLinear();
@@ -67,16 +73,15 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         marginRight = marginLeft;
 
         // defaults to grabbing dimensions from container element
-        width = $chart.node().offsetWidth - marginLeft - marginRight;
-        height = $chart.node().offsetHeight - marginTop - marginBottom;
-
-        $svg
-          .attr('width', width + marginLeft + marginRight)
-          .attr('height', height + marginTop + marginBottom);
-
+        const w = $chart.node().offsetWidth;
+        const h = $chart.node().offsetHeight;
+        const factor = shouldShrink ? fraction : 1;
+        width = w * factor - marginLeft - marginRight;
+        height = h - marginTop - marginBottom;
         scaleX.range([0, width]);
         scaleY.range([height, 0]);
 
+        $svg.style('margin-left', d3.format('%')(offset));
         return Chart;
       },
       // update scales and render chart
@@ -85,8 +90,18 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         const extentX = d3.extent(flat);
         scaleX.domain(extentX);
 
+        $svg
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
+          .attr('width', width + marginLeft + marginRight)
+          .attr('height', height + marginTop + marginBottom);
+
         const axisX = d3.axisBottom(scaleX).ticks(Chart.getDayCount() * 0.1);
         $axis
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
           .call(axisX)
           .attr('transform', `translate(${marginLeft}, ${scaleY(1)})`);
 
@@ -95,7 +110,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
 
         const generateLine = d3
           .line()
-          .curve(d3.curveMonotoneX)
+          // .curve(d3.curveMonotoneX)
           .x(d => scaleX(d.days))
           .y(d => scaleY(d.value));
 
@@ -107,6 +122,9 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         $person
           .select('path')
           .datum(d => d.values)
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
           .attr('d', generateLine);
 
         return Chart;
@@ -121,6 +139,20 @@ d3.selection.prototype.puddingChartLine = function init(options) {
       // get day count
       getDayCount() {
         return d3.max(data, d => d.values.length);
+      },
+      shrink(val) {
+        shouldShrink = val;
+        return Chart;
+      },
+      fraction(val) {
+        if (!arguments.length) return fraction;
+        fraction = val;
+        return Chart;
+      },
+      offset(val) {
+        if (!arguments.length) return offset;
+        offset = val;
+        return Chart;
       },
     };
     Chart.init();

@@ -1,0 +1,9 @@
+{{#each doc.images}}
+<section id='{{value}}' data-js='{{value}}'>
+	<figure class='section__figure' style='background-image: url(assets/images/{{value}}.png)'>
+		{{!-- <img src='assets/images/{{value}}.png' alt='{{alt}}'>
+		<figcaption>{{{caption}}}</figcaption> --}}
+	</figure>
+	<div class='media-overlay'></div>
+</section>
+{{/each}}

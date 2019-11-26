@@ -7,15 +7,25 @@ let chartPost = null;
 
 const $section = d3.select('[data-js="impact"');
 const $graphic = $section.select('[data-js="impact__graphic"');
+const $zone = $graphic.select('[data-js="graphic__zone"');
 const $figurePre = $graphic.select('[data-js="figure--pre"');
 const $figurePost = $graphic.select('[data-js="figure--post"');
 
 function updateChartDimensions() {
   const daysPre = chartPre.getDayCount();
   const daysPost = chartPost.getDayCount();
-  const zone = Math.floor(daysPre * 0.2);
-  const gtc = `${daysPre}fr ${zone}fr ${daysPost}fr`;
-  $graphic.style('grid-template-columns', gtc);
+  const daysZone = Math.floor(daysPre * 0.2);
+  const total = daysPre + daysPost + daysZone;
+  const perPre = daysPre / total;
+  const perPost = daysPost / total;
+  const perZone = daysZone / total;
+
+  chartPre.fraction(perPre);
+  chartPost.fraction(perPost).offset(perPre);
+  $zone.style('width', `${perZone}%`).style('left', `${perPre}%`);
+
+  // const gtc = `${daysPre}fr ${zone}fr ${daysPost}fr`;
+  // $graphic.style('grid-template-columns', gtc);
 }
 
 function resize() {
@@ -25,6 +35,9 @@ function resize() {
 function slide(value) {
   const isPre = ['pre-setup', 'pre-result'].includes(value);
   $figurePost.classed('is-visible', !isPre);
+  chartPre.shrink(value === 'post-setup');
+  const resizePre = ['pre-result', 'post-setup'].includes(value);
+  if (resizePre) chartPre.resize().render();
 }
 
 function cleanData(data, pre) {
@@ -74,7 +87,10 @@ function setup([people, pre, post]) {
   updateChartDimensions();
 
   chartPre.resize().render();
-  chartPost.resize().render();
+  chartPost
+    .shrink(true)
+    .resize()
+    .render();
 }
 
 function init() {

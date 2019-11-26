@@ -49,7 +49,7 @@ function setup(people) {
       d => `person ${d.label ? 'is-label' : ''} ${d.beauty ? 'is-beauty' : ''}`
     );
 
-  $p.append('text').text(d => d.name);
+  $p.append('p').text(d => d.name);
 }
 
 function slide(value) {
