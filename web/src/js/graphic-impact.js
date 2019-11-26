@@ -21,8 +21,10 @@ function updateChartDimensions() {
   const perZone = daysZone / total;
 
   chartPre.fraction(perPre);
-  chartPost.fraction(perPost).offset(perPre);
-  $zone.style('width', `${perZone}%`).style('left', `${perPre}%`);
+  chartPost.fraction(perPost).offset(perPre + perZone);
+  $zone
+    .style('width', d3.format('%')(perZone))
+    .style('left', d3.format('%')(perPre));
 
   // const gtc = `${daysPre}fr ${zone}fr ${daysPost}fr`;
   // $graphic.style('grid-template-columns', gtc);
@@ -35,6 +37,7 @@ function resize() {
 function slide(value) {
   const isPre = ['pre-setup', 'pre-result'].includes(value);
   $figurePost.classed('is-visible', !isPre);
+  $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-setup');
   const resizePre = ['pre-result', 'post-setup'].includes(value);
   if (resizePre) chartPre.resize().render();
@@ -81,8 +84,20 @@ function setup([people, pre, post]) {
     }))
     .filter(d => d.id);
 
-  chartPre = $figurePre.datum(nestedPre).puddingChartLine({ extentY });
-  chartPost = $figurePost.datum(nestedPost).puddingChartLine({ extentY });
+  chartPre = $figurePre
+    .datum(nestedPre)
+    .puddingChartLine({
+      extentY,
+      label: '90 Days Until Controversy',
+      comp: 'Pre-Controversy Max',
+    });
+  chartPost = $figurePost
+    .datum(nestedPost)
+    .puddingChartLine({
+      extentY,
+      label: '180 Days Since Apology',
+      comp: 'Pre-Apology Max',
+    });
 
   updateChartDimensions();
 
