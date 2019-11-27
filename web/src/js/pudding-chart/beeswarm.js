@@ -29,8 +29,8 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 
     // dom elements
     let $svg = null;
-	let $bees = null;
-	let $bee = null
+    let $bees = null;
+    let $bee = null;
     let $axis = null;
     let $vis = null;
     let $labels = null;
@@ -109,11 +109,21 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         });
 
         scaleX.range([marginLeft, width + marginLeft]);
-
+        
         sim
           .force("y-pos", d3.forceY(height / 2).strength(0.4))
           .force("x-pos", d3.forceX(node => scaleX(node.display)).strength(0.4))
-          .force("collide", d3.forceCollide(radius / 2));
+          .force(
+            "collide",
+            d3.forceCollide(node => {
+              switch (node.beauty) {
+                case "TRUE":
+                  return radius / 2;
+                case "FALSE":
+                  return radius / 4;
+              }
+            })
+          );
 
         return Chart;
       },
@@ -125,16 +135,17 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .join("div")
           .attr("class", "bee")
           .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
-          .style(
-            "background-image",
-            d => `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
+          .style("background-image", d =>
+            d.beauty == "TRUE"
+              ? `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
+              : ""
           )
-          .style("width", `${radius}px`)
-          .style("height", `${radius}px`)
+          .style("width", d => `${d.beauty == "TRUE" ? radius : radius / 2}px`)
+          .style("height", d => `${d.beauty == "TRUE" ? radius : radius / 2}px`)
           .style("background-size", `${1.15 * radius}px`);
 
         sim
-          .alpha(1)
+          .alpha(0.4)
           .on("tick", () => {
             $bee.style("left", d => `${d.x}px`).style("top", d => `${d.y}px`);
           })
