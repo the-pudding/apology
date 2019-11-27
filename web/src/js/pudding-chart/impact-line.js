@@ -30,8 +30,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     // dimensions
     let width = 0;
     let height = 0;
-    const marginTop = 0;
-    const marginBottom = 0;
+    const marginTop = 16;
+    const marginBottom = 16;
     const marginLeft = 32;
     const marginRight = 32;
     const DUR = 500;

@@ -1,4 +1,7 @@
 /* CUSTOM STORY STYLE */
+html, body
+	height 100%
+
 body
 	font-weight bold
 	font-family $sans
@@ -6,7 +9,7 @@ body
 main
 	position relative
 	overflow hidden
-	height 100vh
+	height 100%
 
 mark
 	padding 0 0.25em
@@ -36,8 +39,12 @@ section
 	height 100%
 	user-select none
 
+.graphics
+	top auto
+	bottom 0
+
 .swiper
-	pointer-events none
+	// pointer-events none
 
 .swiper__wrapper
 	height 100%
@@ -46,16 +53,21 @@ section
 	height 100%
 
 	.slide__text
+		display flex
+		align-items center
 		background $fg
 		color $bg
 
 	p
+		set-type-size(root, true)
 		margin 0 auto
 		padding 1rem
-		set-type-size(xx-large, true)
 		max-width 60rem
 		text-align left
-		font-weight bold
+		text-align left
+
+		+mq('bp-4')
+			set-type-size(x-large, true)
 
 	&.is-center p
 		text-align center
@@ -83,7 +95,19 @@ section
 	filter grayscale(100%)
 	background-position 50% 50%
 	background-size 33%
+	background-size cover
+	background-size contain
 	// background-repeat no-repeat
 
 svg text
 	font-family $sans
+
+.mobile
+	display none
+
+.is-mobile
+	.mobile
+		display block
+
+	.desktop
+		display none
