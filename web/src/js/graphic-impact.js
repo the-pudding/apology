@@ -7,19 +7,40 @@ let chartPost = null;
 
 const $section = d3.select('[data-js="impact"');
 const $graphic = $section.select('[data-js="impact__graphic"');
+const $zone = $graphic.select('[data-js="graphic__zone"');
 const $figurePre = $graphic.select('[data-js="figure--pre"');
 const $figurePost = $graphic.select('[data-js="figure--post"');
 
 function updateChartDimensions() {
   const daysPre = chartPre.getDayCount();
   const daysPost = chartPost.getDayCount();
-  const zone = Math.floor(daysPre * 0.2);
-  const gtc = `${daysPre}fr ${zone}fr ${daysPost}fr`;
-  $graphic.style('grid-template-columns', gtc);
+  const daysZone = Math.floor(daysPre * 0.2);
+  const total = daysPre + daysPost + daysZone;
+  const perPre = daysPre / total;
+  const perPost = daysPost / total;
+  const perZone = daysZone / total;
+
+  chartPre.fraction(perPre);
+  chartPost.fraction(perPost).offset(perPre + perZone);
+  $zone
+    .style('width', d3.format('%')(perZone))
+    .style('left', d3.format('%')(perPre));
+
+  // const gtc = `${daysPre}fr ${zone}fr ${daysPost}fr`;
+  // $graphic.style('grid-template-columns', gtc);
 }
 
 function resize() {
   updateChartDimensions();
+}
+
+function slide(value) {
+  const isPre = ['pre-setup', 'pre-result', 'pre-example'].includes(value);
+  $figurePost.classed('is-visible', !isPre);
+  $zone.classed('is-visible', !isPre);
+  chartPre.shrink(value === 'post-setup');
+  const resizePre = ['pre-result', 'post-setup'].includes(value);
+  if (resizePre) chartPre.resize().render();
 }
 
 function cleanData(data, pre) {
@@ -63,17 +84,28 @@ function setup([people, pre, post]) {
     }))
     .filter(d => d.id);
 
-  chartPre = $figurePre.datum(nestedPre).puddingChartLine({ extentY });
-  chartPost = $figurePost.datum(nestedPost).puddingChartLine({ extentY });
+  chartPre = $figurePre.datum(nestedPre).puddingChartLine({
+    extentY,
+    label: '90 Days Until Controversy',
+    comp: 'Pre-Controversy Max',
+  });
+  chartPost = $figurePost.datum(nestedPost).puddingChartLine({
+    extentY,
+    label: '180 Days Since Apology',
+    comp: 'Pre-Apology Max',
+  });
 
   updateChartDimensions();
 
   chartPre.resize().render();
-  chartPost.resize().render();
+  chartPost
+    .shrink(true)
+    .resize()
+    .render();
 }
 
 function init() {
   loadData(['people.csv', 'pre.csv', 'post.csv']).then(setup);
 }
 
-export default { init, resize };
+export default { init, resize, slide };

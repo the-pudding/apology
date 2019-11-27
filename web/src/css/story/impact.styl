@@ -1,19 +1,44 @@
 #impact
+	padding-bottom 2rem
+
 	.impact__graphic
-		display grid
+		position relative
 		margin 0 auto
 		max-width 80rem
+		width 90%
+		height 80vh
+
+	figure
+		position absolute
+		top 0
+		left 0
+		width 100%
+		height 100%
+		opacity 0
+		transition opacity $fade ease-in-out
+
+		&.is-visible
+			opacity 1
+			transition opacity $fade 500ms ease-in-out
 
 	.graphic__zone
-		position relative
-		height 80vh
+		position absolute
+		top 0
+		left 0
+		height 100%
 		background $off-white
 		vertical-align middle
 		text-align center
+		opacity 0
+		transition opacity $fade ease-in-out
+
+		&.is-visible
+			opacity 1
+			transition opacity $fade 500ms ease-in-out
 
 		.zone__label
 			position absolute
-			top 0
+			top 100%
 			left 0
 			margin 0
 			width 100%
@@ -25,37 +50,47 @@
 			left 0
 			margin 0
 			font-family $sans
-			set-type-size(small)
-			lin-height 1
+			set-type-size(x-small)
+			padding 0 0.25em
+			text-transform uppercase
+			line-height 1
 
 			&:first-of-type
 				text-align right
-				transform translate(-50%, -100%)
+				transform translate(-100%, 0%)
+
+				&:before
+					right -2px
+					left auto
 
 			&:last-of-type
 				right 0
 				left auto
-				text-align right
-				transform translate(50%, -100%)
+				text-align left
+				transform translate(100%, 0%)
 
-			&:after
+				&:before
+					left -2px
+
+			&:before
 				position absolute
-				top 100%
-				left 50%
+				top 0
 				display block
-				width 1px
-				height 0.5rem
-				background $fg
+				width 2px
+				height 1em
+				background $off-white
 				content ''
 
 	.person
 		path
 			fill none
 			stroke $gray-light
-			stroke-width 2px
+			stroke-width 6px
+			stroke-opacity 0.5
+			// stroke-linecap round
 
 		&.is-beauty path
-			stroke red
+			// stroke $primary
 
 		// stroke-width 2px
 		// &.cluster--1 path
@@ -80,3 +115,18 @@
 		// stroke red
 		text
 			display none
+
+	.g-axis
+		.axis--y
+			path
+				display none
+
+			line
+				stroke-width 2px
+				stroke $fg
+				stroke-dasharray 4px 4px
+
+		.text-comp--bg
+			fill none
+			stroke-width 2px
+			stroke $bg
