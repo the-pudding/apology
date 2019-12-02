@@ -57,7 +57,6 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .enter()
           .append("text")
           .attr("class", d => `label ${d}-lab`)
-          .attr("y", "20px")
           .attr("text-anchor", d => {
             switch (d) {
               case "lower":
@@ -79,7 +78,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         width = $sel.node().offsetWidth - marginLeft - marginRight;
 
         sectionHeight = $sel.node().parentElement.parentElement.offsetHeight;
-        height = sectionHeight / 5 - marginTop - marginBottom;
+        height = sectionHeight / 8 - marginTop - marginBottom;
 
         radius = 0.3 * height;
 
@@ -97,32 +96,40 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .attr("x1", marginLeft)
           .attr("x2", marginLeft + width);
 
-        $labels.transition().attr("x", d => {
-          switch (d) {
-            case "lower":
-              return marginLeft / 2;
-            case "middle":
-              return marginLeft + width / 2;
-            case "upper":
-              return (3 * marginLeft) / 2 + width;
-          }
-        });
+        $labels
+          .transition()
+          .attr("y", `${0.95 * height}px`)
+          .attr("x", d => {
+            switch (d) {
+              case "lower":
+                return marginLeft / 2;
+              case "middle":
+                return marginLeft + width / 2;
+              case "upper":
+                return (3 * marginLeft) / 2 + width;
+            }
+          });
 
         scaleX.range([marginLeft, width + marginLeft]);
-        
+
         sim
-          .force("y-pos", d3.forceY(height / 2).strength(0.4))
-          .force("x-pos", d3.forceX(node => scaleX(node.display)).strength(0.4))
+          .force(
+            "y-pos",
+            d3
+              .forceY(height / 2)
+              .strength(node => (node.beauty == "TRUE" ? 1 : 0.1))
+          )
+          .force(
+            "x-pos",
+            d3
+              .forceX(node => scaleX(node.display))
+              .strength(node => (node.beauty == "TRUE" ? 1 : 0.2))
+          )
           .force(
             "collide",
-            d3.forceCollide(node => {
-              switch (node.beauty) {
-                case "TRUE":
-                  return radius / 2;
-                case "FALSE":
-                  return radius / 4;
-              }
-            })
+            d3.forceCollide(node =>
+              node.beauty == "TRUE" ? radius / 2 : radius / 8
+            )
           );
 
         return Chart;
@@ -135,13 +142,14 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .join("div")
           .attr("class", "bee")
           .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
+          .style("border-color", d => (d.beauty == "TRUE" ? "#c20" : "grey"))
           .style("background-image", d =>
             d.beauty == "TRUE"
               ? `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
               : ""
           )
-          .style("width", d => `${d.beauty == "TRUE" ? radius : radius / 2}px`)
-          .style("height", d => `${d.beauty == "TRUE" ? radius : radius / 2}px`)
+          .style("width", d => `${d.beauty == "TRUE" ? radius : radius / 4}px`)
+          .style("height", d => `${d.beauty == "TRUE" ? radius : radius / 4}px`)
           .style("background-size", `${1.15 * radius}px`);
 
         sim

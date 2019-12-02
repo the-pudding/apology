@@ -3,8 +3,11 @@
         {{#each doc.beeswarm}}
         <h3 class='graphic__title'>{{{title}}}</h3>
         <figure class='graphic__figure' data-js='graphic__figure' data-id={{id}} lower="{{lower}}" middle="{{middle}}"
-            upper="{{upper}}"></figure>
+            upper="{{upper}}" hovertext-pre="{{hovertext-pre}}" hovertext-post="{{hovertext-post}}"></figure>
         {{/each}}
-        <div class="beeswarm__hovertext" data-js="beeswarm__hovertext"></div>
+        <div class="beeswarm__hovertext" data-js="beeswarm__hovertext">
+            <div class="beeswarm__hovertext__title" data-js="beeswarm__hovertext__title"></div>
+            <div class="beeswarm__hovertext__content" data-js="beeswarm__hovertext__content"></div>
+        </div>
     </div>
 </section>
