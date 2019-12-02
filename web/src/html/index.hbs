@@ -26,10 +26,23 @@
 			<div class='swiper__wrapper' data-js='swiper__wrapper'>
 				
 				{{#each doc.slides}}
-					<div class='slide {{{class}}}' data-js='slide' data-slide='{{slide}}' data-trigger='{{trigger}}'>
+					<div class='slide slide--{{type}} {{class}}' data-js='slide' data-slide='{{slide}}' data-type='{{type}}' data-trigger='{{trigger}}' data-nerd='{{nerd}}'>
 					
 						{{#ifEquals type 'titlecard'}}
 						{{> story/intro }}
+						{{/ifEquals}}
+
+						{{#ifEquals type 'inter'}}
+							{{#ifEquals media 'video'}}
+								<video src='assets/videos/{{slide}}.mp4' preload autoplay loop muted></video>
+							{{/ifEquals}}
+							{{#ifEquals media 'image'}}
+								<img src='assets/images/{{slide}}.png' alt='{{alt}}'>
+							{{/ifEquals}}
+
+							<div class='slide__text'>
+								<p>{{{text}}}</p>
+							</div>
 						{{/ifEquals}}
 
 						{{#ifEquals type 'text'}}
@@ -37,11 +50,21 @@
 							<p>{{{text}}}</p>
 						</div>
 						{{/ifEquals}}
+
+						{{#if nerd}}
+						<div class='slide__nerd' data-js='slide__nerd'>
+							<p>{{{nerd}}}</p>
+						</div>
+						{{/if}}
 					
 					</div>
 				{{/each}}
 
 			</div>
+		</div>
+
+		<div class='nerd-mode'>
+			<button data-js='nerd-mode__button' class='btn'>🤓</button>
 		</div>
 
 	</main>

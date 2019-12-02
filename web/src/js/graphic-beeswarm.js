@@ -1,16 +1,29 @@
 import loadData from "./load-data";
 import "./pudding-chart/beeswarm";
 
-const $section = d3.select('[data-js="beeswarm"');
-const $graphic = $section.select('[data-js="beeswarm__graphic"');
-const $figure = $graphic.selectAll('[data-js="graphic__figure"');
+const $section = d3.select('[data-js="beeswarm"]');
+const $graphic = $section.select('[data-js="beeswarm__graphic"]');
+const $figure = $graphic.selectAll('[data-js="graphic__figure"]');
+const $chart = $graphic.selectAll('[data-js="graphic__chart"]');
 
 const charts = [];
 
 function resize() {
+	const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
+	const sz = Math.floor(($section.node().offsetHeight - h) / $chart.size());
+	$chart.style('height', `${sz}px`);
   charts.forEach(chart => {
     chart.resize().render();
   });
+}
+
+function cleanData(data) {
+	const clean = data.map(d => ({
+		...d,
+		beauty: d.beauty === 'TRUE'
+	}));
+	const filtered = clean.filter(d => d.value !== 'NA');
+	return filtered;
 }
 
 function setupGraphics() {
@@ -18,9 +31,8 @@ function setupGraphics() {
   const id = $f.attr("data-id");
 
   const file = `beeswarm--${id}.csv`;
-  loadData(file).then(data => {
-    let plotData = data.filter(d => d.value != "NA");
-    const chart = $f.datum(plotData).puddingChartBeeswarm();
+  loadData(file).then(cleanData).then(data => {
+    const chart = $f.datum(data).puddingChartBeeswarm();
     chart.resize().render();
     chart
       .getBees()
@@ -55,11 +67,11 @@ function hoverText(elem, data) {
   let dims = elem.getBoundingClientRect();
   let hovertext_pre = $fig.getAttribute("hovertext-pre");
   let hovertext_post = $fig.getAttribute("hovertext-post");
-  d3.select('[data-js="beeswarm__hovertext"')
+  d3.select('[data-js="beeswarm__hovertext]"')
     .style("left", `${dims.x + dims.width / 2}px`)
     .style("top", `${dims.y}px`)
-    .style("background-color", data.beauty == "TRUE" ? "#c20" : "grey")
-    .style("color", data.beauty == "TRUE" ? "#e7e5e4" : "black")
+    .style("background-color", data.beauty ? "#c20" : "grey")
+    .style("color", data.beauty ? "#e7e5e4" : "black")
     .transition()
     .style("opacity", 1);
 
@@ -74,13 +86,14 @@ function highlightEl(elem) {
   d3.selectAll(".bee")
     .transition()
     .style("opacity", 0.3);
-  d3.selectAll(`[data-js=${$dataAttr}`)
+  d3.selectAll(`[data-js=${$dataAttr}]`)
     .transition()
     .style("opacity", 1);
 }
 
 function init() {
   $figure.each(setupGraphics);
+	resize();
 }
 
 export default { init, resize };

@@ -53,7 +53,7 @@ function setup(people) {
 }
 
 function slide(value) {
-  $figure.selectAll('.is-beauty').classed('is-active', value === 'tldr');
+  $figure.selectAll('.is-beauty').classed('is-active', value === 'beauty');
 }
 
 function init() {

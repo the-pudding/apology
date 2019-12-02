@@ -24,6 +24,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let shouldShrink = false;
     let fraction = 0;
     let offset = 0;
+		let focus = [];
     const endLabel = label.includes('Apology');
     const endComp = comp.includes('Apology');
 
@@ -196,6 +197,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .data(data, d => d.key)
           .join(enterPerson);
 
+				$person.classed('is-focus', d => focus.includes(d.name));
+				
         $person
           .select('path')
           .datum(d => d.values)
@@ -231,6 +234,11 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         offset = val;
         return Chart;
       },
+			focus(val) {
+				if (val) focus.push(val);
+				else focus = [];
+				return Chart;
+			}
     };
     Chart.init();
 

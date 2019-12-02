@@ -16,6 +16,9 @@ mark
 	background-color $primary
 	color $bg
 
+	&.non
+		background-color $secondary
+
 section
 	position absolute
 	top 0
@@ -50,13 +53,29 @@ section
 	height 100%
 
 .slide
+	position relative
 	height 100%
+
+	.slide__nerd
+		position absolute
+		top 0
+		left 0
+		display flex
+		align-items center
+		width 100%
+		height 100%
+		background-color $secondary
+		transition transform 250ms ease-in-out
+		transform translateY(-100%)
+
+		&.is-visible
+			transform translateY(0)
 
 	.slide__text
 		display flex
 		align-items center
-		background $fg
-		color $bg
+		// background $fg
+		// color $bg
 
 	p
 		set-type-size(root, true)
@@ -64,13 +83,38 @@ section
 		padding 1rem
 		max-width 60rem
 		text-align left
-		text-align left
 
 		+mq('bp-4')
 			set-type-size(x-large, true)
 
 	&.is-center p
 		text-align center
+
+.slide--inter
+	display flex
+	flex-direction column
+	justify-content center
+	background $fg
+	color $bg
+
+	img, video
+		display block
+		margin 2rem auto
+		max-width 30rem
+		box-shadow 0px 0px 0px 0.5rem $bg
+
+	.slide__text
+		background transparent
+
+		p
+			set-type-size(x-large, true)
+			margin 0 auto
+			padding 1rem
+			max-width 60rem
+
+			// text-align center
+			+mq('bp-4')
+				set-type-size(xxx-large, true)
 
 .graphic__title
 	text-align center
@@ -111,3 +155,23 @@ svg text
 
 	.desktop
 		display none
+
+.nerd-mode
+	position absolute
+	top 0
+	right 0
+	padding 1rem
+
+	button
+		border 4px solid $bg
+		border-radius 50%
+		opacity 0
+		transition opacity 100ms ease-in-out
+		pointer-events none
+
+		&.is-visible
+			opacity 1
+			pointer-events auto
+
+		&:hover
+			background-color $secondary

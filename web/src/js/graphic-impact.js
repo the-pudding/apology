@@ -35,11 +35,15 @@ function resize() {
 }
 
 function slide(value) {
-  const isPre = ['pre-setup', 'pre-result', 'pre-example'].includes(value);
+  const isPre = ['pre-setup', 'pre-result', 'pre-example', 'post-setup'].includes(value);
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
-  chartPre.shrink(value === 'post-setup');
-  const resizePre = ['pre-result', 'post-setup'].includes(value);
+  chartPre.shrink(value === 'post-result');
+  const resizePre = ['pre-exmaple', 'post-result'].includes(value);
+
+	if (value === 'pre-example') chartPre.focus('Jake Paul').render();
+	else chartPre.focus().render();
+
   if (resizePre) chartPre.resize().render();
 }
 

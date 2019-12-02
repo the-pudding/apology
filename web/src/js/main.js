@@ -10,15 +10,27 @@ import Beeswarm from './graphic-beeswarm';
 const $body = d3.select('body');
 const $graphics = $body.select('.graphics');
 const $slide = d3.selectAll('[data-js="slide"]');
+const $slideText = d3.selectAll('[data-type="text"]');
 const $section = d3.selectAll('section');
+const $nerdButton = d3.select('[data-js="nerd-mode__button"]');
+const $nerdSlide = d3.selectAll('[data-js="slide__nerd"]');
 
 const SLIDE_COUNT = $slide.size();
 
 let swiper = null;
 
+function toggleNerd() {
+	const $s = d3.select('.slide--active');
+	const $n = $s.select('[data-js="slide__nerd"]');
+	if ($n.size()) {
+		const v = $n.classed('is-visible');
+		$n.classed('is-visible', !v);
+	}
+}
+
 function getSlideTextHeight() {
   const h = [];
-  $slide.each((d, i, n) => {
+  $slideText.each((d, i, n) => {
     const $t = d3.select(n[i]).select('.slide__text');
     if ($t.size()) h.push($t.node().offsetHeight);
   });
@@ -27,12 +39,16 @@ function getSlideTextHeight() {
 
 function updateSwiper() {
   swiper.update();
-  const h = getSlideTextHeight();
-  $graphics.style('height', `${window.innerHeight - h}px`);
-  $slide.select('.slide__text').style('height', `${h}px`);
+}
+
+function updateText() {
+	const h = getSlideTextHeight();
+	$graphics.style('height', `${window.innerHeight - h}px`);
+	$slide.select('.slide__text').style('height', `${h}px`);
 }
 
 function resize() {
+	updateText();
   Category.resize();
   Impact.resize();
   Beeswarm.resize();
@@ -63,22 +79,24 @@ function setupSwiper() {
     slideActiveClass: 'slide--active',
   });
 
-  swiper.on('before-slide', currentIndex => {
-    // console.log('current', currentIndex);
-  });
-
   swiper.on('after-slide', newIndex => {
-    // console.log('new', newIndex);
+		$nerdSlide.classed('is-visible', false);
     index = newIndex;
     const $s = $slide.filter((d, i) => i === index);
     const slide = $s.attr('data-slide');
     const trigger = $s.attr('data-trigger');
-    $section.classed('is-visible', false);
-    if (trigger) {
+		const nerd = !!$s.attr('data-nerd');
+
+		$nerdButton.classed('is-visible', nerd);
+		$section.classed('is-visible', false);
+    
+		if (trigger) {
       d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
       if (trigger === 'category') Category.slide(slide);
       if (trigger === 'impact') Impact.slide(slide);
     }
+
+
   });
 
   // arrow keys
@@ -101,7 +119,12 @@ function setupSwiper() {
   });
 }
 
+function setupNerd() {
+	$nerdButton.on('click', toggleNerd);
+}
+
 function init() {
+	
   $body.style('height', window.innerHeight - 100);
   // add mobile class to body tag
   $body.classed('is-mobile', isMobile.any());
@@ -110,12 +133,15 @@ function init() {
   // setup sticky header menu
   // setupStickyHeader();
   // kick off graphic code
+	updateText();
+	
   Category.init();
   Impact.init();
   Beeswarm.init();
   // setup swiper
   setupSwiper();
   updateSwiper();
+	setupNerd();
   // load footer stories
   footer.init();
 }

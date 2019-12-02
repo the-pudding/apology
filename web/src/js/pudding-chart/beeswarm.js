@@ -10,7 +10,7 @@
 d3.selection.prototype.puddingChartBeeswarm = function init(options) {
   function createChart(el) {
     const $sel = d3.select(el);
-    const labels = ["lower", "middle", "upper"];
+    const labels = ["lower", "upper"];
     const data = $sel.datum();
     // dimension stuff
     let width = 0;
@@ -51,23 +51,22 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         // create axis
         $axis = $svg.append("g").attr("class", "g-axis");
         $axis.append("line").attr("class", "axis");
-        $labels = $axis
-          .selectAll(".label")
-          .data(labels)
-          .enter()
-          .append("text")
-          .attr("class", d => `label ${d}-lab`)
-          .attr("text-anchor", d => {
-            switch (d) {
-              case "lower":
-                return "start";
-              case "middle":
-                return "middle";
-              case "upper":
-                return "end";
-            }
-          })
-          .text(d => $sel.attr(d));
+        // $labels = $axis
+        //   .selectAll(".label")
+        //   .data(labels)
+        //   .join('text')
+        //   .attr("class", d => `label ${d}-lab`)
+        //   .attr("text-anchor", d => {
+        //     switch (d) {
+        //       case "lower":
+        //         return "start";
+        //       case "middle":
+        //         return "middle";
+        //       case "upper":
+        //         return "end";
+        //     }
+        //   })
+        //   .text(d => $sel.attr(d));
 
         // setup viz group
         $vis = $g.append("g").attr("class", "g-vis");
@@ -78,9 +77,9 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         width = $sel.node().offsetWidth - marginLeft - marginRight;
 
         sectionHeight = $sel.node().parentElement.parentElement.offsetHeight;
-        height = sectionHeight / 8 - marginTop - marginBottom;
+				height = $sel.node().offsetHeight - marginTop - marginBottom;
 
-        radius = 0.3 * height;
+        radius = 0.25 * height;
 
         $sel.style("height", `${height}px`);
 
@@ -96,19 +95,9 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .attr("x1", marginLeft)
           .attr("x2", marginLeft + width);
 
-        $labels
-          .transition()
-          .attr("y", `${0.95 * height}px`)
-          .attr("x", d => {
-            switch (d) {
-              case "lower":
-                return marginLeft / 2;
-              case "middle":
-                return marginLeft + width / 2;
-              case "upper":
-                return (3 * marginLeft) / 2 + width;
-            }
-          });
+        // $labels
+				// 	.attr('transform', `translate(${width / 2}, 24)`)
+				// 	.attr("text-anchor", d => d.lower ? 'end' : 'start');
 
         scaleX.range([marginLeft, width + marginLeft]);
 
@@ -117,18 +106,18 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
             "y-pos",
             d3
               .forceY(height / 2)
-              .strength(node => (node.beauty == "TRUE" ? 1 : 0.1))
+              .strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
             "x-pos",
             d3
               .forceX(node => scaleX(node.display))
-              .strength(node => (node.beauty == "TRUE" ? 1 : 0.2))
+              .strength(node => (node.beauty ? 1 : 0.2))
           )
           .force(
             "collide",
             d3.forceCollide(node =>
-              node.beauty == "TRUE" ? radius / 2 : radius / 8
+              node.beauty ? radius / 2 : radius / 8
             )
           );
 
@@ -140,17 +129,17 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .selectAll(".bee")
           .data(data, d => d.name)
           .join("div")
-          .attr("class", "bee")
+          .attr("class", d => `bee ${d.beauty ? 'is-beauty' : ''}`)
           .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
-          .style("border-color", d => (d.beauty == "TRUE" ? "#c20" : "grey"))
-          .style("background-image", d =>
-            d.beauty == "TRUE"
+          .style("background-image", d => d.beauty
               ? `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
               : ""
           )
-          .style("width", d => `${d.beauty == "TRUE" ? radius : radius / 4}px`)
-          .style("height", d => `${d.beauty == "TRUE" ? radius : radius / 4}px`)
-          .style("background-size", `${1.15 * radius}px`);
+          .style("width", d => `${d.beauty ? radius : radius / 4}px`)
+          .style("height", d => `${d.beauty ? radius : radius / 4}px`)
+          .style("background-size", `${1.15 * radius}px`)
+					.style('top', d => d.beauty ? height / 2 : 0)
+					.style('left', d => d.beauty ? scaleX(d.display) : 0)
 
         sim
           .alpha(0.4)
