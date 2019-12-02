@@ -44,7 +44,7 @@ function updateSwiper() {
 function updateText() {
 	const h = getSlideTextHeight();
 	$graphics.style('height', `${window.innerHeight - h}px`);
-	$slide.select('.slide__text').style('height', `${h}px`);
+	$slideText.select('.slide__text').style('height', `${h}px`);
 }
 
 function resize() {
