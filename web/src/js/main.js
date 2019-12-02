@@ -8,6 +8,7 @@ import Impact from './graphic-impact';
 import Beeswarm from './graphic-beeswarm';
 
 const $body = d3.select('body');
+const $graphics = $body.select('.graphics');
 const $slide = d3.selectAll('[data-js="slide"]');
 const $section = d3.selectAll('section');
 
@@ -15,13 +16,27 @@ const SLIDE_COUNT = $slide.size();
 
 let swiper = null;
 
+function getSlideTextHeight() {
+  const h = [];
+  $slide.each((d, i, n) => {
+    const $t = d3.select(n[i]).select('.slide__text');
+    if ($t.size()) h.push($t.node().offsetHeight);
+  });
+  return Math.max(...h);
+}
+
+function updateSwiper() {
+  swiper.update();
+  const h = getSlideTextHeight();
+  $graphics.style('height', `${window.innerHeight - h}px`);
+  $slide.select('.slide__text').style('height', `${h}px`);
+}
+
 function resize() {
-  // only do resize on width changes, not height
-  // (remove the conditional if you want to trigger on height change)
   Category.resize();
   Impact.resize();
   Beeswarm.resize();
-  swiper.update();
+  updateSwiper();
 }
 
 function setupStickyHeader() {
@@ -74,7 +89,7 @@ function setupSwiper() {
     else if (key === 39) newIndex += 1;
 
     // TODO remove
-    if (key === 73) swiper.scroll(6);
+    if (key === 73) swiper.scroll(7);
     if (key === 66) swiper.scroll(SLIDE_COUNT - 1);
 
     newIndex = Math.max(0, Math.min(newIndex, SLIDE_COUNT - 1));
@@ -87,6 +102,7 @@ function setupSwiper() {
 }
 
 function init() {
+  $body.style('height', window.innerHeight - 100);
   // add mobile class to body tag
   $body.classed('is-mobile', isMobile.any());
   // setup resize event
@@ -99,6 +115,7 @@ function init() {
   Beeswarm.init();
   // setup swiper
   setupSwiper();
+  updateSwiper();
   // load footer stories
   footer.init();
 }

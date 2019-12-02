@@ -1,7 +1,7 @@
 .intro
 	position relative
 	margin 0 auto
-	padding 6rem 1rem
+	padding 3rem 1rem
 	height 100%
 	background-color $bg
 	color $fg
@@ -9,25 +9,13 @@
 	&__hed
 		position relative
 		margin 0 auto
+		max-width 50rem
 		text-align center
 		text-transform uppercase
-		set-type-size(xxxxxx-large, true)
-		max-width 50rem
+		set-type-size(xx-large, true)
 
-	&__dek
-		position relative
-		margin 0 auto
-		margin-top 1rem
-		text-align center
-		set-type-size(xxx-large)
-
-	&__byline
-		position absolute
-		right 1rem
-		bottom 1rem
-		margin 0 auto
-		margin-top 1rem
-		text-align center
+		+mq('bp-4')
+			set-type-size(xxxxxx-large, true)
 
 	&__time
 		position relative
@@ -40,4 +28,37 @@
 	&__start
 		position relative
 		margin 1rem auto
+		margin-top 3rem
 		text-align center
+
+		svg
+			display block
+			margin 0 auto
+			height 3rem
+			animation swipe 2s infinite
+
+.slide p.intro__byline
+	position absolute
+	bottom 1rem
+	left 0
+	margin 0 auto
+	max-width none
+	width 100%
+	text-align center
+	set-type-size(small, true)
+
+	+mq('bp-4')
+		set-type-size(x-large, true)
+
+@keyframes swipe
+	0%
+		transform translateX(0%)
+
+	25%
+		transform translateX(-50%)
+
+	50%
+		transform translateX(0%)
+
+	100%
+		transform translateX(0%)
