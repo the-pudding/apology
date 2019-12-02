@@ -78,7 +78,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         width = $sel.node().offsetWidth - marginLeft - marginRight;
 
         sectionHeight = $sel.node().parentElement.parentElement.offsetHeight;
-        height = sectionHeight / 5 - marginTop - marginBottom;
+        height = sectionHeight / 8 - marginTop - marginBottom;
 
         radius = 0.3 * height;
 
