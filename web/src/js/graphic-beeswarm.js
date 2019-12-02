@@ -9,21 +9,21 @@ const $chart = $graphic.selectAll('[data-js="graphic__chart"]');
 const charts = [];
 
 function resize() {
-	const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
-	const sz = Math.floor(($section.node().offsetHeight - h) / $chart.size());
-	$chart.style('height', `${sz}px`);
+  const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
+  const sz = Math.floor(($section.node().offsetHeight - h) / $chart.size());
+  $chart.style("height", `${sz}px`);
   charts.forEach(chart => {
     chart.resize().render();
   });
 }
 
 function cleanData(data) {
-	const clean = data.map(d => ({
-		...d,
-		beauty: d.beauty === 'TRUE'
-	}));
-	const filtered = clean.filter(d => d.value !== 'NA');
-	return filtered;
+  const clean = data.map(d => ({
+    ...d,
+    beauty: d.beauty === "TRUE"
+  }));
+  const filtered = clean.filter(d => d.value !== "NA");
+  return filtered;
 }
 
 function setupGraphics() {
@@ -31,15 +31,17 @@ function setupGraphics() {
   const id = $f.attr("data-id");
 
   const file = `beeswarm--${id}.csv`;
-  loadData(file).then(cleanData).then(data => {
-    const chart = $f.datum(data).puddingChartBeeswarm();
-    chart.resize().render();
-    chart
-      .getBees()
-      .nodes()
-      .map(setupHover);
-    charts.push(chart);
-  });
+  loadData(file)
+    .then(cleanData)
+    .then(data => {
+      const chart = $f.datum(data).puddingChartBeeswarm();
+      chart.resize().render();
+      chart
+        .getBees()
+        .nodes()
+        .map(setupHover);
+      charts.push(chart);
+    });
 }
 
 function setupHover(el) {
@@ -57,7 +59,7 @@ function mouseOutHandler() {
   d3.selectAll(".bee")
     .transition()
     .style("opacity", 1);
-  d3.select('[data-js="beeswarm__hovertext"')
+  d3.selectAll('[data-js="beeswarm__hovertext"]')
     .transition()
     .style("opacity", 0);
 }
@@ -65,20 +67,18 @@ function mouseOutHandler() {
 function hoverText(elem, data) {
   let $fig = elem.parentElement.parentElement;
   let dims = elem.getBoundingClientRect();
-  let hovertext_pre = $fig.getAttribute("hovertext-pre");
-  let hovertext_post = $fig.getAttribute("hovertext-post");
-  d3.select('[data-js="beeswarm__hovertext]"')
+  let $hoverBox = d3.select(
+    `[data-id=beeswarm__hovertext_${$fig.getAttribute("data-id")}`
+  );
+  $hoverBox
     .style("left", `${dims.x + dims.width / 2}px`)
     .style("top", `${dims.y}px`)
     .style("background-color", data.beauty ? "#c20" : "grey")
     .style("color", data.beauty ? "#e7e5e4" : "black")
     .transition()
     .style("opacity", 1);
-
-  d3.select('[data-js="beeswarm__hovertext__title"').html(`${data.name}`);
-  d3.select('[data-js="beeswarm__hovertext__content"').html(
-    `${hovertext_pre}: ${data.value}${hovertext_post}`
-  );
+  $hoverBox.select('[data-js="beeswarm__hovertext__title"]').html(data.name);
+  $hoverBox.select('[data-js="beeswarm__hovertext__content"]').html(data.value);
 }
 
 function highlightEl(elem) {
@@ -93,7 +93,7 @@ function highlightEl(elem) {
 
 function init() {
   $figure.each(setupGraphics);
-	resize();
+  resize();
 }
 
 export default { init, resize };

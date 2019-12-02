@@ -1,21 +1,20 @@
 <section id='beeswarm' data-js='beeswarm'>
     <div class='beeswarm__graphic' data-js='beeswarm__graphic'>
         {{#each doc.beeswarm}}
-				<div class='graphic__chart' data-js='graphic__chart'>
-					<h3 class='graphic__title'>{{{title}}}</h3>
-					<div class='graphic__label'>
-						<p>&larr; {{{lower}}}</p>
-						<p>{{{upper}}} &rarr;</p>
-					</div>
-					<figure class='graphic__figure' data-js='graphic__figure' data-id={{id}} lower="{{lower}}" middle="{{middle}}"
-						upper="{{upper}}" hovertext-pre="{{hovertext-pre}}" hovertext-post="{{hovertext-post}}"></figure>
-					
-					<div class="beeswarm__hovertext" data-js="beeswarm__hovertext">
-						<div class="beeswarm__hovertext__title" data-js="beeswarm__hovertext__title"></div>
-						<div class="beeswarm__hovertext__content" data-js="beeswarm__hovertext__content"></div>
-					</div>
-					
-				</div>
-				{{/each}}
+        <div class='graphic__chart' data-js='graphic__chart'>
+            <h3 class='graphic__title'>{{{title}}}</h3>
+            <div class='graphic__label'>
+                <p>&larr; {{{lower}}}</p>
+                <p>{{{upper}}} &rarr;</p>
+            </div>
+            <figure class='graphic__figure' data-js='graphic__figure' data-id={{id}}></figure>
+            <div class="beeswarm__hovertext" data-js="beeswarm__hovertext" data-id="beeswarm__hovertext_{{id}}">
+                <div class="beeswarm__hovertext__title" data-js="beeswarm__hovertext__title"></div>
+                <div class="beeswarm__hovertext__content">
+                    {{hovertext-pre}}: <span data-js="beeswarm__hovertext__content"></span>{{hovertext-post}}
+                </div>
+            </div>
+        </div>
+        {{/each}}
     </div>
 </section>

@@ -10,7 +10,6 @@
 d3.selection.prototype.puddingChartBeeswarm = function init(options) {
   function createChart(el) {
     const $sel = d3.select(el);
-    const labels = ["lower", "upper"];
     const data = $sel.datum();
     // dimension stuff
     let width = 0;
@@ -32,8 +31,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     let $bees = null;
     let $bee = null;
     let $axis = null;
-    let $vis = null;
-    let $labels = null;
+    //let $vis = null;
 
     // helper functions
 
@@ -43,41 +41,21 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         $svg = $sel.append("svg").attr("class", "pudding-chart");
         $bees = $sel.append("div").attr("class", "bees");
 
-        const $g = $svg.append("g");
-
+        //const $g = $svg.append("g");
         // offset chart for margins
-        $g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
+        //$g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
+        // setup viz group
+        //$vis = $g.append("g").attr("class", "g-vis");
 
         // create axis
         $axis = $svg.append("g").attr("class", "g-axis");
         $axis.append("line").attr("class", "axis");
-        // $labels = $axis
-        //   .selectAll(".label")
-        //   .data(labels)
-        //   .join('text')
-        //   .attr("class", d => `label ${d}-lab`)
-        //   .attr("text-anchor", d => {
-        //     switch (d) {
-        //       case "lower":
-        //         return "start";
-        //       case "middle":
-        //         return "middle";
-        //       case "upper":
-        //         return "end";
-        //     }
-        //   })
-        //   .text(d => $sel.attr(d));
-
-        // setup viz group
-        $vis = $g.append("g").attr("class", "g-vis");
       },
       // on resize, update new dimensions
       resize() {
         // defaults to grabbing dimensions from container element
         width = $sel.node().offsetWidth - marginLeft - marginRight;
-
-        sectionHeight = $sel.node().parentElement.parentElement.offsetHeight;
-				height = $sel.node().offsetHeight - marginTop - marginBottom;
+        height = $sel.node().offsetHeight - marginTop - marginBottom;
 
         radius = 0.25 * height;
 
@@ -95,30 +73,22 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .attr("x1", marginLeft)
           .attr("x2", marginLeft + width);
 
-        // $labels
-				// 	.attr('transform', `translate(${width / 2}, 24)`)
-				// 	.attr("text-anchor", d => d.lower ? 'end' : 'start');
-
         scaleX.range([marginLeft, width + marginLeft]);
 
         sim
           .force(
             "y-pos",
-            d3
-              .forceY(height / 2)
-              .strength(node => (node.beauty ? 1 : 0.5))
+            d3.forceY(height / 2).strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
             "x-pos",
             d3
               .forceX(node => scaleX(node.display))
-              .strength(node => (node.beauty ? 1 : 0.2))
+              .strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
             "collide",
-            d3.forceCollide(node =>
-              node.beauty ? radius / 2 : radius / 8
-            )
+            d3.forceCollide(node => (node.beauty ? radius / 2 : radius / 8))
           );
 
         return Chart;
@@ -129,17 +99,18 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .selectAll(".bee")
           .data(data, d => d.name)
           .join("div")
-          .attr("class", d => `bee ${d.beauty ? 'is-beauty' : ''}`)
+          .attr("class", d => `bee ${d.beauty ? "is-beauty" : ""}`)
           .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
-          .style("background-image", d => d.beauty
+          .style("background-image", d =>
+            d.beauty
               ? `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
               : ""
           )
           .style("width", d => `${d.beauty ? radius : radius / 4}px`)
           .style("height", d => `${d.beauty ? radius : radius / 4}px`)
           .style("background-size", `${1.15 * radius}px`)
-					.style('top', d => d.beauty ? height / 2 : 0)
-					.style('left', d => d.beauty ? scaleX(d.display) : 0)
+          .style("top", d => (d.beauty ? height / 2 : 0))
+          .style("left", d => (d.beauty ? scaleX(d.display) : 0));
 
         sim
           .alpha(0.4)
