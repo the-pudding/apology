@@ -20,12 +20,12 @@ const SLIDE_COUNT = $slide.size();
 let swiper = null;
 
 function toggleNerd() {
-	const $s = d3.select('.slide--active');
-	const $n = $s.select('[data-js="slide__nerd"]');
-	if ($n.size()) {
-		const v = $n.classed('is-visible');
-		$n.classed('is-visible', !v);
-	}
+  const $s = d3.select('.slide--active');
+  const $n = $s.select('[data-js="slide__nerd"]');
+  if ($n.size()) {
+    const v = $n.classed('is-visible');
+    $n.classed('is-visible', !v);
+  }
 }
 
 function getSlideTextHeight() {
@@ -42,13 +42,13 @@ function updateSwiper() {
 }
 
 function updateText() {
-	const h = getSlideTextHeight();
-	$graphics.style('height', `${window.innerHeight - h}px`);
-	$slideText.select('.slide__text').style('height', `${h}px`);
+  const h = getSlideTextHeight();
+  $graphics.style('height', `${window.innerHeight - h}px`);
+  $slideText.select('.slide__text').style('height', `${h}px`);
 }
 
 function resize() {
-	updateText();
+  updateText();
   Category.resize();
   Impact.resize();
   Beeswarm.resize();
@@ -80,23 +80,21 @@ function setupSwiper() {
   });
 
   swiper.on('after-slide', newIndex => {
-		$nerdSlide.classed('is-visible', false);
+    $nerdSlide.classed('is-visible', false);
     index = newIndex;
     const $s = $slide.filter((d, i) => i === index);
     const slide = $s.attr('data-slide');
     const trigger = $s.attr('data-trigger');
-		const nerd = !!$s.attr('data-nerd');
+    const nerd = !!$s.attr('data-nerd');
 
-		$nerdButton.classed('is-visible', nerd);
-		$section.classed('is-visible', false);
-    
-		if (trigger) {
+    $nerdButton.classed('is-visible', nerd);
+    $section.classed('is-visible', false);
+
+    if (trigger) {
       d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
       if (trigger === 'category') Category.slide(slide);
       if (trigger === 'impact') Impact.slide(slide);
     }
-
-
   });
 
   // arrow keys
@@ -117,14 +115,15 @@ function setupSwiper() {
       swiper.scroll(index);
     }
   });
+
+  $nerdSlide.classed('is-loaded', true);
 }
 
 function setupNerd() {
-	$nerdButton.on('click', toggleNerd);
+  $nerdButton.on('click', toggleNerd);
 }
 
 function init() {
-	
   $body.style('height', window.innerHeight - 100);
   // add mobile class to body tag
   $body.classed('is-mobile', isMobile.any());
@@ -133,15 +132,15 @@ function init() {
   // setup sticky header menu
   // setupStickyHeader();
   // kick off graphic code
-	updateText();
-	
+  updateText();
+
   Category.init();
   Impact.init();
   Beeswarm.init();
   // setup swiper
   setupSwiper();
   updateSwiper();
-	setupNerd();
+  setupNerd();
   // load footer stories
   footer.init();
 }
