@@ -43,10 +43,16 @@ section
 	user-select none
 
 .graphics
+	padding 0 3rem
+
+.graphics
 	top auto
 	bottom 0
 
 .swiper
+	pointer-events none
+
+.arrows
 	pointer-events none
 
 .arrow
@@ -60,6 +66,7 @@ section
 	line-height 1
 	transition transform 100ms ease-in-out
 	transform translate(0, -50%)
+	pointer-events auto
 
 	&:hover
 		transform translate(-10%, -50%)

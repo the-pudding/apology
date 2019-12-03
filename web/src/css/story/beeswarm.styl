@@ -58,6 +58,7 @@
 		border-radius 50%
 		background-color $secondary
 		background-position center center
+		cursor crosshair
 		transform translate(-50%, -50%)
 
 		&.is-beauty
@@ -66,11 +67,13 @@
 	.beeswarm__hovertext
 		position fixed
 		padding 0.5rem
+		border 2px solid $bg
 		border-radius 2%
-		box-shadow 0px 0px 2px
+		background-color $fg
+		color $bg
 		opacity 0
 		transform translate(-50%, -120%)
 		pointer-events none
 
 	.beeswarm__hovertext__content
-		font-size 0.85rem
+		set-type-size(small)

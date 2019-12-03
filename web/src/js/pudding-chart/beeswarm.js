@@ -31,25 +31,25 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     let $bees = null;
     let $bee = null;
     let $axis = null;
-    //let $vis = null;
+    // let $vis = null;
 
     // helper functions
 
     const Chart = {
       // called once at start
       init() {
-        $svg = $sel.append("svg").attr("class", "pudding-chart");
-        $bees = $sel.append("div").attr("class", "bees");
+        $svg = $sel.append('svg').attr('class', 'pudding-chart');
+        $bees = $sel.append('div').attr('class', 'bees');
 
-        //const $g = $svg.append("g");
+        // const $g = $svg.append("g");
         // offset chart for margins
-        //$g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
+        // $g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
         // setup viz group
-        //$vis = $g.append("g").attr("class", "g-vis");
+        // $vis = $g.append("g").attr("class", "g-vis");
 
         // create axis
-        $axis = $svg.append("g").attr("class", "g-axis");
-        $axis.append("line").attr("class", "axis");
+        $axis = $svg.append('g').attr('class', 'g-axis');
+        $axis.append('line').attr('class', 'axis');
       },
       // on resize, update new dimensions
       resize() {
@@ -59,35 +59,35 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 
         radius = 0.25 * height;
 
-        $sel.style("height", `${height}px`);
+        $sel.style('height', `${height}px`);
 
         $svg
-          .attr("width", width + marginLeft + marginRight)
-          .attr("height", height + marginTop + marginBottom);
+          .attr('width', width + marginLeft + marginRight)
+          .attr('height', height + marginTop + marginBottom);
 
         $axis
-          .select(".axis")
+          .select('.axis')
           .transition()
-          .attr("y1", height / 2)
-          .attr("y2", height / 2)
-          .attr("x1", marginLeft)
-          .attr("x2", marginLeft + width);
+          .attr('y1', height / 2)
+          .attr('y2', height / 2)
+          .attr('x1', marginLeft)
+          .attr('x2', marginLeft + width);
 
         scaleX.range([marginLeft, width + marginLeft]);
 
         sim
           .force(
-            "y-pos",
+            'y-pos',
             d3.forceY(height / 2).strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
-            "x-pos",
+            'x-pos',
             d3
               .forceX(node => scaleX(node.display))
               .strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
-            "collide",
+            'collide',
             d3.forceCollide(node => (node.beauty ? radius / 2 : radius / 8))
           );
 
@@ -96,26 +96,26 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
       // update scales and render chart
       render() {
         $bee = $bees
-          .selectAll(".bee")
+          .selectAll('.bee')
           .data(data, d => d.name)
-          .join("div")
-          .attr("class", d => `bee ${d.beauty ? "is-beauty" : ""}`)
-          .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
-          .style("background-image", d =>
+          .join('div')
+          .attr('class', d => `bee ${d.beauty ? 'is-beauty' : ''}`)
+          .attr('data-js', d => `bee--${d.name.replace(/\s/g, '')}`)
+          .style('background-image', d =>
             d.beauty
-              ? `url("assets/images/${d.name.replace(/\s/g, "")}.png")`
-              : ""
+              ? `url("assets/images/${d.name.replace(/\s/g, '')}.png")`
+              : ''
           )
-          .style("width", d => `${d.beauty ? radius : radius / 4}px`)
-          .style("height", d => `${d.beauty ? radius : radius / 4}px`)
-          .style("background-size", `${1.15 * radius}px`)
-          .style("top", d => (d.beauty ? height / 2 : 0))
-          .style("left", d => (d.beauty ? scaleX(d.display) : 0));
+          .style('width', d => `${d.beauty ? radius : radius / 4}px`)
+          .style('height', d => `${d.beauty ? radius : radius / 4}px`)
+          .style('background-size', `${1.15 * radius}px`)
+          .style('top', d => (d.beauty ? height / 2 : 0))
+          .style('left', d => (d.beauty ? scaleX(d.display) : 0));
 
         sim
           .alpha(0.4)
-          .on("tick", () => {
-            $bee.style("left", d => `${d.x}px`).style("top", d => `${d.y}px`);
+          .on('tick', () => {
+            $bee.style('left', d => `${d.x}px`).style('top', d => `${d.y}px`);
           })
           .restart();
 
@@ -123,7 +123,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
       },
       getBees() {
         return $bee;
-      }
+      },
     };
     Chart.init();
 
