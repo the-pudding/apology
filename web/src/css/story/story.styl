@@ -34,7 +34,7 @@ section
 		opacity 1
 		transition $fade ease-out
 
-.graphics, .swiper
+.graphics, .swiper, .arrows
 	position absolute
 	top 0
 	left 0
@@ -47,7 +47,43 @@ section
 	bottom 0
 
 .swiper
-	// pointer-events none
+	pointer-events none
+
+.arrow
+	position absolute
+	top 50%
+	left 0
+	visibility hidden
+	margin 0 1rem
+	padding 0.25rem
+	border 2px solid $fg
+	background rgba($bg, 0.5)
+	line-height 1
+	transition transform 100ms ease-in-out
+	transform translate(0, -50%)
+
+	&:hover
+		transform translate(-10%, -50%)
+
+	&.is-visible
+		visibility visible
+
+	svg
+		width 2rem
+		height 2rem
+
+	&--right
+		right 0
+		left auto
+
+		&:hover
+			transform translate(10%, -50%)
+
+.is-mobile .arrows
+	display none
+
+.is-mobile .swiper
+	pointer-events auto
 
 .swiper__wrapper
 	height 100%

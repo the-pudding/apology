@@ -14,6 +14,8 @@ const $slideText = d3.selectAll('[data-type="text"]');
 const $section = d3.selectAll('section');
 const $nerdButton = d3.select('[data-js="nerd-mode__button"]');
 const $nerdSlide = d3.selectAll('[data-js="slide__nerd"]');
+const $arrowLeft = d3.select('[data-js="arrow--left"]');
+const $arrowRight = d3.select('[data-js="arrow--right"]');
 
 const SLIDE_COUNT = $slide.size();
 
@@ -97,6 +99,15 @@ function setupSwiper() {
     }
   });
 
+  const advance = i => {
+    if (i !== index) {
+      index = i;
+      swiper.scroll(index);
+    }
+    $arrowLeft.classed('is-visible', index > 0);
+    $arrowRight.classed('is-visible', index < SLIDE_COUNT - 1);
+  };
+
   // arrow keys
   $body.on('keydown', () => {
     const key = d3.event.keyCode;
@@ -109,14 +120,24 @@ function setupSwiper() {
     if (key === 66) swiper.scroll(SLIDE_COUNT - 1);
 
     newIndex = Math.max(0, Math.min(newIndex, SLIDE_COUNT - 1));
-
-    if (newIndex !== index) {
-      index = newIndex;
-      swiper.scroll(index);
-    }
+    advance(newIndex);
   });
 
   $nerdSlide.classed('is-loaded', true);
+
+  $arrowLeft.on('click', () => {
+    let newIndex = index - 1;
+    newIndex = Math.max(0, newIndex);
+
+    advance(newIndex);
+  });
+
+  $arrowRight.on('click', () => {
+    let newIndex = index + 1;
+    newIndex = Math.min(newIndex, SLIDE_COUNT - 1);
+
+    advance(newIndex);
+  });
 }
 
 function setupNerd() {
