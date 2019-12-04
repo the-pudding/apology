@@ -34,7 +34,7 @@
 
 						{{#ifEquals type 'inter'}}
 							{{#ifEquals media 'video'}}
-								<video src='assets/videos/{{slide}}.mp4' preload autoplay loop muted></video>
+								<video src='assets/videos/{{slide}}.mp4' preload autoplay loop muted poster='assets/images/{{slide}}.png'></video>
 							{{/ifEquals}}
 							{{#ifEquals media 'image'}}
 								<img src='assets/images/{{slide}}.png' alt='{{alt}}'>
