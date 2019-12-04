@@ -57,19 +57,6 @@ function resize() {
   updateSwiper();
 }
 
-function setupStickyHeader() {
-  const $header = $body.select('header');
-  if ($header.classed('is-sticky')) {
-    const $menu = $body.select('.header__menu');
-    const $toggle = $body.select('.header__toggle');
-    $toggle.on('click', () => {
-      const visible = $menu.classed('is-visible');
-      $menu.classed('is-visible', !visible);
-      $toggle.classed('is-visible', !visible);
-    });
-  }
-}
-
 function setupSwiper() {
   let index = 0;
   const containerEl = d3.select('[data-js="swiper"]').node();
@@ -150,8 +137,7 @@ function init() {
   $body.classed('is-mobile', isMobile.any());
   // setup resize event
   window.addEventListener('resize', debounce(resize, 150));
-  // setup sticky header menu
-  // setupStickyHeader();
+
   // kick off graphic code
   updateText();
 

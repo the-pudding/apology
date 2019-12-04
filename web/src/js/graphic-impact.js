@@ -35,14 +35,20 @@ function resize() {
 }
 
 function slide(value) {
-  const isPre = ['pre-setup', 'pre-result', 'pre-example', 'post-setup'].includes(value);
+  const isPre = [
+    'pre-setup',
+    'pre-result',
+    'pre-example',
+    'post-setup',
+  ].includes(value);
+
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-result');
-  const resizePre = ['pre-exmaple', 'post-result'].includes(value);
+  const resizePre = ['pre-example', 'post-result'].includes(value);
 
-	if (value === 'pre-example') chartPre.focus('Jake Paul').render();
-	else chartPre.focus().render();
+  if (value === 'pre-example') chartPre.focus('Jake Paul').render();
+  else chartPre.focus().render();
 
   if (resizePre) chartPre.resize().render();
 }
@@ -87,6 +93,9 @@ function setup([people, pre, post]) {
       ...dataPeople.find(v => v.id === d.key),
     }))
     .filter(d => d.id);
+
+  nestedPre.sort((a, b) => d3.ascending(a.beauty, b.beauty));
+  nestedPost.sort((a, b) => d3.ascending(a.beauty, b.beauty));
 
   chartPre = $figurePre.datum(nestedPre).puddingChartLine({
     extentY,
