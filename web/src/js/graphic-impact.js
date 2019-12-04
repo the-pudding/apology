@@ -65,7 +65,13 @@ function cleanData(data, pre) {
 }
 
 function setup([people, pre, post]) {
-  const dataPeople = people.filter(d => d.remove_flag === 'FALSE');
+  const dataPeople = people
+    .filter(d => d.remove_flag === 'FALSE')
+    .map(d => ({
+      ...d,
+      growth_delta: +d.growth_delta,
+    }));
+
   const dataPre = cleanData(pre, true);
   const dataPost = cleanData(post, false);
 

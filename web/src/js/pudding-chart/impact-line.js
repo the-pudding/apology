@@ -197,6 +197,9 @@ d3.selection.prototype.puddingChartLine = function init(options) {
 
         $person.classed('is-focus', d => focus.includes(d.name));
 
+        $person.sort((a, b) =>
+          d3.ascending(focus.includes(a.name), focus.includes(b.name))
+        );
         $person
           .select('.path--bg')
           .datum(d => d.values)
