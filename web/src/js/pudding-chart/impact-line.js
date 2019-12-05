@@ -25,8 +25,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let fraction = 0;
     let offset = 0;
     let focus = [];
+    let showBeauty = true;
+    let showCluster = false;
+
     const endLabel = label.includes('Apology');
-    const endComp = comp.includes('Apology');
 
     // dimensions
     let width = 0;
@@ -195,7 +197,12 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .data(data, d => d.key)
           .join(enterPerson);
 
-        $person.classed('is-focus', d => focus.includes(d.name));
+        $person
+          .classed('is-focus', d => focus.includes(d.name))
+          .classed('is-beauty', d => {
+            if (showBeauty) return d.beauty;
+            return focus.includes(d.name) && d.beauty;
+          });
 
         $person.sort((a, b) =>
           d3.ascending(focus.includes(a.name), focus.includes(b.name))
@@ -245,8 +252,18 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         return Chart;
       },
       focus(val) {
-        if (val) focus.push(val);
+        if (val) focus = val;
         else focus = [];
+        return Chart;
+      },
+      beauty(val) {
+        if (!arguments.length) return showBeauty;
+        showBeauty = val;
+        return Chart;
+      },
+      cluster(val) {
+        if (!arguments.length) return offset;
+        showCluster = val;
         return Chart;
       },
     };

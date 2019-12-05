@@ -42,13 +42,28 @@ function slide(value) {
     'post-setup',
   ].includes(value);
 
+  const ignoreBeauty = ['post-accelerating', 'post-declining'].includes(value);
+
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-result');
-  const resizePre = ['pre-example', 'post-result'].includes(value);
 
-  if (value === 'pre-example') chartPre.focus('Jake Paul').render();
-  else chartPre.focus().render();
+  chartPre.beauty(!ignoreBeauty);
+  chartPost.beauty(!ignoreBeauty);
+
+  if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
+  else if (value === 'post-accelerating') {
+    chartPre.focus(['Gabriel Zamora']).render();
+    chartPost.focus(['Gabriel Zamora']).render();
+  } else if (value === 'post-declining') {
+    chartPre.focus(['Laura Lee']).render();
+    chartPost.focus(['Laura Lee']).render();
+  } else {
+    chartPre.focus().render();
+    chartPost.focus().render();
+  }
+
+  const resizePre = ['pre-example', 'post-result'].includes(value);
 
   if (resizePre) chartPre.resize().render();
 }
