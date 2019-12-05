@@ -24,17 +24,19 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let shouldShrink = false;
     let fraction = 0;
     let offset = 0;
-		let focus = [];
+    let focus = [];
+    let showBeauty = true;
+    let showCluster = false;
+
     const endLabel = label.includes('Apology');
-    const endComp = comp.includes('Apology');
 
     // dimensions
     let width = 0;
     let height = 0;
     const marginTop = 16;
     const marginBottom = 16;
-    const marginLeft = 32;
-    const marginRight = 32;
+    const marginLeft = 14;
+    const marginRight = 28;
     const DUR = 500;
     const LABEL_SIZE = 12;
     const EASE = d3.easeCubicInOut;
@@ -54,7 +56,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         })
         .attr('data-name', d => d.name);
 
-      $person.append('path');
+      $person.append('path').attr('class', 'path--bg');
+      $person.append('path').attr('class', 'path--fg');
       $person.append('text').text(d => d.name);
 
       return $person;
@@ -71,7 +74,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         // create axis
         $axis = $svg.append('g').attr('class', 'g-axis');
 
-        $axis.append('g').attr('class', 'axis--y');
+        $axis.append('g').attr('class', 'axis--y axis--y--bg');
+        $axis.append('g').attr('class', 'axis--y axis--y--fg');
 
         $axis
           .append('text')
@@ -79,7 +83,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .text(comp)
           .attr('x', LABEL_SIZE / 2)
           .attr('y', -LABEL_SIZE / 2)
-          .attr('text-anchor', endComp ? 'start' : 'end')
+          .attr('text-anchor', 'end')
           .style('font-size', LABEL_SIZE);
 
         $axis
@@ -88,7 +92,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .text(comp)
           .attr('x', LABEL_SIZE / 2)
           .attr('y', -LABEL_SIZE / 2)
-          .attr('text-anchor', endComp ? 'start' : 'end')
+          .attr('text-anchor', 'end')
           .style('font-size', LABEL_SIZE);
 
         $axis
@@ -99,8 +103,6 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .attr('y', -LABEL_SIZE / 2)
           .attr('text-anchor', endLabel ? 'end' : 'start')
           .style('font-size', LABEL_SIZE);
-
-        $axis.append('line');
       },
       // on resize, update new dimensions
       resize() {
@@ -135,15 +137,24 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .attr('width', width + marginLeft + marginRight)
           .attr('height', height + marginTop + marginBottom);
 
-        const axisY = endLabel ? d3.axisLeft(scaleY) : d3.axisRight(scaleY);
+        // const axisY = endLabel ? d3.axisLeft(scaleY) : d3.axisRight(scaleY);
+        const axisY = d3.axisRight(scaleY);
 
         axisY
           .tickValues([0.5, 1, 2])
-          .tickSize(endComp ? -width : width)
-          .tickFormat(d => `${d}x`);
+          // .tickSize(endComp ? -width : width)
+          .tickSize(width)
+          .tickFormat(d => `${d}x`.replace('0', ''));
 
         $axis
-          .select('.axis--y')
+          .select('.axis--y--bg')
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
+          .call(axisY);
+
+        $axis
+          .select('.axis--y--fg')
           .transition()
           .duration(DUR)
           .ease(EASE)
@@ -161,23 +172,12 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .ease(EASE)
           .attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
-        // $axis
-        //   .select('line')
-        //   .transition()
-        //   .duration(DUR)
-        //   .ease(EASE)
-        //   .attr('transform', `translate(0, ${scaleY(1)})`)
-        //   .attr('x1', 0)
-        //   .attr('x2', width)
-        //   .attr('y1', 0)
-        //   .attr('y2', 0);
-
         $axis
           .selectAll('.text-comp')
           .transition()
           .duration(DUR)
           .ease(EASE)
-          .attr('transform', `translate(${endComp ? 0 : width}, ${scaleY(1)})`);
+          .attr('transform', `translate(${width}, ${scaleY(1)})`);
 
         $axis
           .select('.text-label')
@@ -197,16 +197,33 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .data(data, d => d.key)
           .join(enterPerson);
 
-				$person.classed('is-focus', d => focus.includes(d.name));
-				
         $person
-          .select('path')
+          .classed('is-focus', d => focus.includes(d.name))
+          .classed('is-beauty', d => {
+            if (showBeauty) return d.beauty;
+            return focus.includes(d.name) && d.beauty;
+          });
+
+        $person.sort((a, b) =>
+          d3.ascending(focus.includes(a.name), focus.includes(b.name))
+        );
+        $person
+          .select('.path--bg')
           .datum(d => d.values)
           .transition()
           .duration(DUR)
           .ease(EASE)
           .attr('d', generateLine);
 
+        $person
+          .select('.path--fg')
+          .datum(d => d.values)
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
+          .attr('d', generateLine);
+
+        // $axis.selectAll('.tick text').style('opacity', endLabel ? 0 : 1);
         return Chart;
       },
       // get / set data
@@ -234,11 +251,21 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         offset = val;
         return Chart;
       },
-			focus(val) {
-				if (val) focus.push(val);
-				else focus = [];
-				return Chart;
-			}
+      focus(val) {
+        if (val) focus = val;
+        else focus = [];
+        return Chart;
+      },
+      beauty(val) {
+        if (!arguments.length) return showBeauty;
+        showBeauty = val;
+        return Chart;
+      },
+      cluster(val) {
+        if (!arguments.length) return offset;
+        showCluster = val;
+        return Chart;
+      },
     };
     Chart.init();
 

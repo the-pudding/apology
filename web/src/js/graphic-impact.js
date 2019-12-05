@@ -35,14 +35,35 @@ function resize() {
 }
 
 function slide(value) {
-  const isPre = ['pre-setup', 'pre-result', 'pre-example', 'post-setup'].includes(value);
+  const isPre = [
+    'pre-setup',
+    'pre-result',
+    'pre-example',
+    'post-setup',
+  ].includes(value);
+
+  const ignoreBeauty = ['post-accelerating', 'post-declining'].includes(value);
+
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-result');
-  const resizePre = ['pre-exmaple', 'post-result'].includes(value);
 
-	if (value === 'pre-example') chartPre.focus('Jake Paul').render();
-	else chartPre.focus().render();
+  chartPre.beauty(!ignoreBeauty);
+  chartPost.beauty(!ignoreBeauty);
+
+  if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
+  else if (value === 'post-accelerating') {
+    chartPre.focus(['Gabriel Zamora']).render();
+    chartPost.focus(['Gabriel Zamora']).render();
+  } else if (value === 'post-declining') {
+    chartPre.focus(['Laura Lee']).render();
+    chartPost.focus(['Laura Lee']).render();
+  } else {
+    chartPre.focus().render();
+    chartPost.focus().render();
+  }
+
+  const resizePre = ['pre-example', 'post-result'].includes(value);
 
   if (resizePre) chartPre.resize().render();
 }
@@ -59,7 +80,13 @@ function cleanData(data, pre) {
 }
 
 function setup([people, pre, post]) {
-  const dataPeople = people.filter(d => d.remove_flag === 'FALSE');
+  const dataPeople = people
+    .filter(d => d.remove_flag === 'FALSE')
+    .map(d => ({
+      ...d,
+      growth_delta: +d.growth_delta,
+    }));
+
   const dataPre = cleanData(pre, true);
   const dataPost = cleanData(post, false);
 
@@ -87,6 +114,9 @@ function setup([people, pre, post]) {
       ...dataPeople.find(v => v.id === d.key),
     }))
     .filter(d => d.id);
+
+  nestedPre.sort((a, b) => d3.ascending(a.beauty, b.beauty));
+  nestedPost.sort((a, b) => d3.ascending(a.beauty, b.beauty));
 
   chartPre = $figurePre.datum(nestedPre).puddingChartLine({
     extentY,

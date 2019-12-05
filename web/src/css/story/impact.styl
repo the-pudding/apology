@@ -1,4 +1,12 @@
 #impact
+	.graphic__title
+		position absolute
+		bottom 0
+		left 0
+		padding 1rem 0
+		width 100%
+		text-align center
+
 	.impact__graphic
 		position relative
 		margin 0 auto
@@ -11,7 +19,7 @@
 		top 0
 		left 0
 		width 100%
-		height 100%
+		height 95%
 		opacity 0
 		transition opacity $fade ease-in-out
 
@@ -23,8 +31,9 @@
 		position absolute
 		top 0
 		left 0
-		height 100%
-		background $off-white
+		height 85%
+		background linear-gradient(45deg, $off-white 25%, #eaeaea 25%, #eaeaea 50%, $off-white 50%, $off-white 75%, #eaeaea 75%)
+		background-size 1rem 1rem
 		vertical-align middle
 		text-align center
 		opacity 0
@@ -36,7 +45,7 @@
 
 		.zone__label
 			position absolute
-			top 100%
+			top -0.75rem
 			left 0
 			margin 0
 			width 100%
@@ -75,25 +84,39 @@
 				top 0
 				display block
 				width 2px
-				height 1em
-				background $off-white
+				height 0.75rem
+				background #ddd
 				content ''
 
 	.person
 		path
 			fill none
-			stroke $gray-light
-			stroke-width 6px
-			stroke-opacity 0.5
-			// stroke-linecap round
 
-		&.is-beauty path
-			stroke $primary
+		.path--bg
+			stroke $bg
+			stroke-width 6px
+			stroke-opacity 0.75
+
+		.path--fg
+			stroke $gray-light
+			stroke-width 2px
 			stroke-opacity 1
 
-		&.is-focus path
+		&.is-focus .path--fg
 			stroke $secondary
 			stroke-opacity 1
+			stroke-width 6px
+
+		&.is-beauty .path--bg
+			stroke-width 8px
+
+		&.is-beauty .path--fg
+			stroke $primary
+			stroke-opacity 1
+			stroke-width 6px
+
+		&.is-beauty .path--bg
+			stroke-width 8px
 
 		// stroke-width 2px
 		// &.cluster--1 path
@@ -124,6 +147,14 @@
 			path
 				display none
 
+		.axis--y--bg
+			line
+				stroke-width 6px
+				stroke $bg
+				stroke-dasharray 3px 0px
+				stroke-opacity 0.67
+
+		.axis--y--fg
 			line
 				stroke-width 2px
 				stroke $fg
@@ -133,3 +164,6 @@
 			fill none
 			stroke-width 2px
 			stroke $bg
+
+	text
+		font-size 12px

@@ -4,8 +4,9 @@
         <div class='graphic__chart' data-js='graphic__chart'>
             <h3 class='graphic__title'>{{{title}}}</h3>
             <div class='graphic__label'>
-                <p>&larr; {{{lower}}}</p>
-                <p>{{{upper}}} &rarr;</p>
+                <p>{{{lower}}}</p>
+								{{#if middle}}<p>{{{middle}}}</p>{{/if}}
+                <p>{{{upper}}}</p>
             </div>
             <figure class='graphic__figure' data-js='graphic__figure' data-id={{id}}></figure>
             <div class="beeswarm__hovertext" data-js="beeswarm__hovertext" data-id="beeswarm__hovertext_{{id}}">
