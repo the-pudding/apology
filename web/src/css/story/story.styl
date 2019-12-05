@@ -29,10 +29,12 @@ section
 	height 100%
 	opacity 0
 	transition $fade-out ease-in
+	pointer-events none
 
 	&.is-visible
 		opacity 1
 		transition $fade ease-out
+		pointer-events auto
 
 .graphics, .swiper, .arrows
 	position absolute
