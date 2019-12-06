@@ -3,6 +3,7 @@ import Swiper from 'tiny-swiper';
 import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import footer from './footer';
+import Images from './graphic-images';
 import Category from './graphic-category';
 import Impact from './graphic-impact';
 import Beeswarm from './graphic-beeswarm';
@@ -58,6 +59,7 @@ function updateText() {
 
 function resize() {
   updateText();
+  Images.resize();
   Category.resize();
   Impact.resize();
   Beeswarm.resize();
@@ -90,6 +92,7 @@ function setupSwiper() {
       d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
       if (trigger === 'category') Category.slide(slide);
       if (trigger === 'impact') Impact.slide(slide);
+      if (trigger === 'images') Images.slide(slide);
     }
   });
 
@@ -152,6 +155,7 @@ function init() {
   // kick off graphic code
   updateText();
 
+  Images.init();
   Category.init();
   Impact.init();
   Beeswarm.init();

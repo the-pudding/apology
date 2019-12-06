@@ -33,13 +33,12 @@
 
 		+mq('bp-6')
 			display block
-			flex-grow 1
 			flex-direction column
 			flex-wrap nowrap
 			align-items flex-start
 			align-content flex-start
 			max-height 100%
-			width auto
+			width 16.67%
 
 	.person
 		position relative
@@ -72,12 +71,13 @@
 		transition color $fade
 
 		+mq('bp-6')
-			set-type-size(large)
+			set-type-size(medium)
 
 	.is-label
 		position absolute
 		top 100%
 		left 0.5rem
+		width 100%
 		transform translateY(0.5em)
 
 		p
