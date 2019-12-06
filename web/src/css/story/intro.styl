@@ -37,18 +37,47 @@
 			height 3rem
 			animation swipe 2s infinite
 
+	.accident
+		position absolute
+		bottom 1rem
+		left 1rem
+		z-index set-index(overlay)
+		pointer-events auto
+
+		button
+			display block
+			margin-top 1rem
+			padding 0.5rem
+			background-color $primary
+			color $white
+			font-weight bold
+
+	.smokey
+		position absolute
+		bottom 7.5rem
+		left 1rem
+		width 16rem
+		border 2px solid $fg
+		transition transform 250ms ease-in-out
+		transform translateX(-125%)
+		pointer-events auto
+
+		&.is-visible
+			transform translateX(0)
+
 .slide p.intro__byline
 	position absolute
-	bottom 1rem
+	bottom 0
 	left 0
 	margin 0 auto
 	max-width none
 	width 100%
 	text-align center
-	set-type-size(small, true)
+	line-height 1
+	set-type-size(small)
 
 	+mq('bp-4')
-		set-type-size(x-large, true)
+		set-type-size(x-large)
 
 @keyframes swipe
 	0%

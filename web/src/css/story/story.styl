@@ -29,10 +29,12 @@ section
 	height 100%
 	opacity 0
 	transition $fade-out ease-in
+	pointer-events none
 
 	&.is-visible
 		opacity 1
 		transition $fade ease-out
+		pointer-events auto
 
 .graphics, .swiper, .arrows
 	position absolute
@@ -115,9 +117,14 @@ section
 
 		&.is-visible
 			transform translateY(0)
+			pointer-events auto
 
 		&.is-loaded
 			visibility visible
+
+		a
+			border-color $bg
+			color $bg
 
 	.slide__text
 		display flex
@@ -186,12 +193,6 @@ section
 	left 0
 	width 100%
 	height 100%
-	filter grayscale(100%)
-	background-position 50% 50%
-	background-size 33%
-	background-size cover
-	background-size contain
-	// background-repeat no-repeat
 
 svg text
 	font-family $sans

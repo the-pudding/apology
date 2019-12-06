@@ -73,11 +73,15 @@
 		padding 0.5rem
 		border 2px solid $bg
 		border-radius 2%
-		background-color $fg
+		background-color $primary
+		background-color $secondary
 		color $bg
 		opacity 0
 		transform translate(-50%, -120%)
 		pointer-events none
+
+		&.is-beauty
+			background-color $primary
 
 	.beeswarm__hovertext__content
 		set-type-size(small)

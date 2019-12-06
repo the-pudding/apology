@@ -75,6 +75,7 @@ function hoverText(elem, data) {
     `[data-id=beeswarm__hovertext_${$fig.getAttribute('data-id')}`
   );
   $hoverBox
+    .classed('is-beauty', data.beauty)
     .style('left', `${dims.x + dims.width / 2}px`)
     .style('top', `${dims.y}px`)
     .transition()
