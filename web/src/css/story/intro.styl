@@ -67,16 +67,17 @@
 
 .slide p.intro__byline
 	position absolute
-	bottom 1rem
+	bottom 0
 	left 0
 	margin 0 auto
 	max-width none
 	width 100%
 	text-align center
-	set-type-size(small, true)
+	line-height 1
+	set-type-size(small)
 
 	+mq('bp-4')
-		set-type-size(x-large, true)
+		set-type-size(x-large)
 
 @keyframes swipe
 	0%

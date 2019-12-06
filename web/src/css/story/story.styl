@@ -117,9 +117,14 @@ section
 
 		&.is-visible
 			transform translateY(0)
+			pointer-events auto
 
 		&.is-loaded
 			visibility visible
+
+		a
+			border-color $bg
+			color $bg
 
 	.slide__text
 		display flex

@@ -41,8 +41,34 @@
 			max-height 100%
 			width auto
 
-	.person p
+	.person
+		position relative
+		visibility hidden
+		cursor crosshair
+
+		&.is-visible
+			visibility visible
+
+		&.is-mark
+			background-color $primary
+			color $bg
+
+			.person__summary
+				visibility visible
+
+		&:not(.is-label):hover
+			.person__name
+				background-color $secondary
+				color $bg
+
+			.person__summary
+				visibility visible
+				background-color $secondary
+
+	p.person__name
 		margin 0
+		padding 0 0.5rem
+		border-bottom 2px solid $bg
 		transition color $fade
 
 		+mq('bp-6')
@@ -51,7 +77,7 @@
 	.is-label
 		position absolute
 		top 100%
-		left 0.5em
+		left 0.5rem
 		transform translateY(0.5em)
 
 		p
@@ -60,8 +86,29 @@
 			line-height 1.25
 
 			+mq('bp-6')
-				set-type-size(root)
+				set-type-size(small)
 
 	.is-beauty.is-active
-		p
-			color $primary
+		.person__name
+			background-color $primary
+			color $bg
+
+	p.person__summary
+		position absolute
+		bottom 0
+		left 100%
+		z-index set-index(overlay)
+		visibility hidden
+		background-color $primary
+		color $bg
+		pointer-events none
+		set-type-size(small)
+		padding 1rem
+		width 20rem
+		border 2px solid $bg
+		transform translate(0, 1.5rem)
+
+		&.is-flip
+			right 100%
+			left auto
+			transform translate(0, 1.5rem)

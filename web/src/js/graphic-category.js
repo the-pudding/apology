@@ -30,7 +30,9 @@ function setup(people) {
     .entries(data)
     .map(d => ({
       ...d,
-      values: d.values.concat([{ name: d.key, label: true }]),
+      values: d.values.concat([
+        { name: d.key, label: true, cat: d.values[0].cat },
+      ]),
     }));
 
   nested.sort((a, b) => d3.descending(a.values.length, b.values.length));
@@ -49,11 +51,40 @@ function setup(people) {
       d => `person ${d.label ? 'is-label' : ''} ${d.beauty ? 'is-beauty' : ''}`
     );
 
-  $p.append('p').text(d => d.name);
+  $p.append('p')
+    .attr('class', 'person__name')
+    .text(d => d.name);
+
+  $p.append('p')
+    .attr('class', 'person__summary')
+    .classed('is-flip', d =>
+      ['Miscellaneous', 'Exploiting Audience'].includes(d.cat)
+    )
+    .text(d => d.controversy_summary);
 }
 
 function slide(value) {
   $figure.selectAll('.is-beauty').classed('is-active', value === 'beauty');
+  if (value === 'insensitive') {
+    $figure
+      .selectAll('.person')
+      .classed('is-visible', d => d.cat === 'Insensitive Video')
+      .classed('is-mark', d => d.name === 'Logan Paul');
+  } else if (value === 'racist') {
+    $figure
+      .selectAll('.person')
+      .classed('is-visible', d => d.cat === 'Racist Comments')
+      .classed('is-mark', d => d.name === 'Laura Lee');
+  } else if (value === 'misc') {
+    $figure
+      .selectAll('.person')
+      .classed('is-visible', d => d.cat === 'Miscellaneous')
+      .classed('is-mark', d => d.name === 'Jenna Marbles');
+  } else
+    $figure
+      .selectAll('.person')
+      .classed('is-visible', true)
+      .classed('is-mark', false);
 }
 
 function init() {
