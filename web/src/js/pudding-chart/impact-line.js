@@ -51,8 +51,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         .append('g')
         .attr('class', d => {
           const b = d.beauty ? 'is-beauty' : '';
-          const c = `cluster--${d.cluster}`;
-          return `person ${c} ${b}`;
+          const cluster = `${d.growth_delta}`.replace('-', 'neg');
+          const g = `growth--${endLabel ? d.growth_post : d.growth_pre}`;
+          const c = `cluster--${cluster}`;
+          return `person ${g} ${c} ${b}`;
         })
         .attr('data-name', d => d.name);
 
@@ -202,7 +204,8 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .classed('is-beauty', d => {
             if (showBeauty) return d.beauty;
             return focus.includes(d.name) && d.beauty;
-          });
+          })
+          .classed('is-cluster', showCluster);
 
         $person.sort((a, b) =>
           d3.ascending(focus.includes(a.name), focus.includes(b.name))
@@ -257,12 +260,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         return Chart;
       },
       beauty(val) {
-        if (!arguments.length) return showBeauty;
         showBeauty = val;
         return Chart;
       },
       cluster(val) {
-        if (!arguments.length) return offset;
         showCluster = val;
         return Chart;
       },

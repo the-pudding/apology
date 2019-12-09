@@ -53,14 +53,35 @@ function slide(value) {
 
   if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
   else if (value === 'post-accelerating') {
-    chartPre.focus(['Gabriel Zamora']).render();
-    chartPost.focus(['Gabriel Zamora']).render();
+    chartPre
+      .cluster()
+      .focus(['Gabriel Zamora'])
+      .render();
+    chartPost
+      .cluster()
+      .focus(['Gabriel Zamora'])
+      .render();
   } else if (value === 'post-declining') {
-    chartPre.focus(['Laura Lee']).render();
-    chartPost.focus(['Laura Lee']).render();
+    chartPre
+      .cluster()
+      .focus(['Laura Lee'])
+      .render();
+    chartPost
+      .cluster()
+      .focus(['Laura Lee'])
+      .render();
+  } else if (value === 'post-cluster') {
+    chartPre.cluster(true).render();
+    chartPost.cluster(true).render();
   } else {
-    chartPre.focus().render();
-    chartPost.focus().render();
+    chartPre
+      .focus()
+      .cluster()
+      .render();
+    chartPost
+      .focus()
+      .cluster()
+      .render();
   }
 
   const resizePre = ['pre-example', 'post-result'].includes(value);

@@ -9,7 +9,7 @@ function slide() {
     .selectAll('img')
     .transition()
     .duration(0)
-    .delay((d, i) => i * 1000)
+    .delay((d, i) => i * 750)
     .on('end', (d, i, n) => {
       const $n = d3.select(n[i]);
       const top = $n.attr('data-top');
