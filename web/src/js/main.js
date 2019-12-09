@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 import isMobile from './utils/is-mobile';
 import footer from './footer';
 import Images from './graphic-images';
+import People from './graphic-people';
 import Category from './graphic-category';
 import Impact from './graphic-impact';
 import Beeswarm from './graphic-beeswarm';
@@ -60,6 +61,7 @@ function updateText() {
 function resize() {
   updateText();
   Images.resize();
+  People.resize();
   Category.resize();
   Impact.resize();
   Beeswarm.resize();
@@ -93,6 +95,7 @@ function setupSwiper() {
       if (trigger === 'category') Category.slide(slide);
       if (trigger === 'impact') Impact.slide(slide);
       if (trigger === 'images') Images.slide(slide);
+      if (trigger === 'people') People.slide(slide);
     }
   });
 
@@ -156,6 +159,7 @@ function init() {
   updateText();
 
   Images.init();
+  People.init();
   Category.init();
   Impact.init();
   Beeswarm.init();

@@ -103,7 +103,10 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
           .attr('data-js', d => `bee--${d.name.replace(/\s/g, '')}`)
           .style('background-image', d =>
             d.beauty
-              ? `url("assets/images/${d.name.replace(/\s/g, '')}@2x.jpg")`
+              ? `url("assets/images/people/${d.name.replace(
+                  /\s/g,
+                  ''
+                )}@2x.jpg")`
               : ''
           )
           .style('width', d => `${d.beauty ? radius : radius / 4}px`)

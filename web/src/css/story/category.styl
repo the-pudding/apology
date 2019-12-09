@@ -71,7 +71,10 @@
 		transition color $fade
 
 		+mq('bp-6')
-			set-type-size(medium)
+			font-size 1.1vw
+
+		+mq('bp-8')
+			set-type-size(small)
 
 	.is-label
 		position absolute
@@ -82,10 +85,12 @@
 
 		p
 			color $gray
-			set-type-size(small)
 			line-height 1.25
 
 			+mq('bp-6')
+				font-size 1vw
+
+			+mq('bp-8')
 				set-type-size(small)
 
 	.is-beauty.is-active
