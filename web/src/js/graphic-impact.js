@@ -42,7 +42,11 @@ function slide(value) {
     'post-setup',
   ].includes(value);
 
-  const ignoreBeauty = ['post-accelerating', 'post-declining'].includes(value);
+  const ignoreBeauty = [
+    'post-positive',
+    'post-negative',
+    'post-cluster',
+  ].includes(value);
 
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
@@ -52,15 +56,36 @@ function slide(value) {
   chartPost.beauty(!ignoreBeauty);
 
   if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
-  else if (value === 'post-accelerating') {
-    chartPre.focus(['Gabriel Zamora']).render();
-    chartPost.focus(['Gabriel Zamora']).render();
-  } else if (value === 'post-declining') {
-    chartPre.focus(['Laura Lee']).render();
-    chartPost.focus(['Laura Lee']).render();
+  else if (value === 'post-positive') {
+    chartPre
+      .cluster(true)
+      .focus(['Gabriel Zamora'])
+      .render();
+    chartPost
+      .cluster(true)
+      .focus(['Gabriel Zamora'])
+      .render();
+  } else if (value === 'post-negative') {
+    chartPre
+      .cluster(true)
+      .focus(['Laura Lee'])
+      .render();
+    chartPost
+      .cluster(true)
+      .focus(['Laura Lee'])
+      .render();
+  } else if (value === 'post-cluster') {
+    chartPre.cluster(true).render();
+    chartPost.cluster(true).render();
   } else {
-    chartPre.focus().render();
-    chartPost.focus().render();
+    chartPre
+      .focus()
+      .cluster()
+      .render();
+    chartPost
+      .focus()
+      .cluster()
+      .render();
   }
 
   const resizePre = ['pre-example', 'post-result'].includes(value);

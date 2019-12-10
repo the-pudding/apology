@@ -51,8 +51,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         .append('g')
         .attr('class', d => {
           const b = d.beauty ? 'is-beauty' : '';
-          const c = `cluster--${d.cluster}`;
-          return `person ${c} ${b}`;
+          const cluster = `${d.growth_delta}`.replace('-', 'neg');
+          const g = `growth--${endLabel ? d.growth_post : d.growth_pre}`;
+          const c = `cluster--${cluster}`;
+          return `person ${g} ${c} ${b}`;
         })
         .attr('data-name', d => d.name);
 
@@ -202,11 +204,28 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .classed('is-beauty', d => {
             if (showBeauty) return d.beauty;
             return focus.includes(d.name) && d.beauty;
-          });
+          })
+          .classed('is-cluster', !showBeauty && !focus.length && showCluster)
+          .classed(
+            'is-focus-cluster',
+            d => showCluster && focus.includes(d.name)
+          );
 
         $person.sort((a, b) =>
           d3.ascending(focus.includes(a.name), focus.includes(b.name))
         );
+
+        if (showCluster) {
+          $person.sort(
+            (a, b) =>
+              d3.ascending(focus.includes(a.name), focus.includes(b.name)) ||
+              d3.ascending(
+                a.growth_delta < -2 || a.growth_delta > 0,
+                b.growth_delta < -2 || b.growth_delta > 0
+              )
+          );
+        }
+
         $person
           .select('.path--bg')
           .datum(d => d.values)
@@ -257,12 +276,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         return Chart;
       },
       beauty(val) {
-        if (!arguments.length) return showBeauty;
         showBeauty = val;
         return Chart;
       },
       cluster(val) {
-        if (!arguments.length) return offset;
         showCluster = val;
         return Chart;
       },
