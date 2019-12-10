@@ -10,7 +10,16 @@ const charts = [];
 
 function slide(value) {
   let $els = null;
-  const focusSlides = ["GabrielZamora"];
+  const focusSlides = [
+    "GabrielZamora",
+    "JeffreeStar",
+    "JamesCharles",
+    "JaclynHill",
+    "LauraLee"
+  ];
+  
+  d3.select(".swiper").style("pointer-events", "none");
+  mouseOutHandler();
 
   if (focusSlides.includes(value)) {
     d3.select(".swiper").style("pointer-events", "auto");
@@ -19,10 +28,7 @@ function slide(value) {
     $els.each(function(d) {
       hoverText(this, d);
     });
-  } else {
-    d3.select(".swiper").style("pointer-events", "none");
-    mouseOutHandler();
-  }
+  } 
 }
 
 function resize() {
