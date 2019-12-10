@@ -118,44 +118,64 @@
 		&.is-beauty .path--bg
 			stroke-width 8px
 
-		// &.is-cluster.is-beauty.cluster--1 .path--fg
+		&.is-cluster.cluster--1 .path--fg
+			stroke-width 2px
+			stroke $teal
+
+		&.is-cluster.cluster--0 .path--fg
+			stroke-width 2px
+			stroke $gray-light
+
+		&.is-cluster.cluster--neg1 .path--fg
+			stroke-width 2px
+			stroke $gray-light
+
+		&.is-cluster.cluster--neg2 .path--fg
+			stroke-width 2px
+			stroke $red
+
+		&.is-cluster.cluster--neg3 .path--fg
+			stroke-width 2px
+			stroke $red
+
+		&.is-focus-cluster.cluster--1 .path--fg
+			stroke-width 6px
+			stroke $teal
+
+		&.is-focus-cluster.cluster--0 .path--fg
+			stroke-width 6px
+			stroke $gray-light
+
+		&.is-focus-cluster.cluster--neg1 .path--fg
+			stroke-width 6px
+			stroke $gray-light
+
+		&.is-focus-cluster.cluster--neg2 .path--fg
+			stroke-width 6px
+			stroke $red
+
+		&.is-focus-cluster.cluster--neg3 .path--fg
+			stroke-width 6px
+			stroke $red
+
+		// &.is-cluster.growth--A .path--fg
 		// stroke-width 2px
+		// stroke $p1
+		// stroke red
+
+		// &.is-cluster.growth--B .path--fg
+		// stroke-width 2px
+		// stroke $p2
 		// stroke green
 
-		// &.is-cluster.is-beauty.cluster--0 .path--fg
+		// &.is-cluster.growth--C .path--fg
 		// stroke-width 2px
-		// stroke yellow
-
-		// &.is-cluster.is-beauty.cluster--neg1 .path--fg
-		// stroke-width 2px
+		// stroke $p3
 		// stroke orange
 
-		// &.is-cluster.is-beauty.cluster--neg2 .path--fg
+		// &.is-cluster.growth--D .path--fg
 		// stroke-width 2px
-		// stroke red
-
-		// &.is-cluster.is-beauty.cluster--neg3 .path--fg
-		// stroke-width 2px
-		// stroke red
-		&.is-cluster.growth--A .path--fg
-			stroke-width 2px
-			stroke $p1
-			stroke $primary
-
-		&.is-cluster.growth--B .path--fg
-			stroke-width 2px
-			stroke $p2
-			stroke $gray-light
-
-		&.is-cluster.growth--C .path--fg
-			stroke-width 2px
-			stroke $p3
-			stroke $gray-light
-
-		&.is-cluster.growth--D .path--fg
-			stroke-width 2px
-			stroke $secondary
-
+		// stroke blue
 		text
 			display none
 

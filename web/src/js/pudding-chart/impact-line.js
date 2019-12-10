@@ -205,11 +205,27 @@ d3.selection.prototype.puddingChartLine = function init(options) {
             if (showBeauty) return d.beauty;
             return focus.includes(d.name) && d.beauty;
           })
-          .classed('is-cluster', showCluster);
+          .classed('is-cluster', !showBeauty && !focus.length && showCluster)
+          .classed(
+            'is-focus-cluster',
+            d => showCluster && focus.includes(d.name)
+          );
 
         $person.sort((a, b) =>
           d3.ascending(focus.includes(a.name), focus.includes(b.name))
         );
+
+        if (showCluster) {
+          $person.sort(
+            (a, b) =>
+              d3.ascending(focus.includes(a.name), focus.includes(b.name)) ||
+              d3.ascending(
+                a.growth_delta < -2 || a.growth_delta > 0,
+                b.growth_delta < -2 || b.growth_delta > 0
+              )
+          );
+        }
+
         $person
           .select('.path--bg')
           .datum(d => d.values)

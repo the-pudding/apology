@@ -10,6 +10,7 @@ const other = [
   'Incorrect Statement',
   'Low-quality Product',
   'Inappropriate Animal Care',
+  'Plagiarism',
 ];
 
 function resize() {}

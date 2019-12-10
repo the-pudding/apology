@@ -42,7 +42,11 @@ function slide(value) {
     'post-setup',
   ].includes(value);
 
-  const ignoreBeauty = ['post-accelerating', 'post-declining'].includes(value);
+  const ignoreBeauty = [
+    'post-positive',
+    'post-negative',
+    'post-cluster',
+  ].includes(value);
 
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
@@ -52,22 +56,22 @@ function slide(value) {
   chartPost.beauty(!ignoreBeauty);
 
   if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
-  else if (value === 'post-accelerating') {
+  else if (value === 'post-positive') {
     chartPre
-      .cluster()
+      .cluster(true)
       .focus(['Gabriel Zamora'])
       .render();
     chartPost
-      .cluster()
+      .cluster(true)
       .focus(['Gabriel Zamora'])
       .render();
-  } else if (value === 'post-declining') {
+  } else if (value === 'post-negative') {
     chartPre
-      .cluster()
+      .cluster(true)
       .focus(['Laura Lee'])
       .render();
     chartPost
-      .cluster()
+      .cluster(true)
       .focus(['Laura Lee'])
       .render();
   } else if (value === 'post-cluster') {
