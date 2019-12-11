@@ -1,35 +1,35 @@
 "name","type","value","display","beauty"
-"Alfie Deyes","ratios","3.18",0.627177812901284,FALSE
-"Deji","ratios","1.42",0.538548274562875,FALSE
-"Keemstar","ratios","NA",NA,FALSE
-"Fine Bros","ratios","NA",NA,FALSE
-"Gabriel Zamora","ratios","34.23",0.888399641999904,TRUE
-"Grav3yardgirl","ratios","2.37",0.594858882290063,TRUE
-"H3H3","ratios","32.99",0.884343389037254,FALSE
-"Jaclyn Hill","ratios","0.92",0.49083372545905,TRUE
-"James Charles","ratios","4.00",0.652397571482265,TRUE
-"Jeffree Star","ratios","7.75",0.725106171692414,TRUE
-"Jenna Marbles","ratios","94.47",1,FALSE
-"Jon Tron","ratios","NA",NA,FALSE
-"KSI","ratios","15.52",0.801446713236955,FALSE
-"Laura Lee","ratios","NA",NA,TRUE
-"Leafy","ratios","1.10",0.510477601544872,FALSE
-"Logan Paul","ratios","0.73",0.465403341037757,FALSE
-"Louis Cole","ratios","6.10",0.698788096522119,FALSE
-"Maximilian Dood","ratios","NA",NA,FALSE
-"Olivia Jade","ratios","8.61",0.73667443720269,TRUE
-"Onision","ratios","2.41",0.596698784825138,FALSE
-"PewDiePie","ratios","12.49",0.777569436591008,FALSE
-"RiceGum","ratios","1.05",0.505363581314459,FALSE
-"Shay Carl","ratios","NA",NA,FALSE
-"Tana","ratios","0.29",0.363918478682678,FALSE
-"LaBrant Fam","ratios","15.86",0.803829008344091,FALSE
-"Zoella","ratios","9.52",0.747719324394313,TRUE
-"Jake Paul","ratios","2.32",0.592514835906076,FALSE
-"Social Repose","ratios","0.06",0.190717229441772,FALSE
-"Brad Sousa","ratios","0.32",0.374740154406121,FALSE
-"TmarTn","ratios","NA",NA,FALSE
-"Jake Dufner","ratios","4.02",0.652945859952064,FALSE
-"Manny Mua","ratios","NA",NA,TRUE
-"Yovana Mendoza","ratios","0.20",0.323071898591362,FALSE
-"Simply Kenna","ratios","1.44",0.540085804665351,FALSE
+"Alfie Deyes","ratios","76/24",0.627177812901284,FALSE
+"Deji","ratios","59/41",0.538548274562875,FALSE
+"Keemstar","ratios",NA,NA,FALSE
+"Fine Bros","ratios",NA,NA,FALSE
+"Gabriel Zamora","ratios","97/3",0.888399641999904,TRUE
+"Grav3yardgirl","ratios","70/30",0.594858882290063,TRUE
+"H3H3","ratios","97/3",0.884343389037254,FALSE
+"Jaclyn Hill","ratios","48/52",0.49083372545905,TRUE
+"James Charles","ratios","80/20",0.652397571482265,TRUE
+"Jeffree Star","ratios","89/11",0.725106171692414,TRUE
+"Jenna Marbles","ratios","99/1",1,FALSE
+"Jon Tron","ratios",NA,NA,FALSE
+"KSI","ratios","94/6",0.801446713236955,FALSE
+"Laura Lee","ratios",NA,NA,TRUE
+"Leafy","ratios","52/48",0.510477601544872,FALSE
+"Logan Paul","ratios","42/58",0.465403341037757,FALSE
+"Louis Cole","ratios","86/14",0.698788096522119,FALSE
+"Maximilian Dood","ratios",NA,NA,FALSE
+"Olivia Jade","ratios","90/10",0.73667443720269,TRUE
+"Onision","ratios","71/29",0.596698784825138,FALSE
+"PewDiePie","ratios","93/7",0.777569436591008,FALSE
+"RiceGum","ratios","51/49",0.505363581314459,FALSE
+"Shay Carl","ratios",NA,NA,FALSE
+"Tana","ratios","22/78",0.363918478682678,FALSE
+"LaBrant Fam","ratios","94/6",0.803829008344091,FALSE
+"Zoella","ratios","90/10",0.747719324394313,TRUE
+"Jake Paul","ratios","70/30",0.592514835906076,FALSE
+"Social Repose","ratios"," 6/94",0.190717229441772,FALSE
+"Brad Sousa","ratios","24/76",0.374740154406121,FALSE
+"TmarTn","ratios",NA,NA,FALSE
+"Jake Dufner","ratios","80/20",0.652945859952064,FALSE
+"Manny Mua","ratios",NA,NA,TRUE
+"Yovana Mendoza","ratios","17/83",0.323071898591362,FALSE
+"Simply Kenna","ratios","59/41",0.540085804665351,FALSE
