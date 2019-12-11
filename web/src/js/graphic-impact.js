@@ -10,6 +10,17 @@ const $graphic = $section.select('[data-js="impact__graphic"');
 const $zone = $graphic.select('[data-js="graphic__zone"');
 const $figurePre = $graphic.select('[data-js="figure--pre"');
 const $figurePost = $graphic.select('[data-js="figure--post"');
+const $select = $graphic.select('[data-js="graphic__select"');
+
+function handleSelectChange() {
+  const name = this.value;
+  if (name === 'Highlight') return false;
+
+  chartPre.highlight(name).render();
+  chartPost.highlight(name).render();
+
+  return false;
+}
 
 function updateChartDimensions() {
   const daysPre = chartPre.getDayCount();
@@ -35,6 +46,9 @@ function resize() {
 }
 
 function slide(value) {
+  // reset option
+  $select.selectAll('option').property('selected', d => d.name === 'Highlight');
+
   const isPre = [
     'pre-setup',
     'pre-result',
@@ -48,12 +62,15 @@ function slide(value) {
     'post-cluster',
   ].includes(value);
 
+  $select.classed('is-visible', !isPre);
   $figurePost.classed('is-visible', !isPre);
   $zone.classed('is-visible', !isPre);
   chartPre.shrink(value === 'post-result');
 
   chartPre.beauty(!ignoreBeauty);
   chartPost.beauty(!ignoreBeauty);
+  chartPre.highlight();
+  chartPost.highlight();
 
   if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
   else if (value === 'post-positive') {
@@ -102,6 +119,16 @@ function cleanData(data, pre) {
     value: +d.value,
     side,
   }));
+}
+
+function setupSelect(data) {
+  $select
+    .selectAll('option')
+    .data([{ name: 'Highlight' }].concat(data))
+    .join('option')
+    .text(d => d.name);
+
+  $select.on('change', handleSelectChange);
 }
 
 function setup([people, pre, post]) {
@@ -161,6 +188,8 @@ function setup([people, pre, post]) {
     .shrink(true)
     .resize()
     .render();
+
+  setupSelect(dataPeople);
 }
 
 function init() {

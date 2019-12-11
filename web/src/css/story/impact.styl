@@ -158,6 +158,21 @@
 			stroke-width 6px
 			stroke $red
 
+		&.is-focus-cluster.cluster--1 .path--bg
+			stroke-width 8px
+
+		&.is-focus-cluster.cluster--0 .path--bg
+			stroke-width 8px
+
+		&.is-focus-cluster.cluster--neg1 .path--bg
+			stroke-width 8px
+
+		&.is-focus-cluster.cluster--neg2 .path--bg
+			stroke-width 8px
+
+		&.is-focus-cluster.cluster--neg3 .path--bg
+			stroke-width 8px
+
 		// &.is-cluster.growth--A .path--fg
 		// stroke-width 2px
 		// stroke $p1
@@ -178,6 +193,14 @@
 		// stroke blue
 		text
 			display none
+
+		&.is-highlight, &.is-highlight.is-focus-cluster, &.is-highlight.is-cluster
+			.path--fg
+				stroke $secondary
+				stroke-width 6px
+
+			.path--bg
+				stroke-width 8px
 
 	.g-axis
 		.axis--y
@@ -204,3 +227,24 @@
 
 	text
 		font-size 12px
+
+	select
+		position absolute
+		top 0
+		right 28px
+		z-index set-index(middle)
+		font-weight bold
+		font-family $sans
+		pointer-events auto
+		set-type-size(small)
+		visibility hidden
+		transform translateY(-100%)
+
+		&.is-visible
+			visibility visible
+
+		option
+			font-weight bold
+			font-family $sans
+			pointer-events auto
+			set-type-size(small)
