@@ -1,12 +1,11 @@
 footer.pudding-footer
-	padding 3rem 1rem
-	border-top 4px solid $black
-	font-family $sans
 	margin-top 3rem
+	padding 3rem 1rem
 
 	.footer-recirc
-		max-width 65rem
 		margin 0 auto
+		max-width 65rem
+
 		&__articles
 			display flex
 			flex-wrap wrap
@@ -14,30 +13,33 @@ footer.pudding-footer
 
 		&__article
 			display block
+			margin-bottom 2rem
 			width 100%
 			border none
-			margin-bottom 2rem
+
 			+mq('bp-5')
-				width calc(25% - 1.5rem)
 				margin-right 1.5rem
+				width calc(25% - 1.5rem)
+
 				&:last-of-type
 					margin-right 0
 
 		.article__headline
 			font-family $sans-display
 			set-type-size(large, false)
-			line-height 1
-			font-weight 700
 			padding-left 0.5rem
+			font-weight 700
+			line-height 1
 			// padding-top 1rem
 
 	.footer-company
+		display flex
+		flex-direction column
 		margin 0 auto
 		margin-top 3rem
 		max-width 65rem
-		display flex
-		flex-direction column
 		font-family $sans-display
+
 		+mq('bp-5')
 			flex-direction row
 
@@ -45,23 +47,26 @@ footer.pudding-footer
 			order 1
 			margin 2rem 0 0 0
 			width 100%
+
 			+mq('bp-5')
-				width 22rem
 				margin 0 0 0 2rem
+				width 22rem
 
 		&__cta-list
 			display flex
-			flex-wrap wrap
 			flex-direction column
+			flex-wrap wrap
 			height 12rem
+
 			+mq('bp-5')
 				flex-direction column
 
 			li
 				display flex
-				width 50%
-				margin-bottom 1rem
 				align-items center
+				margin-bottom 1rem
+				width 50%
+
 				+mq('bp-5')
 					padding-left 1rem
 
@@ -70,32 +75,36 @@ footer.pudding-footer
 					border none
 
 				p
-					font-family $sans-display
 					margin 0
-					padding-left 0.5rem
 					padding-top 0.1rem
-					line-height 1
+					padding-left 0.5rem
 					color $gray
+					font-family $sans-display
+					line-height 1
+
 					+mq('bp-4')
 						set-type-size(large)
 
 				svg
+					vertical-align middle
 					fill $gray
 					stroke none
-					vertical-align middle
+
 					circle, polyline, line
 						fill none
 						stroke $gray
+
 				.feather-mail path, .feather-lock path, .feather-rss path
-						stroke $gray
-						fill none
+					stroke $gray
+					fill none
 
 		&__about
+			display flex
+			flex-direction column
 			order 0
 			width 100%
 			color $gray
-			display flex
-			flex-direction column
+
 			+mq('bp-5')
 				width calc(100% - 24rem)
 
@@ -103,6 +112,7 @@ footer.pudding-footer
 				margin 0
 				set-type-size(root, false)
 				line-height 1.4
+
 			svg
-				width 12rem
 				margin-bottom 0.5rem
+				width 12rem
