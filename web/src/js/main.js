@@ -96,6 +96,7 @@ function setupSwiper() {
       if (trigger === 'impact') Impact.slide(slide);
       if (trigger === 'images') Images.slide(slide);
       if (trigger === 'people') People.slide(slide);
+      if (trigger === 'beeswarm') Beeswarm.slide(slide);
     }
   });
 
