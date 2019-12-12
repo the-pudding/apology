@@ -18,7 +18,6 @@ const $nerdButton = $body.select('[data-js="nerd-mode__button"]');
 const $nerdSlide = $body.selectAll('[data-js="slide__nerd"]');
 const $arrowLeft = $body.select('[data-js="arrow--left"]');
 const $arrowRight = $body.select('[data-js="arrow--right"]');
-const $accidentButton = $body.select('[data-js="accident__button"]');
 const $progress = $body.select('[data-js="progress__inner"]');
 
 const SLIDE_COUNT = $slide.size();
@@ -32,12 +31,6 @@ function toggleNerd() {
     const v = $n.classed('is-visible');
     $n.classed('is-visible', !v);
   }
-}
-
-function toggleSmokey() {
-  const $s = d3.select('.smokey');
-  const v = $s.classed('is-visible');
-  $s.classed('is-visible', !v);
 }
 
 function getSlideTextHeight() {
@@ -147,10 +140,6 @@ function setupNerd() {
   $nerdButton.on('click', toggleNerd);
 }
 
-function setupSmokey() {
-  $accidentButton.on('click', toggleSmokey);
-}
-
 function init() {
   $body.style('height', window.innerHeight - 100);
   // add mobile class to body tag
@@ -170,7 +159,6 @@ function init() {
   setupSwiper();
   updateSwiper();
   setupNerd();
-  setupSmokey();
   // load footer stories
   footer.init();
 }
