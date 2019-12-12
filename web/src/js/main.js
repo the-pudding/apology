@@ -11,14 +11,15 @@ import Beeswarm from './graphic-beeswarm';
 
 const $body = d3.select('body');
 const $graphics = $body.select('.graphics');
-const $slide = d3.selectAll('[data-js="slide"]');
-const $slideText = d3.selectAll('[data-type="text"]');
-const $section = d3.selectAll('section');
-const $nerdButton = d3.select('[data-js="nerd-mode__button"]');
-const $nerdSlide = d3.selectAll('[data-js="slide__nerd"]');
-const $arrowLeft = d3.select('[data-js="arrow--left"]');
-const $arrowRight = d3.select('[data-js="arrow--right"]');
-const $accidentButton = d3.select('[data-js="accident__button"]');
+const $slide = $body.selectAll('[data-js="slide"]');
+const $slideText = $body.selectAll('[data-type="text"]');
+const $section = $body.selectAll('section');
+const $nerdButton = $body.select('[data-js="nerd-mode__button"]');
+const $nerdSlide = $body.selectAll('[data-js="slide__nerd"]');
+const $arrowLeft = $body.select('[data-js="arrow--left"]');
+const $arrowRight = $body.select('[data-js="arrow--right"]');
+const $accidentButton = $body.select('[data-js="accident__button"]');
+const $progress = $body.select('[data-js="progress__inner"]');
 
 const SLIDE_COUNT = $slide.size();
 
@@ -89,6 +90,7 @@ function setupSwiper() {
 
     $nerdButton.classed('is-visible', nerd);
     $section.classed('is-visible', false);
+    $progress.style('width', d3.format('%')(index / (SLIDE_COUNT - 1)));
 
     if (trigger) {
       d3.select(`[data-js="${trigger}"]`).classed('is-visible', true);
@@ -116,9 +118,9 @@ function setupSwiper() {
     if (key === 37) newIndex -= 1;
     else if (key === 39) newIndex += 1;
 
-    // TODO remove
-    if (key === 73) swiper.scroll(12);
-    if (key === 66) swiper.scroll(SLIDE_COUNT - 1);
+    // // TODO remove
+    // if (key === 73) swiper.scroll(12);
+    // if (key === 66) swiper.scroll(SLIDE_COUNT - 1);
 
     newIndex = Math.max(0, Math.min(newIndex, SLIDE_COUNT - 1));
     advance(newIndex);
