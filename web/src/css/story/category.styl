@@ -9,27 +9,29 @@
 	figure
 		display flex
 		flex-direction column
-		justify-content center
-		align-items flex-start
+		justify-content flex-end
+		align-items flex-end
 		margin 0 auto
-		padding 1rem
 		max-width 80rem
 
 		+mq('bp-6')
 			flex-direction row
 			align-items flex-end
+			padding 1rem 0
 
 	.controversy
 		position relative
 		display flex
-		flex-direction column
 		flex-wrap wrap
 		align-items flex-start
 		align-content flex-start
-		margin-bottom 1.5rem
-		padding 0 0.5em
-		max-height 6rem
+		margin-bottom 1em
+		padding-bottom 0.5em
 		width 100%
+
+		&:last-of-type
+			margin-bottom 0
+			padding-bottom 0
 
 		+mq('bp-6')
 			display block
@@ -37,8 +39,13 @@
 			flex-wrap nowrap
 			align-items flex-start
 			align-content flex-start
-			max-height 100%
+			margin-bottom 1.5rem
+			padding 0 0.5em
 			width 16.67%
+
+			&:last-of-type
+				margin-bottom 1.5rem
+				padding 0 0.5em
 
 	.person
 		position relative
@@ -67,10 +74,12 @@
 	p.person__name
 		margin 0
 		padding 0 0.5rem
-		border-bottom 2px solid $bg
 		transition color $fade
+		set-type-size(xx-small)
+		border 1px solid $bg
 
 		+mq('bp-6')
+			border-bottom 2px solid $bg
 			font-size 1.1vw
 
 		+mq('bp-8')
@@ -78,10 +87,14 @@
 
 	.is-label
 		position absolute
-		top 100%
-		left 0.5rem
+		top 0
 		width 100%
-		transform translateY(0.5em)
+		transform translateY(-125%)
+
+		+mq('bp-6')
+			top 100%
+			left 0.5rem
+			transform translateY(0.5em)
 
 		p
 			color $gray
@@ -108,10 +121,14 @@
 		color $bg
 		pointer-events none
 		set-type-size(small)
+		display none
 		padding 1rem
 		width 20rem
 		border 2px solid $bg
 		transform translate(0, 1.5rem)
+
+		+mq('bp-6')
+			display block
 
 		&.is-flip
 			right 100%

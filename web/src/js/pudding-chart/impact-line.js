@@ -71,11 +71,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
       init() {
         $svg = $chart.append('svg').attr('class', 'pudding-chart');
 
-        // setup viz group
-        $vis = $svg.append('g').attr('class', 'g-vis');
-
         // create axis
         $axis = $svg.append('g').attr('class', 'g-axis');
+        // setup viz group
+        $vis = $svg.append('g').attr('class', 'g-vis');
 
         $axis.append('g').attr('class', 'axis--y axis--y--bg');
         $axis.append('g').attr('class', 'axis--y axis--y--fg');

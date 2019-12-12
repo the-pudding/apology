@@ -12,10 +12,13 @@
 		left 50%
 		max-width 20rem
 		width 33%
-		border 0.5rem solid $fg
+		border 0.25rem solid $fg
 		transition all 250ms ease-in-out
 		transform translate(-50%, -50%)
 		transform-origin center center
+
+		+mq('bp-6')
+			border 0.5rem solid $fg
 
 		&.is-visible
 			top 50%
