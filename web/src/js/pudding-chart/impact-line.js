@@ -15,6 +15,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let $svg = null;
     let $axis = null;
     let $vis = null;
+    let $label = null;
 
     // data
     const { extentY, label, comp } = options;
@@ -76,28 +77,30 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         // setup viz group
         $vis = $svg.append('g').attr('class', 'g-vis');
 
+        $label = $svg.append('g').attr('class', 'g-label');
+
         $axis.append('g').attr('class', 'axis--y axis--y--bg');
         $axis.append('g').attr('class', 'axis--y axis--y--fg');
 
-        $axis
+        $label
           .append('text')
           .attr('class', 'text-comp text-comp--bg')
           .text(comp)
-          .attr('x', LABEL_SIZE / 2)
+          .attr('x', -LABEL_SIZE / 2)
           .attr('y', -LABEL_SIZE / 2)
           .attr('text-anchor', 'end')
           .style('font-size', LABEL_SIZE);
 
-        $axis
+        $label
           .append('text')
           .attr('class', 'text-comp text-comp--fg')
           .text(comp)
-          .attr('x', LABEL_SIZE / 2)
+          .attr('x', -LABEL_SIZE / 2)
           .attr('y', -LABEL_SIZE / 2)
           .attr('text-anchor', 'end')
           .style('font-size', LABEL_SIZE);
 
-        $axis
+        $label
           .append('text')
           .attr('class', 'text-label')
           .text(label)
@@ -173,15 +176,20 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .duration(DUR)
           .ease(EASE)
           .attr('transform', `translate(${marginLeft}, ${marginTop})`);
+        $label
+          .transition()
+          .duration(DUR)
+          .ease(EASE)
+          .attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
-        $axis
+        $label
           .selectAll('.text-comp')
           .transition()
           .duration(DUR)
           .ease(EASE)
           .attr('transform', `translate(${width}, ${scaleY(1)})`);
 
-        $axis
+        $label
           .select('.text-label')
           .transition()
           .duration(DUR)
@@ -246,7 +254,6 @@ d3.selection.prototype.puddingChartLine = function init(options) {
           .ease(EASE)
           .attr('d', generateLine);
 
-        // $axis.selectAll('.tick text').style('opacity', endLabel ? 0 : 1);
         return Chart;
       },
       // get / set data
