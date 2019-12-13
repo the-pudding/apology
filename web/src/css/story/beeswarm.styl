@@ -2,12 +2,22 @@
 	padding 1rem
 
 	.beeswarm__graphic
+		display flex
+		align-content flex-end
 		margin 0 auto
 		max-width 80rem
 		width 90%
 
+		+mq('bp-3')
+			flex-direction row
+			flex-wrap wrap
+
 	.graphic__chart
 		position relative
+		width 33.33%
+
+		+mq('bp-3')
+			width 100%
 
 	.graphic__title
 		position absolute

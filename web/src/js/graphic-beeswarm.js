@@ -1,12 +1,17 @@
 import loadData from './load-data';
 import './pudding-chart/beeswarm';
 
+const $body = d3.select('body');
 const $section = d3.select('[data-js="beeswarm"]');
 const $graphic = $section.select('[data-js="beeswarm__graphic"]');
 const $figure = $graphic.selectAll('[data-js="graphic__figure"]');
 const $chart = $graphic.selectAll('[data-js="graphic__chart"]');
 
+const BP = 480;
+
 const charts = [];
+
+let mobile = false;
 
 function slide(value) {
   const focusSlides = [
@@ -31,11 +36,12 @@ function slide(value) {
 }
 
 function resize() {
+  mobile = $body.node().offsetWidth < BP;
   const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
   const sz = Math.floor(($section.node().offsetHeight - h) / $chart.size());
   $chart.style('height', `${sz}px`);
   charts.forEach(chart => {
-    chart.resize().render();
+    chart.resize(mobile).render();
   });
 }
 
@@ -61,7 +67,7 @@ function setupGraphics() {
       chart
         .getBees()
         .nodes()
-        .map(setupHover);
+        .forEach(setupHover);
       charts.push(chart);
     });
 }

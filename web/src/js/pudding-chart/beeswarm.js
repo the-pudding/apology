@@ -52,7 +52,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         $axis.append('line').attr('class', 'axis');
       },
       // on resize, update new dimensions
-      resize() {
+      resize(mobile) {
         // defaults to grabbing dimensions from container element
         width = $sel.node().offsetWidth - marginLeft - marginRight;
         height = $sel.node().offsetHeight - marginTop - marginBottom;
