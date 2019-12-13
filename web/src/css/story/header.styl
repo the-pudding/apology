@@ -3,7 +3,11 @@ header
 	top 1rem
 	left 1rem
 	z-index set-index('overlay')
+	display none
 	width 2rem
+
+	+mq('bp-6')
+		display block
 
 	svg
 		width 100%

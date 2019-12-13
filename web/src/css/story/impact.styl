@@ -94,113 +94,164 @@
 
 		.path--bg
 			stroke $bg
-			stroke-width 6px
+			stroke-width 3px
 			stroke-opacity 0.75
+
+			+mq('bp-6')
+				stroke-width 4px
 
 		.path--fg
 			stroke $gray-light
-			stroke-width 2px
+			stroke-width 1px
 			stroke-opacity 1
+
+			+mq('bp-6')
+				stroke-width 2px
+
+		&.is-focus .path--bg
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-focus .path--fg
 			stroke $secondary
 			stroke-opacity 1
-			stroke-width 6px
+			stroke-width 3px
+
+			+mq('bp-6')
+				stroke-width 4px
 
 		&.is-beauty .path--bg
-			stroke-width 8px
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-beauty .path--fg
 			stroke $primary
 			stroke-opacity 1
-			stroke-width 6px
+			stroke-width 3px
 
-		&.is-beauty .path--bg
-			stroke-width 8px
+			+mq('bp-6')
+				stroke-width 4px
 
 		&.is-cluster.cluster--1 .path--fg
-			stroke-width 2px
+			stroke-width 1px
 			stroke $teal
+
+			+mq('bp-6')
+				stroke-width 2px
 
 		&.is-cluster.cluster--0 .path--fg
-			stroke-width 2px
+			stroke-width 1px
 			stroke $gray-light
+
+			+mq('bp-6')
+				stroke-width 2px
 
 		&.is-cluster.cluster--neg1 .path--fg
-			stroke-width 2px
+			stroke-width 1px
 			stroke $gray-light
+
+			+mq('bp-6')
+				stroke-width 2px
 
 		&.is-cluster.cluster--neg2 .path--fg
-			stroke-width 2px
+			stroke-width 1px
 			stroke $red
+
+			+mq('bp-6')
+				stroke-width 2px
 
 		&.is-cluster.cluster--neg3 .path--fg
-			stroke-width 2px
+			stroke-width 1px
 			stroke $red
+
+			+mq('bp-6')
+				stroke-width 2px
 
 		&.is-focus-cluster.cluster--1 .path--fg
-			stroke-width 6px
+			stroke-width 3px
 			stroke $teal
 
+			+mq('bp-6')
+				stroke-width 4px
+
 		&.is-focus-cluster.cluster--0 .path--fg
-			stroke-width 6px
+			stroke-width 3px
 			stroke $gray-light
+
+			+mq('bp-6')
+				stroke-width 4px
 
 		&.is-focus-cluster.cluster--neg1 .path--fg
-			stroke-width 6px
+			stroke-width 3px
 			stroke $gray-light
 
+			+mq('bp-6')
+				stroke-width 4px
+
 		&.is-focus-cluster.cluster--neg2 .path--fg
-			stroke-width 6px
+			stroke-width 3px
 			stroke $red
+
+			+mq('bp-6')
+				stroke-width 4px
 
 		&.is-focus-cluster.cluster--neg3 .path--fg
-			stroke-width 6px
+			stroke-width 3px
 			stroke $red
 
+			+mq('bp-6')
+				stroke-width 4px
+
 		&.is-focus-cluster.cluster--1 .path--bg
-			stroke-width 8px
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-focus-cluster.cluster--0 .path--bg
-			stroke-width 8px
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-focus-cluster.cluster--neg1 .path--bg
-			stroke-width 8px
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-focus-cluster.cluster--neg2 .path--bg
-			stroke-width 8px
+			stroke-width 5px
+
+			+mq('bp-6')
+				stroke-width 6px
 
 		&.is-focus-cluster.cluster--neg3 .path--bg
-			stroke-width 8px
+			stroke-width 5px
 
-		// &.is-cluster.growth--A .path--fg
-		// stroke-width 2px
-		// stroke $p1
-		// stroke red
+			+mq('bp-6')
+				stroke-width 6px
 
-		// &.is-cluster.growth--B .path--fg
-		// stroke-width 2px
-		// stroke $p2
-		// stroke green
-
-		// &.is-cluster.growth--C .path--fg
-		// stroke-width 2px
-		// stroke $p3
-		// stroke orange
-
-		// &.is-cluster.growth--D .path--fg
-		// stroke-width 2px
-		// stroke blue
 		text
 			display none
 
 		&.is-highlight, &.is-highlight.is-focus-cluster, &.is-highlight.is-cluster
 			.path--fg
 				stroke $secondary
-				stroke-width 6px
+				stroke-width 3px
+
+				+mq('bp-6')
+					stroke-width 4px
 
 			.path--bg
-				stroke-width 8px
+				stroke-width 5px
+
+				+mq('bp-6')
+					stroke-width 6px
 
 	.g-axis
 		.axis--y
@@ -220,6 +271,7 @@
 				stroke $fg
 				stroke-dasharray 4px 4px
 
+	.g-label
 		.text-comp--bg
 			fill none
 			stroke-width 2px
