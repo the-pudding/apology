@@ -1,35 +1,35 @@
 "name","type","value","display","beauty"
-"Alfie Deyes","cuts",2.92,0.313068814712826,FALSE
-"Deji","cuts",4.01,0.269345498169237,FALSE
-"Keemstar","cuts",2.92,0.313068814712826,FALSE
-"Fine Bros","cuts",0.32,0.617831461860216,FALSE
-"Gabriel Zamora","cuts",0.02,1,TRUE
-"Grav3yardgirl","cuts",0.5,0.556316067155601,TRUE
-"H3H3","cuts",5.34,0.229863904849416,FALSE
-"Jaclyn Hill","cuts",3.49,0.288489772508538,TRUE
-"James Charles","cuts",2.02,0.363860262752806,TRUE
-"Jeffree Star","cuts",3.1,0.304823543178285,TRUE
-"Jenna Marbles","cuts",2.08,0.359825687006068,FALSE
-"Jon Tron","cuts",4.27,0.260686148287515,FALSE
-"KSI","cuts",7.76,0.178345970242947,FALSE
-"Laura Lee","cuts",3.38,0.292904181221812,TRUE
+"Alfie Deyes","cuts",2.8,0.604950112836583,FALSE
+"Deji","cuts",3.82,0.534366282620382,FALSE
+"Keemstar","cuts",2.9,0.597241151109014,FALSE
+"Fine Bros","cuts",0,1,FALSE
+"Gabriel Zamora","cuts",0,1,TRUE
+"Grav3yardgirl","cuts",0.46,0.888326164151367,TRUE
+"H3H3","cuts",4.93,0.47281444556498,FALSE
+"Jaclyn Hill","cuts",3.42,0.560088490518495,TRUE
+"James Charles","cuts",2,0.675079237721983,TRUE
+"Jeffree Star","cuts",3.03,0.58750911222392,TRUE
+"Jenna Marbles","cuts",2.05,0.670177161788738,FALSE
+"Jon Tron","cuts",4.04,0.521112909393844,FALSE
+"KSI","cuts",7.75,0.357220486742075,FALSE
+"Laura Lee","cuts",3.16,0.578085326696796,TRUE
 "Leafy","cuts",NA,NA,FALSE
-"Logan Paul","cuts",0.58,0.535858126195311,FALSE
-"Louis Cole","cuts",2.76,0.320836400005546,FALSE
-"Maximilian Dood","cuts",0.21,0.67589075240763,FALSE
-"Olivia Jade","cuts",0.31,0.62220764413543,TRUE
-"Onision","cuts",0.19,0.68968607255082,FALSE
-"PewDiePie","cuts",5.03,0.238107408423364,FALSE
-"RiceGum","cuts",28.3,0,FALSE
-"Shay Carl","cuts",0.11,0.765020653412655,FALSE
-"Tana","cuts",7.77,0.178168458095182,FALSE
-"LaBrant Fam","cuts",1.06,0.452742253324654,FALSE
-"Zoella","cuts",3.52,0.287309980737925,TRUE
+"Logan Paul","cuts",0,1,FALSE
+"Louis Cole","cuts",2.55,0.625144379014223,FALSE
+"Maximilian Dood","cuts",0,1,FALSE
+"Olivia Jade","cuts",0,1,TRUE
+"Onision","cuts",0.09,0.974601238480224,FALSE
+"PewDiePie","cuts",4.4,0.500623413245522,FALSE
+"RiceGum","cuts",28.09,0,FALSE
+"Shay Carl","cuts",0,1,FALSE
+"Tana","cuts",7.72,0.358241239987063,FALSE
+"LaBrant Fam","cuts",1,0.795231230503051,FALSE
+"Zoella","cuts",3.52,0.553446489750062,TRUE
 "Jake Paul","cuts",NA,NA,FALSE
-"Social Repose","cuts",0.09,0.792680733581456,FALSE
-"Brad Sousa","cuts",5.11,0.235932402132148,FALSE
-"TmarTn","cuts",2.43,0.33838863215122,FALSE
-"Jake Dufner","cuts",0.35,0.605479486462176,FALSE
-"Manny Mua","cuts",0.55,0.543178686990456,TRUE
-"Yovana Mendoza","cuts",1.87,0.374495728727323,FALSE
-"Simply Kenna","cuts",2.24,0.349610780209645,FALSE
+"Social Repose","cuts",0,1,FALSE
+"Brad Sousa","cuts",4.93,0.47281444556498,FALSE
+"TmarTn","cuts",2.02,0.673108705492867,FALSE
+"Jake Dufner","cuts",0.3,0.922614333756147,FALSE
+"Manny Mua","cuts",0.51,0.878373755482079,TRUE
+"Yovana Mendoza","cuts",1.84,0.69133170203291,FALSE
+"Simply Kenna","cuts",2.19,0.656866028826193,FALSE
