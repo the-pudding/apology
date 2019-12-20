@@ -47,12 +47,17 @@ function adjustSummary() {
       const off = pbox.left + MOBILE_W - pageW;
       left = `${off > 16 ? -off : 0}px`;
     }
+    $s.style('top', top);
+    $s.style('bottom', bottom);
+    $s.style('left', left);
+    $s.style('right', right);
+  } else {
+    const sNode = $s.node();
+    sNode.removeAttribute('top');
+    sNode.removeAttribute('bottom');
+    sNode.removeAttribute('left');
+    sNode.removeAttribute('right');
   }
-
-  $s.style('top', top);
-  $s.style('bottom', bottom);
-  $s.style('left', left);
-  $s.style('right', right);
 }
 
 function resize() {
