@@ -147,18 +147,20 @@ section
 
 	.slide__text
 		display flex
-		align-items center
+		// align-items center
 
 	p
 		set-type-size(root, true)
 		margin 0 auto
 		padding 1rem
+		padding-right 3rem
 		max-width 60rem
 		text-align left
 		line-height 1.4
 
 		+mq('bp-4')
 			set-type-size(x-large, true)
+			padding-right 0
 
 	&.is-center p
 		text-align center

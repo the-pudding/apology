@@ -5,6 +5,8 @@ const $section = d3.select('[data-js="category"');
 const $graphic = $section.select('[data-js="category__graphic"');
 const $figure = $graphic.select('[data-js="graphic__figure"');
 
+const BP = 960;
+
 const other = [
   'Copywriting',
   'Incorrect Statement',
@@ -13,7 +15,15 @@ const other = [
   'Plagiarism',
 ];
 
-function resize() {}
+function adjustSummary() {
+  const $s = d3.select(this);
+  const { x, width } = $s.node().getBoundingClientRect();
+  // TODO adjust position here
+}
+
+function resize() {
+  $figure.selectAll('.person').each(adjustSummary);
+}
 
 function setup(people) {
   const data = people
@@ -62,6 +72,8 @@ function setup(people) {
       ['Miscellaneous', 'Exploiting Audience'].includes(d.cat)
     )
     .text(d => d.controversy_summary);
+
+  resize();
 }
 
 function slide(value) {
