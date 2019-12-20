@@ -145,12 +145,9 @@ section
 			border-color $bg
 			color $bg
 
-	.slide__text
-		display flex
-		// align-items center
-
+	// .slide__text
 	p
-		set-type-size(root, true)
+		set-type-size(small, true)
 		margin 0 auto
 		padding 1rem
 		padding-right 3rem
@@ -191,7 +188,6 @@ section
 			padding 1rem
 			max-width 60rem
 
-			// text-align center
 			+mq('bp-4')
 				set-type-size(xx-large, true)
 
@@ -238,7 +234,10 @@ svg text
 	position absolute
 	top 0
 	right 0
-	padding 1rem
+	padding 0.5rem
+
+	+mq('bp-4')
+		padding 1rem
 
 	button
 		padding 0.35em

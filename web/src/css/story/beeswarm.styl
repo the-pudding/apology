@@ -1,5 +1,8 @@
 #beeswarm
-	padding 1rem
+	padding 0 0.5rem
+
+	+mq('bp-3')
+		padding 1rem
 
 	.beeswarm__graphic
 		display flex
@@ -7,6 +10,10 @@
 		margin 0 auto
 		max-width 80rem
 		width 100%
+		pointer-events none
+
+		&.is-interactive
+			pointer-events auto
 
 		+mq('bp-3')
 			flex-direction row
@@ -21,14 +28,15 @@
 			width 100%
 
 	.graphic__title
-		position absolute
-		top -30px
+		height 2.5rem
 		transform translateY(-100%)
 
 		+mq('bp-3')
+			position absolute
 			top 0
 			left 0
 			margin 0
+			height auto
 			set-type-size(root)
 			width 100%
 			text-align center
@@ -44,8 +52,9 @@
 		justify-content space-between
 		margin 0
 		height 100%
-		transform translateX(-50%)
 
+		// transform rotate(-90deg) translateX(-50%)
+		// transform-origin 50 0
 		+mq('bp-3')
 			left 0
 			flex-direction row

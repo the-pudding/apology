@@ -8,6 +8,7 @@ const $figure = $graphic.selectAll('[data-js="graphic__figure"]');
 const $chart = $graphic.selectAll('[data-js="graphic__chart"]');
 
 const BP = 480;
+const TITLE_H = 2.5 * 16;
 
 const charts = [];
 
@@ -37,10 +38,10 @@ function slide(value) {
 
 function resize() {
   mobile = $body.node().offsetWidth < BP;
-  const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
+  // const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
   const sz = mobile
-    ? Math.floor($section.node().offsetHeight - h)
-    : Math.floor(($section.node().offsetHeight - h) / $chart.size());
+    ? $section.node().offsetHeight - TITLE_H
+    : Math.floor($section.node().offsetHeight / $chart.size());
   $chart.style('height', `${sz}px`);
   charts.forEach(chart => {
     chart.resize(mobile).render();
@@ -139,6 +140,7 @@ function highlightEl(elem) {
 function init() {
   $figure.each(setupGraphics);
   resize();
+  $graphic.classed('is-interactive', !$body.classed('is-mobile'));
 }
 
 export default { init, resize, slide };

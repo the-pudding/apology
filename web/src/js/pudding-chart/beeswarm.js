@@ -38,8 +38,8 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
     const Chart = {
       // called once at start
       init() {
-        $svg = $sel.append("svg").attr("class", "pudding-chart");
-        $bees = $sel.append("div").attr("class", "bees");
+        $svg = $sel.append('svg').attr('class', 'pudding-chart');
+        $bees = $sel.append('div').attr('class', 'bees');
 
         // const $g = $svg.append("g");
         // offset chart for margins
@@ -48,37 +48,39 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
         // $vis = $g.append("g").attr("class", "g-vis");
 
         // create axis
-        $axis = $svg.append("g").attr("class", "g-axis");
-        $axis.append("line").attr("class", "axis");
+        $axis = $svg.append('g').attr('class', 'g-axis');
+        $axis.append('line').attr('class', 'axis');
       },
       // on resize, update new dimensions
       resize(mobile) {
         // defaults to grabbing dimensions from container element
-        width = $sel.node().parentElement.offsetWidth - marginLeft - marginRight;
-        height = $sel.node().parentElement.offsetHeight - marginTop - marginBottom;
+        width =
+          $sel.node().parentElement.offsetWidth - marginLeft - marginRight;
+        height =
+          $sel.node().parentElement.offsetHeight - marginTop - marginBottom;
 
         radius = mobile ? 0.4 * width : 0.25 * height;
 
-        $sel.style("height", `${height}px`);
+        $sel.style('height', `${height}px`);
 
         $svg
-          .attr("width", width + marginLeft + marginRight)
-          .attr("height", height + marginTop + marginBottom);
+          .attr('width', width + marginLeft + marginRight)
+          .attr('height', height + marginTop + marginBottom);
 
         $axis
-          .select(".axis")
+          .select('.axis')
           .transition()
-          .attr("y1", mobile ? marginTop : height / 2)
-          .attr("y2", mobile ? marginTop + height : height / 2)
-          .attr("x1", mobile ? width/2 : marginLeft)
-          .attr("x2", mobile ? width/2 : marginLeft + width);
+          .attr('y1', mobile ? marginTop : height / 2)
+          .attr('y2', mobile ? marginTop + height : height / 2)
+          .attr('x1', mobile ? width / 2 : marginLeft)
+          .attr('x2', mobile ? width / 2 : marginLeft + width);
 
         scaleX.range([marginLeft, width + marginLeft]);
         scaleY.range([height + marginTop, marginTop]);
 
         sim
           .force(
-            "y-pos",
+            'y-pos',
             mobile
               ? d3
                   .forceY(node => scaleY(node.display))
@@ -86,7 +88,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
               : d3.forceY(height / 2).strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
-            "x-pos",
+            'x-pos',
             mobile
               ? d3.forceX(width / 2).strength(node => (node.beauty ? 1 : 0.5))
               : d3
@@ -94,8 +96,8 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
                   .strength(node => (node.beauty ? 1 : 0.5))
           )
           .force(
-            "collide",
-            d3.forceCollide(node => (node.beauty ? radius / 2 : radius / 8))
+            'collide',
+            d3.forceCollide(node => (node.beauty ? radius / 1.95 : radius / 8))
           );
 
         return Chart;
@@ -103,29 +105,29 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
       // update scales and render chart
       render() {
         $bee = $bees
-          .selectAll(".bee")
+          .selectAll('.bee')
           .data(data, d => d.name)
-          .join("div")
-          .attr("class", d => `bee ${d.beauty ? "is-beauty" : ""}`)
-          .attr("data-js", d => `bee--${d.name.replace(/\s/g, "")}`)
-          .style("background-image", d =>
+          .join('div')
+          .attr('class', d => `bee ${d.beauty ? 'is-beauty' : ''}`)
+          .attr('data-js', d => `bee--${d.name.replace(/\s/g, '')}`)
+          .style('background-image', d =>
             d.beauty
               ? `url("assets/images/people/${d.name.replace(
                   /\s/g,
-                  ""
+                  ''
                 )}@2x.jpg")`
-              : ""
+              : ''
           )
-          .style("width", d => `${d.beauty ? radius : radius / 4}px`)
-          .style("height", d => `${d.beauty ? radius : radius / 4}px`)
-          .style("background-size", `${1.15 * radius}px`)
-          .style("top", d => (d.beauty ? height / 2 : 0))
-          .style("left", d => (d.beauty ? scaleX(d.display) : 0));
+          .style('width', d => `${d.beauty ? radius : radius / 4}px`)
+          .style('height', d => `${d.beauty ? radius : radius / 4}px`)
+          .style('background-size', `${1.15 * radius}px`)
+          .style('top', d => (d.beauty ? height / 2 : 0))
+          .style('left', d => (d.beauty ? scaleX(d.display) : 0));
 
         sim
           .alpha(0.4)
-          .on("tick", () => {
-            $bee.style("left", d => `${d.x}px`).style("top", d => `${d.y}px`);
+          .on('tick', () => {
+            $bee.style('left', d => `${d.x}px`).style('top', d => `${d.y}px`);
           })
           .restart();
 
@@ -133,7 +135,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
       },
       getBees() {
         return $bee;
-      }
+      },
     };
     Chart.init();
 
