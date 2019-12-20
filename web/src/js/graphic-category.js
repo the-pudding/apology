@@ -6,6 +6,10 @@ const $graphic = $section.select('[data-js="category__graphic"');
 const $figure = $graphic.select('[data-js="graphic__figure"');
 
 const BP = 960;
+const MOBILE_W = 240;
+let mobile = false;
+let pageH = 0;
+let pageW = 0;
 
 const other = [
   'Copywriting',
@@ -16,12 +20,45 @@ const other = [
 ];
 
 function adjustSummary() {
-  const $s = d3.select(this);
-  const { x, width } = $s.node().getBoundingClientRect();
-  // TODO adjust position here
+  const $p = d3.select(this);
+  const $s = $p.select('.person__summary');
+  let top = 'auto';
+  let bottom = 'auto';
+  let left = 'auto';
+  let right = 'auto';
+
+  if (mobile) {
+    const pbox = $p.node().getBoundingClientRect();
+    const sbox = $s.node().getBoundingClientRect();
+    // top / height
+    const y2 = sbox.height + sbox.top;
+    if (y2 > pageH) bottom = '100%';
+    else top = '100%';
+
+    const center = pbox.left + pbox.width / 2;
+    if (center > pageW / 2) {
+      // name is on right half
+      left = 'auto';
+      const off = pbox.right - MOBILE_W;
+      right = `${off < 16 ? off : 0}px`;
+    } else {
+      // name is on left half
+      right = 'auto';
+      const off = pbox.left + MOBILE_W - pageW;
+      left = `${off > 16 ? -off : 0}px`;
+    }
+  }
+
+  $s.style('top', top);
+  $s.style('bottom', bottom);
+  $s.style('left', left);
+  $s.style('right', right);
 }
 
 function resize() {
+  pageH = window.innerHeight;
+  pageW = $section.node().offsetWidth;
+  mobile = pageW < BP;
   $figure.selectAll('.person').each(adjustSummary);
 }
 
