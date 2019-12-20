@@ -37,9 +37,13 @@
 
 	&__start
 		position relative
+		display none
 		margin 1rem auto
 		margin-top 3rem
 		text-align center
+
+		&.is-visible
+			display block
 
 		svg
 			display block
@@ -93,10 +97,10 @@
 	0%
 		transform translateX(0%)
 
-	25%
+	30%
 		transform translateX(-50%)
 
-	50%
+	45%
 		transform translateX(0%)
 
 	100%

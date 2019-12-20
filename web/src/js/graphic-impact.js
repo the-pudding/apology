@@ -14,12 +14,10 @@ const $select = $graphic.select('[data-js="graphic__select"');
 
 function handleSelectChange() {
   const name = this.value;
-  if (name === 'Highlight') return false;
+  if (name === 'Highlight') chartPre.highlight().render();
 
   chartPre.highlight(name).render();
   chartPost.highlight(name).render();
-
-  return false;
 }
 
 function updateChartDimensions() {

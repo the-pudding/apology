@@ -16,6 +16,8 @@ const $slideText = $body.selectAll('[data-type="text"]');
 const $section = $body.selectAll('section');
 const $nerdButton = $body.select('[data-js="nerd-mode__button"]');
 const $nerdSlide = $body.selectAll('[data-js="slide__nerd"]');
+const $arrows = $body.select('[data-js="arrows"]');
+const $introStart = $body.select('[data-js="intro__start"]');
 const $arrowLeft = $body.select('[data-js="arrow--left"]');
 const $arrowRight = $body.select('[data-js="arrow--right"]');
 const $progress = $body.select('[data-js="progress__inner"]');
@@ -144,6 +146,8 @@ function init() {
   $body.style('height', window.innerHeight - 100);
   // add mobile class to body tag
   $body.classed('is-mobile', isMobile.any());
+  $arrows.classed('is-visible', true);
+  $introStart.classed('is-visible', true);
   // setup resize event
   window.addEventListener('resize', debounce(resize, 150));
 
