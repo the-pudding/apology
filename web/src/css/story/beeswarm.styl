@@ -1,50 +1,63 @@
 #beeswarm
-	padding 1rem
+	padding 0 0.5rem 1rem 0.5rem
+
+	+mq('bp-3')
+		padding 1rem
 
 	.beeswarm__graphic
 		display flex
 		align-content flex-end
 		margin 0 auto
 		max-width 80rem
-		width 90%
+		width 100%
+		pointer-events none
+
+		&.is-interactive
+			pointer-events auto
 
 		+mq('bp-3')
 			flex-direction row
 			flex-wrap wrap
+			width 90%
 
 	.graphic__chart
 		position relative
 		width 33.33%
+		transform translateY(-1.25rem)
 
 		+mq('bp-3')
 			width 100%
+			transform translateY(0)
 
 	.graphic__title
-		position absolute
-		top -30px
-		transform translateY(-100%)
+		height 2.5rem
+		transform translateY(-50%)
 
 		+mq('bp-3')
+			position absolute
 			top 0
 			left 0
 			margin 0
+			height auto
 			set-type-size(root)
 			width 100%
+			text-align center
 			line-height 1
 			transform translateY(0)
-			text-align center
 
 	.graphic__label
 		position absolute
 		top 0
 		left 50%
+		display flex
+		flex-direction column-reverse
+		justify-content space-between
 		margin 0
 		height 100%
-		display flex
-		justify-content space-between
-		flex-direction column-reverse
-		transform translateX(-50%)
+		transform translate(-50%, 1.25rem)
 
+		// transform rotate(-90deg) translateX(-50%)
+		// transform-origin 50 0
 		+mq('bp-3')
 			left 0
 			flex-direction row
@@ -54,11 +67,15 @@
 		p
 			padding 0
 			color $gray
-			set-type-size(x-small)
+			set-type-size(xx-small)
 			margin 0
+			text-align center
 			text-transform uppercase
 			line-height 1
-			text-align center
+			pointer-evenst none
+
+			+mq('bp-3')
+				set-type-size(x-small)
 
 	figure
 		position relative
@@ -92,6 +109,7 @@
 
 	.beeswarm__hovertext
 		position fixed
+		z-index 10
 		padding 0.5rem
 		border 2px solid $bg
 		border-radius 2%
@@ -101,11 +119,10 @@
 		opacity 0
 		transform translate(0, -120%)
 		pointer-events none
-		z-index 10
 		set-type-size(x-small, false)
 
 		+mq('bp-3')
-				set-type-size(root, false)
+			set-type-size(root, false)
 
 		&.is-beauty
 			background-color $primary
@@ -117,4 +134,4 @@
 		text-transform uppercase
 
 		+mq('bp-3')
-				set-type-size(x-small, false)
+			set-type-size(x-small, false)

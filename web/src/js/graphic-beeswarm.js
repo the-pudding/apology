@@ -8,6 +8,7 @@ const $figure = $graphic.selectAll('[data-js="graphic__figure"]');
 const $chart = $graphic.selectAll('[data-js="graphic__chart"]');
 
 const BP = 480;
+const TITLE_H = 2.5 * 16;
 
 const charts = [];
 
@@ -22,11 +23,9 @@ function slide(value) {
     'LauraLee',
   ];
 
-  d3.select('.swiper').style('pointer-events', 'none');
   mouseOutHandler();
 
   if (focusSlides.includes(value)) {
-    d3.select('.swiper').style('pointer-events', 'auto');
     const $els = d3.selectAll(`[data-js="bee--${value}"`);
     highlightEl($els.node());
     $els.each(function(d) {
@@ -37,10 +36,10 @@ function slide(value) {
 
 function resize() {
   mobile = $body.node().offsetWidth < BP;
-  const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
+  // const h = d3.select('[data-type="text"] .slide__text').node().offsetHeight;
   const sz = mobile
-    ? Math.floor($section.node().offsetHeight - h)
-    : Math.floor(($section.node().offsetHeight - h) / $chart.size());
+    ? $section.node().offsetHeight - TITLE_H
+    : Math.floor($section.node().offsetHeight / $chart.size());
   $chart.style('height', `${sz}px`);
   charts.forEach(chart => {
     chart.resize(mobile).render();
@@ -101,9 +100,8 @@ function mouseOutHandler() {
 function hoverText(elem, data) {
   const $fig = elem.parentElement.parentElement;
   const dims = elem.getBoundingClientRect();
-  const $hoverBox = d3.select(
-    `[data-id=beeswarm__hovertext_${$fig.getAttribute('data-id')}`
-  );
+  const id = $fig.getAttribute('data-id');
+  const $hoverBox = d3.select(`[data-id="beeswarm__hovertext_${id}"]`);
   $hoverBox.select('[data-js="beeswarm__hovertext__title"]').html(data.name);
   $hoverBox.select('[data-js="beeswarm__hovertext__content"]').html(data.value);
   const xoff =
@@ -139,6 +137,7 @@ function highlightEl(elem) {
 function init() {
   $figure.each(setupGraphics);
   resize();
+  $graphic.classed('is-interactive', !$body.classed('is-mobile'));
 }
 
 export default { init, resize, slide };

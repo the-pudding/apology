@@ -25,7 +25,7 @@
 		flex-wrap wrap
 		align-items flex-start
 		align-content flex-start
-		margin-bottom 1em
+		margin-bottom 1.25em
 		padding-bottom 0.5em
 		width 100%
 
@@ -78,6 +78,9 @@
 		set-type-size(xx-small)
 		border 1px solid $bg
 
+		+mq('bp-4')
+			set-type-size(x-small)
+
 		+mq('bp-6')
 			padding 0 0.5rem
 			border-bottom 2px solid $bg
@@ -89,12 +92,16 @@
 	.is-label
 		position absolute
 		top 0
+		padding-top 0.25em
 		width 100%
-		transform translateY(-125%)
+		border-top 2px solid $off-white
+		transform translateY(-110%)
 
 		+mq('bp-6')
 			top 100%
 			left 0.5rem
+			padding-top 0
+			border none
 			transform translateY(0.5em)
 
 		p
@@ -114,24 +121,26 @@
 
 	p.person__summary
 		position absolute
-		bottom 0
-		left 100%
 		z-index set-index(top)
 		visibility hidden
 		background-color $primary
 		color $bg
 		pointer-events none
-		set-type-size(small)
-		display none
-		padding 1rem
-		width 20rem
+		set-type-size(x-small)
+		margin 0
+		padding 1em
+		width 15rem
 		border 2px solid $bg
-		transform translate(0, 1.5rem)
+		line-height 1.4
 
 		+mq('bp-6')
+			set-type-size(small)
+			position absolute
+			bottom 0
+			left 100%
 			display block
+			width 20rem
 
-		&.is-flip
-			right 100%
-			left auto
-			transform translate(0, 1.5rem)
+			&.is-flip
+				right 100%
+				left auto
