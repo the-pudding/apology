@@ -108,29 +108,28 @@
 			border 4px solid $primary
 
 	.beeswarm__hovertext
-		position fixed
+		position absolute
 		z-index 10
-		padding 0.5rem
+		padding 0.25rem
 		border 2px solid $bg
 		border-radius 2%
 		background-color $primary
 		background-color $secondary
 		color $bg
 		opacity 0
-		transform translate(0, -120%)
 		pointer-events none
 		set-type-size(x-small, false)
 
 		+mq('bp-3')
 			set-type-size(root, false)
+			transform translateY(-175%)
+			padding 0.5rem
 
 		&.is-beauty
 			background-color $primary
 
 	.beeswarm__hovertext__content
 		set-type-size(xxx-small, false)
-		margin-top 0.75em
-		margin-bottom 0.25em
 		text-transform uppercase
 
 		+mq('bp-3')
