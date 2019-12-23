@@ -275,7 +275,6 @@
 		.text-comp--bg
 			fill none
 			stroke-width 2px
-			stroke $bg
 
 	text
 		font-size 12px
@@ -289,8 +288,12 @@
 		font-family $sans
 		pointer-events auto
 		set-type-size(small)
+		display none
 		visibility hidden
 		transform translateY(-100%)
+
+		+mq('bp-3')
+			display block
 
 		&.is-visible
 			visibility visible

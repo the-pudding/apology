@@ -2,6 +2,9 @@
 import loadData from './load-data';
 import './pudding-chart/impact-line';
 
+const BP = 480;
+
+let mobile = false;
 let chartPre = null;
 let chartPost = null;
 
@@ -21,9 +24,10 @@ function handleSelectChange() {
 }
 
 function updateChartDimensions() {
+  mobile = $section.node().offsetWidth < BP;
   const daysPre = chartPre.getDayCount();
   const daysPost = chartPost.getDayCount();
-  const daysZone = Math.floor(daysPre * 0.2);
+  const daysZone = Math.floor(daysPre * (mobile ? 0.05 : 0.2));
   const total = daysPre + daysPost + daysZone;
   const perPre = daysPre / total;
   const perPost = daysPost / total;
@@ -69,6 +73,8 @@ function slide(value) {
   chartPost.beauty(!ignoreBeauty);
   chartPre.highlight();
   chartPost.highlight();
+
+  chartPre.pre(isPre);
 
   if (value === 'pre-example') chartPre.focus(['Jake Paul']).render();
   else if (value === 'post-positive') {

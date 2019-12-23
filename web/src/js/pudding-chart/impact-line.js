@@ -10,6 +10,8 @@
 
 d3.selection.prototype.puddingChartLine = function init(options) {
   function createChart(el) {
+    const BP = 480;
+
     // dom elements
     const $chart = d3.select(el);
     let $svg = null;
@@ -29,6 +31,9 @@ d3.selection.prototype.puddingChartLine = function init(options) {
     let highlight = null;
     let showBeauty = true;
     let showCluster = false;
+    let pre = true;
+
+    let mobile = false;
 
     const endLabel = label.includes('Apology');
 
@@ -115,7 +120,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
         const w = $chart.node().offsetWidth;
         const h = $chart.node().offsetHeight;
         const factor = shouldShrink ? fraction : 1;
-
+        mobile = w < BP;
         // marginLeft = Math.floor(
         //   Chart.getDayCount() * MARGIN_FACTOR * w * factor
         // );
@@ -184,6 +189,7 @@ d3.selection.prototype.puddingChartLine = function init(options) {
 
         $label
           .selectAll('.text-comp')
+          .text(mobile && !pre ? '' : comp)
           .transition()
           .duration(DUR)
           .ease(EASE)
@@ -191,10 +197,12 @@ d3.selection.prototype.puddingChartLine = function init(options) {
 
         $label
           .select('.text-label')
+          .text(mobile && !pre ? label.replace('Controversy', '') : label)
           .transition()
           .duration(DUR)
           .ease(EASE)
-          .attr('transform', `translate(${endLabel ? width : 0}, ${height})`);
+          .attr('transform', `translate(${endLabel ? width : 0}, ${height})`)
+          .style('font-size', `${mobile ? 10 : 12}px`);
 
         const generateLine = d3
           .line()
@@ -296,6 +304,10 @@ d3.selection.prototype.puddingChartLine = function init(options) {
       },
       highlight(val) {
         highlight = val;
+        return Chart;
+      },
+      pre(val) {
+        pre = val;
         return Chart;
       },
     };
