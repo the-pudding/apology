@@ -11,14 +11,12 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
   function createChart(el) {
     const $sel = d3.select(el);
     const data = $sel.datum();
+
     // dimension stuff
     let width = 0;
     let height = 0;
     let radius = 0;
-    const marginTop = 0;
-    const marginBottom = 0;
-    const marginLeft = 0;
-    const marginRight = 0;
+    let margin = 0;
 
     const sim = d3.forceSimulation(data);
 
@@ -43,7 +41,7 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
 
         // const $g = $svg.append("g");
         // offset chart for margins
-        // $g.attr("transform", `translate(${marginLeft}, ${marginTop})`);
+        // $g.attr("transform", `translate(${margin}, ${margin})`);
         // setup viz group
         // $vis = $g.append("g").attr("class", "g-vis");
 
@@ -54,29 +52,34 @@ d3.selection.prototype.puddingChartBeeswarm = function init(options) {
       // on resize, update new dimensions
       resize(mobile) {
         // defaults to grabbing dimensions from container element
-        width =
-          $sel.node().parentElement.offsetWidth - marginLeft - marginRight;
-        height =
-          $sel.node().parentElement.offsetHeight - marginTop - marginBottom;
+        const titleH = d3.select('#beeswarm .graphic__title').node()
+          .offsetHeight;
+        width = $sel.node().parentElement.offsetWidth;
+        height = $sel.node().parentElement.offsetHeight - titleH;
+        radius = Math.floor(mobile ? 0.33 * width : 0.25 * height);
+        margin = Math.floor(radius * 0.5);
+        width -= margin * 2;
+        height -= margin * 2;
 
-        radius = mobile ? 0.4 * width : 0.25 * height;
-
-        $sel.style('height', `${height}px`);
+        $sel.style('height', `${height + margin * 2}px`);
 
         $svg
-          .attr('width', width + marginLeft + marginRight)
-          .attr('height', height + marginTop + marginBottom);
+          .attr('width', width + margin * 2)
+          .attr('height', height + margin * 2);
 
         $axis
           .select('.axis')
+          .attr('transform', `translate(${margin}, ${margin})`)
           .transition()
-          .attr('y1', mobile ? marginTop : height / 2)
-          .attr('y2', mobile ? marginTop + height : height / 2)
-          .attr('x1', mobile ? width / 2 : marginLeft)
-          .attr('x2', mobile ? width / 2 : marginLeft + width);
+          .attr('y1', mobile ? 0 : height / 2)
+          .attr('y2', mobile ? 0 + height : height / 2)
+          .attr('x1', mobile ? width / 2 : 0)
+          .attr('x2', mobile ? width / 2 : 0 + width);
 
-        scaleX.range([marginLeft, width + marginLeft]);
-        scaleY.range([height + marginTop, marginTop]);
+        scaleX.range([0, width]);
+        scaleY.range([height, 0]);
+
+        $bees.style('top', `${margin}px`).style('left', `${margin}px`);
 
         sim
           .force(

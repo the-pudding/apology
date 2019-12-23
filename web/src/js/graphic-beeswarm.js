@@ -23,11 +23,9 @@ function slide(value) {
     'LauraLee',
   ];
 
-  d3.select('.swiper').style('pointer-events', 'none');
   mouseOutHandler();
 
   if (focusSlides.includes(value)) {
-    d3.select('.swiper').style('pointer-events', 'auto');
     const $els = d3.selectAll(`[data-js="bee--${value}"`);
     highlightEl($els.node());
     $els.each(function(d) {
@@ -102,9 +100,8 @@ function mouseOutHandler() {
 function hoverText(elem, data) {
   const $fig = elem.parentElement.parentElement;
   const dims = elem.getBoundingClientRect();
-  const $hoverBox = d3.select(
-    `[data-id=beeswarm__hovertext_${$fig.getAttribute('data-id')}`
-  );
+  const id = $fig.getAttribute('data-id');
+  const $hoverBox = d3.select(`[data-id="beeswarm__hovertext_${id}"]`);
   $hoverBox.select('[data-js="beeswarm__hovertext__title"]').html(data.name);
   $hoverBox.select('[data-js="beeswarm__hovertext__content"]').html(data.value);
   const xoff =
