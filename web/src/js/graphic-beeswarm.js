@@ -112,7 +112,9 @@ function hoverText(elem, data) {
     : data.display < 0.8
     ? bbox.width / 2
     : bbox.width;
-  const yoff = mobile ? -elem.offsetHeight * 1.75 : 0;
+  const yoff = mobile
+    ? -elem.offsetHeight * 1.75
+    : -elem.offsetHeight * 0.5;
   $hoverBox
     .classed('is-beauty', data.beauty)
     .style('left', `${data.x - xoff + elem.parentElement.offsetLeft}px`)
