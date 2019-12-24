@@ -159,8 +159,12 @@ section
 			set-type-size(x-large, true)
 			padding-right 0
 
-	&.is-center p
+	&.is-center.slide--inter p
 		text-align center
+
+	&.is-center.slide--text p
+		+mq('bp-6')
+			text-align center
 
 .slide--inter
 	display flex
