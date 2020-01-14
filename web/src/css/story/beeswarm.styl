@@ -1,6 +1,9 @@
 #beeswarm
 	padding 0 0.5rem 1rem 0.5rem
 
+	&.is-visible .beeswarm__graphic.is-interactive
+		pointer-events auto
+
 	+mq('bp-3')
 		padding 1rem
 
@@ -11,9 +14,6 @@
 		max-width 80rem
 		width 100%
 		pointer-events none
-
-		&.is-interactive
-			pointer-events auto
 
 		+mq('bp-3')
 			flex-direction row
