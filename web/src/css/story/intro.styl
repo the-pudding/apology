@@ -66,19 +66,6 @@
 			color $white
 			font-weight bold
 
-	.smokey
-		position absolute
-		bottom 7.5rem
-		left 1rem
-		width 16rem
-		border 2px solid $fg
-		transition transform 250ms ease-in-out
-		transform translateX(-125%)
-		pointer-events auto
-
-		&.is-visible
-			transform translateX(0)
-
 .slide p.intro__byline
 	position absolute
 	bottom 0
@@ -90,6 +77,9 @@
 	line-height 1
 	set-type-size(small)
 	padding 1rem
+
+	a
+		pointer-events auto
 
 	+mq('bp-4')
 		set-type-size(x-large)
