@@ -1,6 +1,6 @@
 /* global d3 */
-const $section = d3.select('[data-js="people"');
-const $figure = $section.select('[data-js="people__figure"');
+const $section = d3.select('[data-js="people"]');
+const $figure = $section.select('[data-js="people__figure"]');
 
 function resize() {}
 

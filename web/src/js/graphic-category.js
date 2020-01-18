@@ -1,9 +1,9 @@
 /* global d3 */
 import loadData from './load-data';
 
-const $section = d3.select('[data-js="category"');
-const $graphic = $section.select('[data-js="category__graphic"');
-const $figure = $graphic.select('[data-js="graphic__figure"');
+const $section = d3.select('[data-js="category"]');
+const $graphic = $section.select('[data-js="category__graphic"]');
+const $figure = $graphic.select('[data-js="graphic__figure"]');
 
 const BP = 960;
 const MOBILE_W = 240;

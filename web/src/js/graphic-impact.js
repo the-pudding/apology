@@ -8,12 +8,12 @@ let mobile = false;
 let chartPre = null;
 let chartPost = null;
 
-const $section = d3.select('[data-js="impact"');
-const $graphic = $section.select('[data-js="impact__graphic"');
-const $zone = $graphic.select('[data-js="graphic__zone"');
-const $figurePre = $graphic.select('[data-js="figure--pre"');
-const $figurePost = $graphic.select('[data-js="figure--post"');
-const $select = $graphic.select('[data-js="graphic__select"');
+const $section = d3.select('[data-js="impact"]');
+const $graphic = $section.select('[data-js="impact__graphic"]');
+const $zone = $graphic.select('[data-js="graphic__zone"]');
+const $figurePre = $graphic.select('[data-js="figure--pre"]');
+const $figurePost = $graphic.select('[data-js="figure--post"]');
+const $select = $graphic.select('[data-js="graphic__select"]');
 
 function handleSelectChange() {
   const name = this.value;
